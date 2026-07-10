@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 int main(void) {
-    printf("Hello, Modern C!\n");
+    puts("Hello, Modern C!");
     return 0;
 }
 
-// Thinking in C:
-// Every C program starts at main(). puts() appends a newline automatically.
+// 💡 Thinking in C:
+// Every C program starts at main(). puts() prints text and adds a newline.
