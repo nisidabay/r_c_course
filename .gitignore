@@ -1,0 +1,22 @@
+# Binaries
+sysinfo
+divider
+grep-lite
+calc
+uniq
+wc-lite
+runit
+todo
+
+# Build artifacts
+*.o
+*.d
+/tmp/
+
+# Fibonacci study system
+.fibonacci/
+session_*.md
+
+# Editor files
+*~
+*.swp
