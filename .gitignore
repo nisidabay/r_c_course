@@ -1,0 +1,9 @@
+# Compiled binaries
+*.o
+*.out
+
+# Fibonacci queue
+.fibonacci/
+
+# Temp files
+/tmp/
