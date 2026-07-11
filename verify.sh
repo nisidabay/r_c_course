@@ -91,13 +91,61 @@ echo "============================================"
 echo "  Compiling Exercise Solutions"
 echo "============================================"
 
-# Find solution files — they follow various naming patterns
+# Find solution files — they follow various naming patterns.
+# 04_strings solutions are now flat in exercises/ (ex_NN_*_solution.c).
+# 03_functions, 06_pointers_101, 09_files use exercises/solutions/.
+# Catch any future */solutions/*.c too.
 for solution_file in $(find "$COURSE_DIR" -path '*/exercises/*solution*' -name '*.c' -o \
                         -path '*/exercises/*solved*' -name '*.c' -o \
-                        -path '*/exercises/solutions/*.c' | sort); do
+                        -path '*/exercises/solutions/*.c' -o \
+                        -path '*/solutions/*.c' | sort | uniq); do
     group_name=$(echo "$solution_file" | sed "s|$COURSE_DIR/||" | cut -d'/' -f1)
     base_name=$(basename "$solution_file" .c)
     compile_test "$solution_file" "[solution] $group_name/$base_name"
+done
+
+# =============================================================
+# 2b. Cross-check: every exercise stub has a matching solution
+# =============================================================
+echo ""
+echo "============================================"
+echo "  Checking Exercise Stub ↔ Solution Match"
+echo "============================================"
+echo ""
+
+for stub_file in $(find "$COURSE_DIR" -path '*/exercises/*' -name 'ex_*.c' ! -name '*solution*' ! -name '*solved*' | sort); do
+    total
+    stub_base=$(basename "$stub_file" .c)
+    stub_dir=$(dirname "$stub_file")
+    group_name=$(echo "$stub_file" | sed "s|$COURSE_DIR/||" | cut -d'/' -f1)
+
+    # Look for matching solution: same dir with _solution or _solved suffix, or in solutions/ subdir
+    solution_found=false
+    for suffix in "_solution" "_solved"; do
+        if [ -f "${stub_dir}/${stub_base}${suffix}.c" ] || \
+           [ -f "${stub_dir}/solutions/${stub_base}${suffix}.c" ] || \
+           [ -f "$(dirname "$stub_dir")/solutions/${stub_base}${suffix}.c" ]; then
+            solution_found=true
+            break
+        fi
+    done
+    # Also check solutions/ dir with same filename
+    for alt_dir in "$(dirname "$stub_dir")/solutions" "${stub_dir}/solutions"; do
+        if [ -f "${alt_dir}/${stub_base}.c" ]; then
+            solution_found=true
+            break
+        fi
+    done
+    # Also check solution_ prefix (e.g. stub=ex_01, solution=solution_ex_01)
+    if [ "$solution_found" = false ] && [ -f "${stub_dir}/solution_${stub_base}.c" ]; then
+        solution_found=true
+    fi
+
+    if [ "$solution_found" = true ]; then
+        pass "stub↔solution $group_name/$stub_base"
+    else
+        fail "stub↔solution $group_name/$stub_base (MISSING SOLUTION)"
+    fi
 done
 
 # =============================================================

@@ -25,7 +25,7 @@ fi
 # The script lives in the exercises/ directory
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXERCISES_DIR="${BASE_DIR}"
-SOLUTIONS_DIR="$(dirname "${BASE_DIR}")/solutions"
+SOLUTIONS_DIR="${BASE_DIR}"
 
 BANNED_FUNCTIONS=("strcpy" "strcat" "sprintf" "scanf" "atoi" "atof")
 EXERCISES_NEED_STDDEF=(3 4 5 6)   # 1-indexed exercise numbers that need <stddef.h>
@@ -174,6 +174,8 @@ banner "Checking EXERCISES (structural checks only)"
 
 for ex_file in "${EXERCISES_DIR}"/ex_*.c; do
     [[ -f "$ex_file" ]] || continue
+    # Skip solution files — they're checked in the solutions section below
+    [[ "$(basename "$ex_file")" == *_solution.c || "$(basename "$ex_file")" == *_solved.c ]] && continue
     TOTAL=$((TOTAL + 1))
     fname="$(basename "$ex_file")"
     ex_num=$(echo "$fname" | sed 's/ex_0*\([0-9]*\)_.*/\1/')
@@ -218,7 +220,7 @@ done
 # ----- Solutions (compile + run) -----
 banner "Checking SOLUTIONS (compile + run)"
 
-for sol_file in "${SOLUTIONS_DIR}"/ex_*.c; do
+for sol_file in "${SOLUTIONS_DIR}"/*_solution.c; do
     [[ -f "$sol_file" ]] || continue
     TOTAL=$((TOTAL + 1))
     fname="$(basename "$sol_file")"
