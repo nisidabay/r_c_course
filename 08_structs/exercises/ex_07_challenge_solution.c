@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #define MAX_STUDENTS 10
 #define MAX_NAME     64
@@ -19,6 +20,14 @@ typedef struct {
     double average;
 } Student;
 
+/* Discard characters remaining in stdin after truncated fgets */
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
 int main(void) {
     char buf[64];
     int count = 0;
@@ -26,6 +35,9 @@ int main(void) {
     printf("How many students? ");
     if (fgets(buf, sizeof buf, stdin) == NULL)
         return 1;
+    size_t len = strlen(buf);
+    if (len > 0 && buf[len - 1] != '\n')
+        consume_remaining();
     if (sscanf(buf, "%d", &count) != 1 || count < 1 || count > MAX_STUDENTS) {
         printf("Invalid count (1-%d).\n", MAX_STUDENTS);
         return 1;
@@ -41,18 +53,21 @@ int main(void) {
         printf("Name: ");
         if (fgets(students[i].name, sizeof students[i].name, stdin) == NULL)
             return 1;
-        /* Strip trailing newline */
-        for (int j = 0; students[i].name[j] != '\0'; j++) {
-            if (students[i].name[j] == '\n') {
-                students[i].name[j] = '\0';
-                break;
-            }
+        /* Strip trailing newline and check for truncation */
+        size_t name_len = strlen(students[i].name);
+        if (name_len > 0 && students[i].name[name_len - 1] != '\n') {
+            consume_remaining();   /* input was truncated */
+        } else if (name_len > 0) {
+            students[i].name[name_len - 1] = '\0';  /* remove \n */
         }
 
         /* Read ID */
         printf("ID: ");
         if (fgets(buf, sizeof buf, stdin) == NULL)
             return 1;
+        size_t id_len = strlen(buf);
+        if (id_len > 0 && buf[id_len - 1] != '\n')
+            consume_remaining();
         if (sscanf(buf, "%d", &students[i].id) != 1) {
             printf("Invalid ID.\n");
             return 1;
@@ -62,6 +77,9 @@ int main(void) {
         printf("Scores (%d): ", NUM_SCORES);
         if (fgets(buf, sizeof buf, stdin) == NULL)
             return 1;
+        size_t scores_len = strlen(buf);
+        if (scores_len > 0 && buf[scores_len - 1] != '\n')
+            consume_remaining();
         if (sscanf(buf, "%d %d %d",
                    &students[i].scores[0],
                    &students[i].scores[1],

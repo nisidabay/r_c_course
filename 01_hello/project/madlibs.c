@@ -16,6 +16,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* consume_remaining — discard extra characters left in stdin
+ * when the user types more than the buffer can hold.  After
+ * fgets, if there is no newline, keep reading until we find
+ * one (or EOF), so leftover input doesn't pollute the next
+ * prompt.
+ */
+static void consume_remaining(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
 int main(void) {
     char noun[48];           /* 48 chars — plenty for a single word */
     char verb[48];           /* 48 chars — plenty for a single word */
@@ -32,6 +44,9 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
+    /* If the user typed more than 47 chars, flush the leftovers */
+    if (strchr(noun, '\n') == NULL)
+        consume_remaining();
     noun[strcspn(noun, "\n")] = '\0';
 
     /* Prompt for a verb */
@@ -40,6 +55,9 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
+    /* If the user typed more than 47 chars, flush the leftovers */
+    if (strchr(verb, '\n') == NULL)
+        consume_remaining();
     verb[strcspn(verb, "\n")] = '\0';
 
     /* Prompt for an adjective */
@@ -48,6 +66,9 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
+    /* If the user typed more than 47 chars, flush the leftovers */
+    if (strchr(adjective, '\n') == NULL)
+        consume_remaining();
     adjective[strcspn(adjective, "\n")] = '\0';
 
     /* Prompt for an adverb */
@@ -56,6 +77,9 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
+    /* If the user typed more than 47 chars, flush the leftovers */
+    if (strchr(adverb, '\n') == NULL)
+        consume_remaining();
     adverb[strcspn(adverb, "\n")] = '\0';
 
     /* Prompt for a number */
@@ -64,6 +88,9 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
+    /* If the user typed more than 11 chars, flush the leftovers */
+    if (strchr(number_str, '\n') == NULL)
+        consume_remaining();
 
     char *endptr;
     long number = strtol(number_str, &endptr, 10);

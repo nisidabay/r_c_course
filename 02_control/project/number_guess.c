@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 int main(void)
@@ -54,6 +55,14 @@ int main(void)
         if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
             printf("\nGoodbye!\n");
             break;
+        }
+
+        /* Check for truncation: if input didn't fit, drain the residue */
+        size_t len = strlen(buffer);
+        if (len > 0 && buffer[len - 1] != '\n') {
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
         }
 
         /* Try to parse an integer from the input */

@@ -20,6 +20,19 @@
 #define ERROR_DIV_ZERO 2147483647  /* close to INT_MAX, unlikely as valid result */
 
 /* Buffer size for input lines */
+
+/**
+ * consume_remaining - Clear stdin of any leftover chars beyond what fgets read.
+ * Call when truncation is detected (buf doesn't end with '\n').
+ */
+static void consume_remaining(void)
+{
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF)
+        ;
+}
+
+/* Buffer size for input lines */
 #define LINE_BUF 64
 
 /* Arithmetic function prototypes */
@@ -103,8 +116,11 @@ int main(void)
             printf("\nGoodbye!\n");
             break;
         }
+        size_t len = strlen(line);
+        if (len > 0 && line[len - 1] != '\n')
+            consume_remaining();
 
-        /* Strip newline so "q\n" becomes "q\0" */
+        /* Strip newline so "q\n" becomes "\0" */
         line[strcspn(line, "\n")] = '\0';
 
         /* Check for quit */
@@ -126,6 +142,9 @@ int main(void)
             printf("\nGoodbye!\n");
             break;
         }
+        len = strlen(line);
+        if (len > 0 && line[len - 1] != '\n')
+            consume_remaining();
         op = line[0];
 
         /* ---- Read second number ---- */
@@ -134,6 +153,9 @@ int main(void)
             printf("\nGoodbye!\n");
             break;
         }
+        len = strlen(line);
+        if (len > 0 && line[len - 1] != '\n')
+            consume_remaining();
 
         tmp = strtol(line, &endptr, 10);
         if (endptr == line || *endptr != '\n') {

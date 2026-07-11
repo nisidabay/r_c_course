@@ -163,6 +163,124 @@ idiomatic C way to report what went wrong.
 
 ---
 
+## Input Safety Best Practices
+
+### The problem: `fgets` may not read a full line
+
+C11, §7.21.7.2:
+
+> *"The fgets function reads **at most one less than the number of characters specified by n** from the stream... No additional characters are read after a new-line character (which is retained) or after end-of-file."*
+
+`fgets(buf, 32, stdin)` reads **at most 31 characters**. If the user types 50, the remaining 19 characters (plus `\n`) stay in `stdin`. The **next** `fgets` will read them, not the user's intended input.
+
+The same applies to `getchar()`: it reads exactly **one** byte. The `\n` from Enter stays behind.
+
+### How to detect and fix it
+
+After every `fgets` call, check whether the buffer contains the newline that signals a complete line was read:
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+/*
+ * consume_remaining — discard characters from stdin until \n or EOF.
+ * Needed only when fgets truncates (buffer too small for the input line)
+ * or after getchar().
+ *
+ * Calling this unconditionally is safe but unnecessary — fgets already
+ * consumes the \n when the input fits. Only call it when truncation is
+ * detected.
+ */
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
+int main(void)
+{
+    char buf[16];  /* intentionally small for demonstration */
+
+    printf("Enter a long string: ");
+    if (fgets(buf, sizeof buf, stdin) == NULL)
+        return 1;
+
+    size_t len = strlen(buf);
+    if (len > 0 && buf[len - 1] != '\n') {
+        /* Truncation detected — consume the rest of the line */
+        consume_remaining();
+    }
+
+    printf("First 15 chars: %s\n", buf);
+
+    return 0;
+}
+```
+
+### When it's needed vs. not
+
+| Scenario | Cleanup needed? | Reason |
+|----------|----------------|--------|
+| `fgets()` with no truncation (buffer large enough for typical input) | ❌ No | `fgets` consumed everything including `\n`. The check `buf[len-1] != '\n'` returns false. |
+| `fgets()` with truncation (buffer too small for the line typed) | ✅ Yes | Characters beyond `size-1` remain in stdin. The next read will pick up garbage. |
+| `getchar()` for menu selection | ✅ Yes | `getchar()` reads exactly one byte; `\n` stays in stdin. |
+| `fflush(stdin)` | ❌ Never | **Undefined behavior.** C11, §7.21.5.2: `fflush` on an input stream is UB. The standard explicitly says so. |
+
+### The guard pattern
+
+The canonical way to call `consume_remaining` only when needed:
+
+```c
+char buf[32];
+if (fgets(buf, sizeof buf, stdin) == NULL)
+    return 1;
+
+size_t len = strlen(buf);
+if (len > 0 && buf[len - 1] != '\n') {
+    consume_remaining();  /* input was truncated — clear the residue */
+}
+```
+
+After `getchar()`, call it unconditionally — the `\n` is always there:
+
+```c
+int choice = getchar();
+consume_remaining();  /* getchar always leaves \n behind */
+```
+
+### What NOT to do
+
+| Anti-pattern | Why it's wrong |
+|-------------|----------------|
+| `fflush(stdin)` | Undefined behavior per C11 §7.21.5.2. Works on some implementations, crashes on others, and the standard guarantees nothing. |
+| `while(getchar() != '\n');` without `EOF` check | Infinite loop if stdin closes (pipe or redirected input). Always check for `EOF`. |
+| Consuming unconditionally after every `fgets` | Wastes cycles and can discard valid input when the line fit perfectly. Use the `buf[len-1] != '\n'` guard. |
+
+### Reference
+
+- ISO/IEC 9899:2011 (C11), §7.21.5.2 — `fflush` behavior on input streams
+- ISO/IEC 9899:2011 (C11), §7.21.7.2 — `fgets` semantics
+- K.3.5.4.1 (Annex K) — recommended practice for `fgets` and newline detection
+
+### Where you'll see it in this course
+
+The `consume_remaining` helper (or an inline equivalent) appears in every file that reads interactive input:
+
+| File | Why it's there |
+|------|---------------|
+| `01_hello/concept/05_simple_input.c` | Two sequential `fgets` calls; the second would read garbage if the first truncated. |
+| `01_hello/exercises/ex_05_input_solution.c` | Same pattern — name buffer, then number buffer. |
+| `01_hello/exercises/ex_06_challenge_solution.c` | Two small `char[12]` buffers for year input. |
+| `01_hello/project/madlibs.c` | Five sequential `fgets` calls — one truncated input would poison every subsequent prompt. |
+| `02_control/project/number_guess.c` | Single `fgets` in a loop — truncation poisons the next iteration. |
+| `03_functions/project/calculator.c` | Three sequential `fgets` calls per iteration (number, operator, number). |
+| `08_structs/exercises/ex_07_challenge_solution.c` | Four `fgets` calls per student record. |
+| `08_structs/project/student_db.c` | `getchar()` for menu selection — the `\n` is always there. |
+
+---
+
 ## Fibonacci Study System
 
 This course uses **Fibonacci-spaced repetition** to schedule reviews. The
