@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-int main(void)
-{
+int main(void) {
     // This is a single-line comment -- the compiler ignores everything after //
     printf("Single-line comments use //\n");
 
@@ -25,8 +24,8 @@ int main(void)
     return 0;
 }
 
-// Thinking in C:
-// Comments exist only for humans -- the compiler strips them before generating code.
-// Unlike some languages, C has no docstring or documentation comment standard built in.
-// Indentation is recommended for readability but has no syntactic meaning in C.
-// Good formatting is a discipline, not enforced by the language itself.
+// Thinking in C: Comments exist only for humans -- the compiler strips them
+// before generating code. Unlike some languages, C has no docstring or
+// documentation comment standard built in. Indentation is recommended for
+// readability but has no syntactic meaning in C. Good formatting is a
+// discipline, not enforced by the language itself.
