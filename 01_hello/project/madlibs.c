@@ -45,7 +45,8 @@ int main(void) {
         return 1;
     }
     /* If the user typed more than 47 chars, flush the leftovers */
-    if (strchr(noun, '\n') == NULL)
+    size_t len = strlen(noun);
+    if (len > 0 && noun[len - 1] != '\n')
         consume_remaining();
     noun[strcspn(noun, "\n")] = '\0';
 
@@ -56,7 +57,8 @@ int main(void) {
         return 1;
     }
     /* If the user typed more than 47 chars, flush the leftovers */
-    if (strchr(verb, '\n') == NULL)
+    len = strlen(verb);
+    if (len > 0 && verb[len - 1] != '\n')
         consume_remaining();
     verb[strcspn(verb, "\n")] = '\0';
 
@@ -67,7 +69,8 @@ int main(void) {
         return 1;
     }
     /* If the user typed more than 47 chars, flush the leftovers */
-    if (strchr(adjective, '\n') == NULL)
+    len = strlen(adjective);
+    if (len > 0 && adjective[len - 1] != '\n')
         consume_remaining();
     adjective[strcspn(adjective, "\n")] = '\0';
 
@@ -78,7 +81,8 @@ int main(void) {
         return 1;
     }
     /* If the user typed more than 47 chars, flush the leftovers */
-    if (strchr(adverb, '\n') == NULL)
+    len = strlen(adverb);
+    if (len > 0 && adverb[len - 1] != '\n')
         consume_remaining();
     adverb[strcspn(adverb, "\n")] = '\0';
 
@@ -89,7 +93,8 @@ int main(void) {
         return 1;
     }
     /* If the user typed more than 11 chars, flush the leftovers */
-    if (strchr(number_str, '\n') == NULL)
+    len = strlen(number_str);
+    if (len > 0 && number_str[len - 1] != '\n')
         consume_remaining();
 
     char *endptr;
