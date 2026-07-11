@@ -1,25 +1,32 @@
-# BUILD.md — madlibs
+# MadLibs — BUILD.md
+
+## Overview
+
+A fill-in-the-blank word game that reads five inputs (noun, verb, adjective,
+adverb, number) and weaves them into a story. Demonstrates sequential `fgets`
+calls with `consume_remaining` guards — a core input safety pattern used
+throughout the course.
 
 ## Requirements
 
-- GCC (GNU C Compiler)
-- C11 standard library
+- GCC (GNU C Compiler) with C11 support
+- Standard C library
 
-## Compile
+## Build
 
 ```bash
 gcc -std=c11 -Wall -Wextra -pedantic madlibs.c -o madlibs
 ```
 
-## Run
+## Usage
 
 ```bash
 ./madlibs
 ```
 
-## Example
+Enter each word when prompted:
 
-```
+```text
 === MadLibs ===
 Fill in the blanks below and I'll tell you a story!
 
@@ -37,3 +44,10 @@ After exactly 42 seconds of this, the robot stopped,
 looked around with a puzzled expression, and walked away.
 The end!
 ```
+
+## Concepts Used
+
+- `fgets` + `consume_remaining` guard for safe input
+- Five sequential reads with truncation protection
+- `snprintf` for safe string building
+- Prompt-and-response interaction pattern
