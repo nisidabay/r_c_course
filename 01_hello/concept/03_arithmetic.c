@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-int main(void)
-{
+int main(void) {
     int a = 15;
     int b = 4;
 
@@ -28,7 +27,12 @@ int main(void)
 }
 
 // Thinking in C:
-// C's arithmetic operators work like standard math — but / on two ints truncates.
-// Unlike Python, C's / with integers drops the fractional part (no floor division).
-// Operator precedence follows PEMDAS; use parentheses to be explicit.
-// The modulo operator % works only with integers, not floating-point types.
+// C's arithmetic operators work like standard math — but / on two ints
+// truncates. Unlike Python, C's / with integers drops the fractional part (no
+// floor division). Operator precedence follows PEMDAS; use parentheses to be
+// explicit. The modulo operator % works only with integers, not floating-point
+// types.
+//
+// The acronym "PEMDAS" stands for Parentheses, Exponents, Multiplication and
+// Division (from left to right), Addition and Subtraction (from left to right).
+// It is a mnemonic used to remember the order of operations in mathematics.
