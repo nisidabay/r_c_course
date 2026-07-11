@@ -10,15 +10,36 @@ gcc -std=c11 -Wall -Wextra -pedantic 01_hello/concept/01_hello_world.c -o /tmp/d
 
 ## Philosophy
 
-This course follows the **"Code first. Theory on demand."** approach used in the companion [Practical Rust](https://github.com/nousresearch/practical-rust) and [Practical Go](https://github.com/nousresearch/practical-go) courses. Each concept is a compilable `.c` file that runs immediately. Explanations live inside the file as comments under `// Thinking in C:` — you read them *after* the code compiles and executes.
+This course follows the **"Code first. Theory on demand."** approach. 
+Each concept is a compilable `.c` file that runs immediately. Explanations live
+inside the file as comments under `// Thinking in C:` — you read them *after*
+the code compiles and executes. Learn C the way you'll use it: to write CLI
+tools for Linux.
 
-**One question per file.** Every concept file answers exactly one question. `01_array_declaration.c` answers "How do I declare and initialize an array?" `03_string_slice.c` answers "How do I represent a string without copying?" This keeps each exposure short, focused, and memorable.
+**One question per file.** Every concept file answers exactly one question.
+`01_array_declaration.c` answers "How do I declare and initialize an array?"
+`03_string_slice.c` answers "How do I represent a string without copying?" This
+keeps each exposure short, focused, and memorable.
 
-**Tony Banters' "Strings Aren't Real" (Group 04).** Group 04 introduces `String_Slice` — a `char*` + `size_t` struct that replaces the traditional null-terminated C string model. The insight (from Tony Banters' talk) is that C strings are not real data types: they're just pointers with a convention. By bundling the length alongside the pointer, every string operation becomes O(1) for length, bounds-safe, and zero-copy. The group's project (an fstab parser) demonstrates the approach end-to-end.
+**Tony Banters' "Strings Aren't Real" (Group 04).** Group 04 introduces
+`String_Slice` — a `char*` + `size_t` struct that replaces the traditional
+null-terminated C string model. The insight (from Tony Banters' talk) is that C
+strings are not real data types: they're just pointers with a convention. By
+bundling the length alongside the pointer, every string operation becomes O(1)
+for length, bounds-safe, and zero-copy. The group's project (an fstab parser)
+demonstrates the approach end-to-end.
 
-**Safe C Standard.** This course enforces a strict safe subset of C11. Banned functions include `strcpy`, `strcat`, `sprintf`, `scanf`, `atoi`, and `atof`. All input uses `fgets` + `sscanf`. All string building uses `snprintf`. All number parsing uses `strtol`/`strtod`. Every `malloc`/`calloc`/`realloc` call is followed by a NULL check with `perror`. See the [Safe C Standard](#safe-c-standard) section for the full table.
+**Safe C Standard.** This course enforces a strict safe subset of C11. Banned
+functions include `strcpy`, `strcat`, `sprintf`, `scanf`, `atoi`, and `atof`.
+All input uses `fgets` + `sscanf`. All string building uses `snprintf`. All
+number parsing uses `strtol`/`strtod`. Every `malloc`/`calloc`/`realloc` call
+is followed by a NULL check with `perror`. See the [Safe C Standard](#safe-c-standard) section for the full table.
 
-**Cross-reference.** Like Practical Rust and Practical Go, this course is organized into groups, each with: concept files (`.c`), exercises (`.c` with solutions), a project (with `BUILD.md`), and a `verify-exercises.sh` script. The top-level `verify.sh` compiles every file and runs every verification script in the whole course.
+**Cross-reference.** This course is organized into groups, each with: concept
+files (`.c`), exercises (`.c` with solutions), a project (with `BUILD.md`), and
+a `verify-exercises.sh` script.
+The top-level `verify.sh` compiles every file and runs every verification
+script in the whole course.
 
 ---
 
@@ -72,7 +93,9 @@ cd 01_hello/project
 gcc -std=c11 -Wall -Wextra -pedantic madlibs.c -o madlibs && ./madlibs
 ```
 
-**Full verification.** From the course root, run the top-level `verify.sh` to compile every concept, every solution, every project, run all verification scripts, and check for forward references:
+**Full verification.** From the course root, run the top-level `verify.sh` to
+compile every concept, every solution, every project, run all verification
+scripts, and check for forward references:
 
 ```bash
 bash verify.sh
@@ -101,9 +124,13 @@ All code in this course is compiled with:
 #define _POSIX_C_SOURCE 200809L
 ```
 
-This define is placed at the top of the file (before any `#include`) and is documented in the file's comments. You do not need to pass it on the command line — it's handled per-file where needed.
+This define is placed at the top of the file (before any `#include`) and is
+documented in the file's comments. You do not need to pass it on the command
+line — it's handled per-file where needed.
 
-**No extra flags for C11 features.** C11 features like `_Generic` selections, anonymous structs/unions, and designated initializers are part of the standard and require no special flags beyond `-std=c11`.
+**No extra flags for C11 features.** C11 features like `_Generic` selections,
+anonymous structs/unions, and designated initializers are part of the standard
+and require no special flags beyond `-std=c11`.
 
 ---
 
@@ -131,25 +158,34 @@ if (arr == NULL) {
 }
 ```
 
-Use `perror` (from `<stdio.h>`) to print the system error message. It's the idiomatic C way to report what went wrong.
+Use `perror` (from `<stdio.h>`) to print the system error message. It's the
+idiomatic C way to report what went wrong.
 
 ---
 
 ## Fibonacci Study System
 
-This course uses **Fibonacci-spaced repetition** to schedule reviews. The rhythm is 1–2–3–5–8 days between successive reviews of the same unit, following the Fibonacci sequence.
+This course uses **Fibonacci-spaced repetition** to schedule reviews. The
+rhythm is 1–2–3–5–8 days between successive reviews of the same unit, following
+the Fibonacci sequence.
 
 **How it works.**
 
-A `learning_schedule.md` at the course root defines the full study plan. Each row specifies a day, a session number, a unit (group name), and an activity. The schedule interleaves new units with reviews of earlier ones so that every unit is seen 5 times total (1 introduction + 4 reviews).
+A `learning_schedule.md` at the course root defines the full study plan. Each
+row specifies a day, a session number, a unit (group name), and an activity.
+The schedule interleaves new units with reviews of earlier ones so that every
+unit is seen 5 times total (1 introduction + 4 reviews).
 
-**`regenerate_crons.sh`.** Run this script from the course root to rebuild the `.fibonacci/queue/` directory:
+**`regenerate_crons.sh`.** Run this script from the course root to rebuild the
+`.fibonacci/queue/` directory:
 
 ```bash
 ./regenerate_crons.sh
 ```
 
-The script reads `learning_schedule.md`, parses the table, and creates one file per session in `.fibonacci/queue/session_NNN.md`. Each file contains the unit name, the activity description, and instructions to delete the file when done.
+The script reads `learning_schedule.md`, parses the table, and creates one file
+per session in `.fibonacci/queue/session_NNN.md`. Each file contains the unit
+name, the activity description, and instructions to delete the file when done.
 
 **Using the queue.**
 
@@ -173,10 +209,12 @@ ls .fibonacci/queue/
 - **3rd review**: 5 days after 2nd review
 - **4th review**: 8 days after 3rd review
 
-This means each unit is revisited at progressively longer intervals, moving knowledge from working memory into long-term retention.
+This means each unit is revisited at progressively longer intervals, moving
+knowledge from working memory into long-term retention.
 
 ---
 
 ## License
 
-This course is provided for educational purposes. See individual file headers for attribution.
+This course is provided for educational purposes. See individual file headers
+for attribution.
