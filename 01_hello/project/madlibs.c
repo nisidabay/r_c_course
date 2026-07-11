@@ -17,11 +17,11 @@
 #include <string.h>
 
 int main(void) {
-    char noun[64];
-    char verb[64];
-    char adjective[64];
-    char adverb[64];
-    char number_str[32];
+    char noun[48];           /* 48 chars — plenty for a single word */
+    char verb[48];           /* 48 chars — plenty for a single word */
+    char adjective[48];      /* 48 chars — plenty for a single word */
+    char adverb[48];         /* 48 chars — plenty for a single word */
+    char number_str[12];     /* 12 chars — 9 digits + sign + '\n' + '\0' */
 
     puts("=== MadLibs ===");
     puts("Fill in the blanks below and I'll tell you a story!\n");

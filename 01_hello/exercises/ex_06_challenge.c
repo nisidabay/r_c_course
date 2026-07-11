@@ -20,17 +20,20 @@ int main(void)
      * Replace YOUR_CODE_HERE with the correct code.
      */
 
-    char input[32];
+    /* buffer for birth year string — 12 = 4 digits + newline + null + padding */
+    char birth_str[12];
+    /* buffer for current year string — 12 = 4 digits + newline + null + padding */
+    char year_str[12];
     int birth_year = 0;
     int current_year = 0;
 
     // printf("Enter your birth year: ");
-    // fgets(input, sizeof(input), stdin);
-    // sscanf(input, "%d", &birth_year);
+    // fgets(birth_str, sizeof(birth_str), stdin);
+    // sscanf(birth_str, "%d", &birth_year);
 
     // printf("Enter current year: ");
-    // fgets(input, sizeof(input), stdin);
-    // sscanf(input, "%d", &current_year);
+    // fgets(year_str, sizeof(year_str), stdin);
+    // sscanf(year_str, "%d", &current_year);
 
     int age = 0;
     int months = 0;

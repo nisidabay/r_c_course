@@ -4,7 +4,7 @@
 
 int main(void) {
     char name[32];
-    char input[32];
+    char age_str[5];  // 3 digits + newline + null → max plausible age 122
 
     printf("Enter your name: ");
     if (fgets(name, sizeof(name), stdin) == NULL) {
@@ -16,7 +16,7 @@ int main(void) {
     name[strcspn(name, "\n")] = '\0';
 
     printf("Enter your age: ");
-    if (fgets(input, sizeof(input), stdin) == NULL) {
+    if (fgets(age_str, sizeof(age_str), stdin) == NULL) {
         fprintf(stderr, "Error reading input or EOF reached\n");
         return 1;
     }
@@ -27,11 +27,11 @@ int main(void) {
     // Group 06 is dedicated to mastering them. For now,
     // just trust the pattern: strtol + endptr = safe parsing.
     char *endptr;
-    long age = strtol(input, &endptr, 10);
+    long age = strtol(age_str, &endptr, 10);
 
     // Validate: the parse must consume at least one digit, and the
     // remaining character must be the newline we expect from fgets.
-    if (endptr == input || *endptr != '\n') {
+    if (endptr == age_str || *endptr != '\n') {
         fprintf(stderr, "Invalid input: expected a whole number\n");
         return 1;
     }
@@ -54,7 +54,7 @@ int main(void) {
 // '\0' (the null terminator).
 //
 // strtol is the safe way to convert a string to a number. It reports parse
-// errors through the endptr pointer: if endptr == input after the call, no
+// errors through the endptr pointer: if endptr == age_str after the call, no
 // digits were consumed (not a number). This is how you validate numeric
 // input in modern C — no undefined behavior, no silent garbage.
 //
