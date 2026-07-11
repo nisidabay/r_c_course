@@ -13,8 +13,7 @@ gcc -std=c11 -Wall -Wextra -pedantic 01_hello/concept/01_hello_world.c -o /tmp/d
 This course follows the **"Code first. Theory on demand."** approach. 
 Each concept is a compilable `.c` file that runs immediately. Explanations live
 inside the file as comments under `// Thinking in C:` — you read them *after*
-the code compiles and executes. Learn C the way you'll use it: to write CLI
-tools for Linux.
+the code compiles and executes. 
 
 **One question per file.** Every concept file answers exactly one question.
 `01_array_declaration.c` answers "How do I declare and initialize an array?"
@@ -58,7 +57,8 @@ script in the whole course.
 | 09 | `09_files/` | How do I read and write files? | csv_reader |
 | 10 | `10_advanced/` | How do I use enums, function pointers, and `_Generic`? | generic_sorter |
 
-Each group has 4–7 concept files, 6–7 exercises (with solutions), a project with `BUILD.md`, and a `verify-exercises.sh` script.
+Each group has 4–7 concept files, 6–7 exercises (with solutions), a project
+with `BUILD.md`, and a `verify-exercises.sh` script.
 
 ---
 
@@ -136,7 +136,8 @@ and require no special flags beyond `-std=c11`.
 
 ## Safe C Standard
 
-The following functions are **banned** in this course. Every occurrence has been replaced with a safe alternative.
+The following functions are **banned** in this course. Every occurrence has
+been replaced with a safe alternative.
 
 | Banned | Safe Replacement | Why |
 |--------|-----------------|-----|
@@ -148,7 +149,8 @@ The following functions are **banned** in this course. Every occurrence has been
 | `atof` | `strtod(str, &endptr)` | No error detection; undefined on overflow |
 | `gets` | `fgets(buf, sizeof buf, stdin)` | Buffer overflow (removed from C11 standard) |
 
-**Memory allocation rule.** Every `malloc`, `calloc`, or `realloc` call must be followed by a NULL check:
+**Memory allocation rule.** Every `malloc`, `calloc`, or `realloc` call must be
+followed by a NULL check:
 
 ```c
 int *arr = malloc(n * sizeof(int));
@@ -169,15 +171,20 @@ idiomatic C way to report what went wrong.
 
 C11, §7.21.7.2:
 
-> *"The fgets function reads **at most one less than the number of characters specified by n** from the stream... No additional characters are read after a new-line character (which is retained) or after end-of-file."*
+> *"The fgets function reads **at most one less than the number of characters
+> specified by n** from the stream... No additional characters are read after a
+> new-line character (which is retained) or after end-of-file."*
 
-`fgets(buf, 32, stdin)` reads **at most 31 characters**. If the user types 50, the remaining 19 characters (plus `\n`) stay in `stdin`. The **next** `fgets` will read them, not the user's intended input.
+`fgets(buf, 32, stdin)` reads **at most 31 characters**. If the user types 50,
+the remaining 19 characters (plus `\n`) stay in `stdin`. The **next** `fgets`
+will read them, not the user's intended input.
 
 The same applies to `getchar()`: it reads exactly **one** byte. The `\n` from Enter stays behind.
 
 ### How to detect and fix it
 
-After every `fgets` call, check whether the buffer contains the newline that signals a complete line was read:
+After every `fgets` call, check whether the buffer contains the newline that
+signals a complete line was read:
 
 ```c
 #include <stdio.h>
