@@ -1,26 +1,62 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main(void)
-{
+int main(void) {
     char name[32];
     char input[32];
-    int age;
 
     printf("Enter your name: ");
-    fgets(name, sizeof(name), stdin);
+    if (fgets(name, sizeof(name), stdin) == NULL) {
+        fprintf(stderr, "Error reading input or EOF reached\n");
+        return 1;
+    }
+
+    // fgets keeps the trailing newline — remove it by replacing '\n' with '\0'
+    name[strcspn(name, "\n")] = '\0';
 
     printf("Enter your age: ");
-    fgets(input, sizeof(input), stdin);
-    sscanf(input, "%d", &age);
+    if (fgets(input, sizeof(input), stdin) == NULL) {
+        fprintf(stderr, "Error reading input or EOF reached\n");
+        return 1;
+    }
 
-    printf("Hello, %s! You are %d years old.\n", name, age);
+    // strtol parses a string into a long with full error detection.
+    // endptr points to the first character NOT consumed by the parse.
+    // Don't worry if pointers feel strange right now —
+    // Group 06 is dedicated to mastering them. For now,
+    // just trust the pattern: strtol + endptr = safe parsing.
+    char *endptr;
+    long age = strtol(input, &endptr, 10);
+
+    // Validate: the parse must consume at least one digit, and the
+    // remaining character must be the newline we expect from fgets.
+    if (endptr == input || *endptr != '\n') {
+        fprintf(stderr, "Invalid input: expected a whole number\n");
+        return 1;
+    }
+
+    printf("Hello, %s! You are %ld years old.\n", name, age);
 
     return 0;
 }
 
 // Thinking in C:
 // C has no built-in input mechanism — fgets reads raw text from stdin.
-// sscanf parses a string into typed variables, returning how many items matched.
-// Unlike Python's input() or JavaScript's prompt(), C input requires explicit buffers.
-// The & operator gives sscanf the address of a variable so it can modify it.
-// Always check fgets return value to handle end-of-file gracefully.
+//
+// `stdin` is a predefined stream in C that represents standard input. This
+// could be the keyboard for interactive programs or another file if you're
+// redirecting input from a file.
+//
+// fgets reads up to the buffer size or until a newline, whichever comes
+// first. It includes the newline in the buffer. We strip it from the name
+// with strcspn, which finds the position of '\n' so we can replace it with
+// '\0' (the null terminator).
+//
+// strtol is the safe way to convert a string to a number. It reports parse
+// errors through the endptr pointer: if endptr == input after the call, no
+// digits were consumed (not a number). This is how you validate numeric
+// input in modern C — no undefined behavior, no silent garbage.
+//
+// Always check the return value of fgets. It returns NULL when stdin
+// reaches end-of-file or a read error occurs.

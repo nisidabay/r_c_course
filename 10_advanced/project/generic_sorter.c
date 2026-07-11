@@ -2,7 +2,7 @@
  * generic_sorter.c — Generic Sorting Framework
  *
  * Demonstrates ALL concepts from groups 01–10:
- *   01: Basic I/O, printf, scanf
+ *   01: Basic I/O, printf, fgets
  *   02: Types, variables, arrays, structs
  *   03: Strings, snprintf, strcmp
  *   04: Loops (while, for), control flow
@@ -178,7 +178,7 @@ int main(void)
                catalog[i].quantity);
     }
 
-    char choice;
+    char line[16];
     do {                                             /* group 04: do-while loop */
         printf("\nSort by:\n");
         for (int i = 0; i < NUM_OPTIONS; i++) {      /* group 04: for loop */
@@ -187,17 +187,16 @@ int main(void)
         printf("  'x' → eXit\n");
         printf("Enter choice: ");
 
-        /* group 08: scanf (reading from stdin) */
-        int res = scanf(" %c", &choice);
-        if (res != 1) {
-            /* Clear stdin on bad input */
-            while (getchar() != '\n');
+        /* Safe C Standard: fgets instead of scanf */
+        if (fgets(line, sizeof line, stdin) == NULL) {
+            printf("Goodbye!\n");
+            break;
+        }
+        char choice = line[0];
+        if (choice == '\n' || choice == '\0') {
             printf("Invalid input. Try again.\n");
             continue;
         }
-
-        /* Consume rest of line */
-        while (getchar() != '\n');
 
         if (choice == 'x') {
             printf("Exiting. Goodbye!\n");

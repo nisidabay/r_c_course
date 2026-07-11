@@ -4,11 +4,17 @@
  * Prompts the user for a noun, verb, adjective, adverb, and number,
  * then prints a silly story with the user's words inserted.
  *
+ * Safe C Standard: uses fgets for all input, strcspn to strip newlines,
+ * strtol for number parsing (see `06_pointers_101` — you'll master
+ * pointers there! For now: strtol uses endptr to detect invalid input).
+ *
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic madlibs.c -o madlibs
  * Run:    ./madlibs
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void) {
     char noun[64];
@@ -16,8 +22,6 @@ int main(void) {
     char adjective[64];
     char adverb[64];
     char number_str[32];
-    int number;
-    int ret;
 
     puts("=== MadLibs ===");
     puts("Fill in the blanks below and I'll tell you a story!\n");
@@ -28,11 +32,7 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
-    ret = sscanf(noun, "%63s", noun);
-    if (ret != 1) {
-        printf("Invalid input.\n");
-        return 1;
-    }
+    noun[strcspn(noun, "\n")] = '\0';
 
     /* Prompt for a verb */
     printf("Enter a verb: ");
@@ -40,11 +40,7 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
-    ret = sscanf(verb, "%63s", verb);
-    if (ret != 1) {
-        printf("Invalid input.\n");
-        return 1;
-    }
+    verb[strcspn(verb, "\n")] = '\0';
 
     /* Prompt for an adjective */
     printf("Enter an adjective: ");
@@ -52,11 +48,7 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
-    ret = sscanf(adjective, "%63s", adjective);
-    if (ret != 1) {
-        printf("Invalid input.\n");
-        return 1;
-    }
+    adjective[strcspn(adjective, "\n")] = '\0';
 
     /* Prompt for an adverb */
     printf("Enter an adverb: ");
@@ -64,11 +56,7 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
-    ret = sscanf(adverb, "%63s", adverb);
-    if (ret != 1) {
-        printf("Invalid input.\n");
-        return 1;
-    }
+    adverb[strcspn(adverb, "\n")] = '\0';
 
     /* Prompt for a number */
     printf("Enter a number: ");
@@ -76,9 +64,11 @@ int main(void) {
         printf("Error reading input.\n");
         return 1;
     }
-    ret = sscanf(number_str, "%d", &number);
-    if (ret != 1) {
-        printf("Invalid input.\n");
+
+    char *endptr;
+    long number = strtol(number_str, &endptr, 10);
+    if (endptr == number_str || (*endptr != '\n' && *endptr != '\0')) {
+        printf("Invalid input: expected a whole number.\n");
         return 1;
     }
 
@@ -88,7 +78,7 @@ int main(void) {
     printf("One day, a %s decided to take a walk in the park.\n", noun);
     printf("Suddenly, it spotted a %s squirrel and began to %s %s.\n",
            adjective, verb, adverb);
-    printf("After exactly %d seconds of this, the %s stopped,\n", number, noun);
+    printf("After exactly %ld seconds of this, the %s stopped,\n", number, noun);
     printf("looked around with a puzzled expression, and walked away.\n");
     printf("The end!\n");
 

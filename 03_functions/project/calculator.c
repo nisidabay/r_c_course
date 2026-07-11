@@ -6,12 +6,21 @@
  *
  * Operations: +, -, *, /, %
  * Enter 'q' to quit.
+ *
+ * Safe C Standard: uses fgets + strtol for all number input
+ * (see `06_pointers_101` — strtol's endptr is a pointer to the
+ * first unparsed character; you'll master pointers there!)
  */
 
 #include <stdio.h>
+#include <stdlib.h>   /* strtol */
+#include <string.h>   /* strcspn */
 
 /* Error code for division/modulo by zero */
 #define ERROR_DIV_ZERO 2147483647  /* close to INT_MAX, unlikely as valid result */
+
+/* Buffer size for input lines */
+#define LINE_BUF 64
 
 /* Arithmetic function prototypes */
 int add(int a, int b);
@@ -75,45 +84,65 @@ int modulo(int a, int b)
  */
 int main(void)
 {
-    int a, b, result;
-    char op;
-    int keep_running = 1;
+    char line[LINE_BUF];
 
     printf("=== Integer Calculator ===\n");
     printf("Enter: <number> <operator> <number>\n");
     printf("Operators: + - * / %%\n");
     printf("Enter 'q' to quit.\n\n");
 
-    while (keep_running) {
+    while (1) {
+        int a, b, result;
+        char op;
+        char *endptr;
+
         printf("> ");
 
-        /* Try to read first number. If user enters 'q', quit. */
-        if (scanf("%d", &a) != 1) {
-            /* Not a number — check if it's 'q' */
-            scanf(" %c", &op);
-            if (op == 'q') {
-                keep_running = 0;
-                continue;
-            }
+        /* ---- Read first number via fgets + strtol ---- */
+        if (fgets(line, sizeof line, stdin) == NULL) {
+            printf("\nGoodbye!\n");
+            break;
+        }
+
+        /* Strip newline so "q\n" becomes "q\0" */
+        line[strcspn(line, "\n")] = '\0';
+
+        /* Check for quit */
+        if (strcmp(line, "q") == 0) {
+            break;
+        }
+
+        /* Parse first number */
+        long tmp = strtol(line, &endptr, 10);
+        if (endptr == line || *endptr != '\0') {
             printf("Invalid input. Enter a number or 'q' to quit.\n");
-            /* Clear remaining input up to newline */
-            while (getchar() != '\n')
-                ;
             continue;
         }
+        a = (int)tmp;
 
-        /* Read operator */
-        scanf(" %c", &op);
+        /* ---- Read operator ---- */
+        printf("Enter operator (+ - * / %%): ");
+        if (fgets(line, sizeof line, stdin) == NULL) {
+            printf("\nGoodbye!\n");
+            break;
+        }
+        op = line[0];
 
-        /* Read second number */
-        if (scanf("%d", &b) != 1) {
+        /* ---- Read second number ---- */
+        printf("Enter second number: ");
+        if (fgets(line, sizeof line, stdin) == NULL) {
+            printf("\nGoodbye!\n");
+            break;
+        }
+
+        tmp = strtol(line, &endptr, 10);
+        if (endptr == line || *endptr != '\n') {
             printf("Invalid input. Please enter a valid integer.\n");
-            while (getchar() != '\n')
-                ;
             continue;
         }
+        b = (int)tmp;
 
-        /* Perform the requested operation */
+        /* ---- Perform the requested operation ---- */
         switch (op) {
         case '+':
             result = add(a, b);

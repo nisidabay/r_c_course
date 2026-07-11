@@ -79,16 +79,15 @@ run_solution \
 # ex_05_input_solution
 run_solution \
     "$EXERCISES_DIR/ex_05_input_solution.c" \
-    "Enter your name: Enter your favorite number: Hello, Alice
-! Your favorite number is 42." \
+    "Enter your name: Enter your favorite number: Hello, Alice! Your favorite number is 42." \
     "Alice\n42"
 
 # ex_06_challenge_solution
 run_solution \
     "$EXERCISES_DIR/ex_06_challenge_solution.c" \
-    "Enter your birth year: Enter current year: You are approximately 35 years old.
-That is about 420 months!" \
-    "1990\n2025"
+    "Enter your birth year: Enter current year: You are approximately 36 years old.
+That is about 432 months!" \
+    "1990\n2026"
 
 echo "=============================="
 echo "Results: $PASS passed, $FAIL failed"
