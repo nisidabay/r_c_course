@@ -3,17 +3,18 @@
  * Group 05 — Arrays
  * Exercise 06: sorting an array (selection sort)
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * Implement the helper functions and the main sort logic.
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* Swap two integers via pointers */
 static void swap(int *a, int *b) {
-    int tmp = /* @FILL_ME */;
+    int tmp = *a;  // FIX ME
     *a = *b;
-    *b = /* @FILL_ME */;
+    *b = tmp;  // FIX ME
 }
 
 /* Print an array of n integers */
@@ -29,11 +30,11 @@ static void selection_sort(int arr[], int n) {
     for (int i = 0; i < n - 1; ++i) {
         int min_idx = i;
         for (int j = i + 1; j < n; ++j) {
-            if (arr[j] /* @FILL_ME */ arr[min_idx]) {
+            if (arr[j] < arr[min_idx]) {  // FIX ME
                 min_idx = j;
             }
         }
-        if (min_idx /* @FILL_ME */ i) {
+        if (min_idx != i) {  // FIX ME
             swap(&arr[i], &arr[min_idx]);
         }
     }
@@ -44,14 +45,14 @@ int main(void) {
     int n = 8;
 
     printf("Before: ");
-    print_array(/* @FILL_ME */, n);
+    print_array(scores, n);  // FIX ME
 
-    selection_sort(/* @FILL_ME */, n);
+    selection_sort(scores, n);  // FIX ME
 
     printf("After:  ");
     print_array(scores, n);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

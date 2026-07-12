@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int limit = 20;
@@ -35,7 +36,7 @@ int main(void) {
         printf("Reading %d: OK\n", readings[i]);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

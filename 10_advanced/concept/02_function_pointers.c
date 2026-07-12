@@ -49,7 +49,7 @@ int main(void) {
     int   *scores = malloc(n * sizeof(int));
     if (!scores) {
         fprintf(stderr, "malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     scores[0] = 85; scores[1] = 92; scores[2] = 78;
@@ -89,7 +89,7 @@ int main(void) {
     printf("%s\n", buf);
 
     free(scores);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

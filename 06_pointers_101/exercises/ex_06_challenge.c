@@ -8,7 +8,7 @@
  *   - Array/pointer equivalence (arr[i] == *(arr + i))
  *   - Pointer arithmetic (p++, *(p + n))
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to implement three functions:
+ * Fill in the blanks (marked FIX ME) to implement three functions:
  *   1. array_print  — prints an array using pointer arithmetic
  *   2. array_sum    — computes sum using pointer arithmetic
  *   3. array_reverse — reverses array in-place using a swap helper
@@ -16,12 +16,13 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* --- Helper: swap two ints via pointers (fill this in) --- */
 void swap_ints(int *a, int *b)
 {
-    int temp = /* @FILL_ME */;
-    /* @FILL_ME */ = *b;
+    int temp = *a;  // FIX ME
+    *a = *b;  // FIX ME
     *b = temp;
 }
 
@@ -31,7 +32,7 @@ void array_print(int *arr, int len)
     printf("[");
     for (int i = 0; i < len; i++) {
         /* Use pointer arithmetic: *(arr + i) instead of arr[i] */
-        printf("%d", *(arr /* @FILL_ME */ i));
+        printf("%d", *(arr + i));  // FIX ME
         if (i < len - 1) {
             printf(", ");
         }
@@ -45,7 +46,7 @@ int array_sum(int *arr, int len)
     int total = 0;
     for (int i = 0; i < len; i++) {
         /* Use pointer arithmetic to read each element */
-        total += /* @FILL_ME */;
+        total += *(arr + i);  // FIX ME
     }
     return total;
 }
@@ -55,7 +56,7 @@ void array_reverse(int *arr, int len)
 {
     for (int i = 0; i < len / 2; i++) {
         /* Swap arr[i] with arr[len - 1 - i] using swap_ints */
-        swap_ints(/* @FILL_ME */, /* @FILL_ME */);
+        swap_ints(&arr[i], &arr[len - 1 - i]);  // FIX ME  // FIX ME
     }
 }
 
@@ -82,7 +83,7 @@ int main(void)
     array_print(numbers, len);
     printf("\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

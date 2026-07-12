@@ -2,11 +2,14 @@
  * Challenge: Student Grade Record System — SOLUTION
  *
  * Build a small system that manages student records using struct arrays.
- * Uses fgets+sscanf for input, snprintf for string copy, and VLA for
+ * Uses fgets+strtol for input, snprintf for string copy, and VLA for
  * the student array.
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define MAX_STUDENTS 10
@@ -20,28 +23,27 @@ typedef struct {
     double average;
 } Student;
 
-/* Discard characters remaining in stdin after truncated fgets */
-static void consume_remaining(void)
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
-
 int main(void) {
     char buf[64];
     int count = 0;
 
     printf("How many students? ");
     if (fgets(buf, sizeof buf, stdin) == NULL)
-        return 1;
-    size_t len = strlen(buf);
-    if (len > 0 && buf[len - 1] != '\n')
-        consume_remaining();
-    if (sscanf(buf, "%d", &count) != 1 || count < 1 || count > MAX_STUDENTS) {
+        return EXIT_FAILURE;
+    buf[strcspn(buf, "\n")] = '\0';
+
+    char *endptr;
+    errno = 0;
+    long val = strtol(buf, &endptr, 10);
+    if (errno == ERANGE || endptr == buf || *endptr != '\0') {
         printf("Invalid count (1-%d).\n", MAX_STUDENTS);
-        return 1;
+        return EXIT_FAILURE;
     }
+    if (val < 1 || val > MAX_STUDENTS) {
+        printf("Invalid count (1-%d).\n", MAX_STUDENTS);
+        return EXIT_FAILURE;
+    }
+    count = (int)val;
 
     Student students[count];
 
@@ -52,40 +54,60 @@ int main(void) {
         /* Read name */
         printf("Name: ");
         if (fgets(students[i].name, sizeof students[i].name, stdin) == NULL)
-            return 1;
-        /* Strip trailing newline and check for truncation */
-        size_t name_len = strlen(students[i].name);
-        if (name_len > 0 && students[i].name[name_len - 1] != '\n') {
-            consume_remaining();   /* input was truncated */
-        } else if (name_len > 0) {
-            students[i].name[name_len - 1] = '\0';  /* remove \n */
-        }
+            return EXIT_FAILURE;
+        students[i].name[strcspn(students[i].name, "\n")] = '\0';
 
         /* Read ID */
         printf("ID: ");
         if (fgets(buf, sizeof buf, stdin) == NULL)
-            return 1;
-        size_t id_len = strlen(buf);
-        if (id_len > 0 && buf[id_len - 1] != '\n')
-            consume_remaining();
-        if (sscanf(buf, "%d", &students[i].id) != 1) {
+            return EXIT_FAILURE;
+        buf[strcspn(buf, "\n")] = '\0';
+
+        errno = 0;
+        val = strtol(buf, &endptr, 10);
+        if (errno == ERANGE || endptr == buf || *endptr != '\0') {
             printf("Invalid ID.\n");
-            return 1;
+            return EXIT_FAILURE;
         }
+        if (val < INT_MIN || val > INT_MAX) {
+            printf("Invalid ID.\n");
+            return EXIT_FAILURE;
+        }
+        students[i].id = (int)val;
 
         /* Read 3 scores */
         printf("Scores (%d): ", NUM_SCORES);
         if (fgets(buf, sizeof buf, stdin) == NULL)
-            return 1;
-        size_t scores_len = strlen(buf);
-        if (scores_len > 0 && buf[scores_len - 1] != '\n')
-            consume_remaining();
-        if (sscanf(buf, "%d %d %d",
-                   &students[i].scores[0],
-                   &students[i].scores[1],
-                   &students[i].scores[2]) != 3) {
+            return EXIT_FAILURE;
+        buf[strcspn(buf, "\n")] = '\0';
+
+        /* Parse three scores */
+        char *p = buf;
+        for (int s = 0; s < NUM_SCORES; s++) {
+            /* skip leading spaces */
+            while (*p == ' ') p++;
+            if (*p == '\0') {
+                printf("Invalid scores.\n");
+                return EXIT_FAILURE;
+            }
+            errno = 0;
+            val = strtol(p, &endptr, 10);
+            if (errno == ERANGE || endptr == p) {
+                printf("Invalid scores.\n");
+                return EXIT_FAILURE;
+            }
+            if (val < INT_MIN || val > INT_MAX) {
+                printf("Invalid scores.\n");
+                return EXIT_FAILURE;
+            }
+            students[i].scores[s] = (int)val;
+            p = endptr;
+        }
+        /* Check no trailing junk */
+        while (*p == ' ') p++;
+        if (*p != '\0') {
             printf("Invalid scores.\n");
-            return 1;
+            return EXIT_FAILURE;
         }
 
         /* Calculate average */
@@ -110,5 +132,5 @@ int main(void) {
                students[i].average);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

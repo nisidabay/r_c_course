@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void)
 {
@@ -32,7 +33,7 @@ int main(void)
     printf("x  = %d\n", x);
     printf("*p = %d\n", *p);      /* still reflects x */
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

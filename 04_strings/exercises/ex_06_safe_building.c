@@ -33,7 +33,7 @@ int main(void) {
      * Returns how many characters it WOULD have written (excluding \0) if space were unlimited.
      * If return >= sizeof(buf), output was truncated — you can detect it. */
     int needed = snprintf(greeting, sizeof(greeting),
-                          /*@*/);
+                          "Hello %s, you have %d messages.", name, count); // FIX ME
 
     printf("snprintf result:\n");
     printf("  Needed: %d characters (would need %zu-byte buffer for full output)\n",
@@ -46,7 +46,7 @@ int main(void) {
 
     /* --- strdup: safe duplication with NULL check --- */
     char *original = "This text needs to be copied to a new location.";
-    char *copy = /*@*/;
+    char *copy = strdup(original); // FIX ME
 
     /* strdup returns NULL if malloc fails — ALWAYS check */
     if (!copy) {
@@ -72,7 +72,7 @@ int main(void) {
     char *file = "documents/report.txt";
 
     /* Build the path: dir/file */
-    snprintf(path, sizeof(path), /*@*/);
+    snprintf(path, sizeof(path), "%s/%s", dir, file); // FIX ME
     printf("\nConstructed path: \"%s\"\n", path);
 
     printf("\nSafe building rules:\n");

@@ -22,7 +22,7 @@ int main(void)
         perror("initial malloc failed");
         free(a);    /* safe even if a is NULL */
         free(b);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     a[0] = 10; a[1] = 20; a[2] = 30;
@@ -57,7 +57,7 @@ int main(void)
     printf("\nBoth allocations freed cleanly.\n");
     printf("Check with: valgrind --leak-check=full ./06_free_valgrind\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

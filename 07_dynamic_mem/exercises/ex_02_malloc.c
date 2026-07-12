@@ -3,7 +3,7 @@
  *
  * Concept: Allocating memory with malloc, using sizeof(T), and freeing.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program should:
  *   1. Allocate an array of 8 doubles on the heap
  *   2. Fill it with values: value[i] = i * 1.5
@@ -21,32 +21,32 @@ int main(void)
     size_t count = 8;
 
     /* Allocate space for 'count' doubles */
-    double *values = /*@*/ malloc(count * sizeof(double)) /*@*/;
+    double *values = malloc(count * sizeof(double));  // FIX ME
     if (values == NULL) {
         printf("ERROR: malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill with values */
     for (size_t i = 0; i < count; i++) {
-        /*@*/ values[i] /*@*/ = (double)i * 1.5;
+        values[i] = (double)i * 1.5;  // FIX ME
     }
 
     /* Print the values */
     printf("Allocated %zu doubles on the heap (sizeof(double) = %zu bytes):\n",
            count, sizeof(double));
     for (size_t i = 0; i < count; i++) {
-        printf("  values[%zu] = %.1f\n", i, /*@*/ values[i] /*@*/);
+        printf("  values[%zu] = %.1f\n", i, values[i]);  // FIX ME
     }
 
     printf("\nTotal bytes allocated: %zu\n", count * sizeof(double));
 
     /* Free the memory */
-    /*@*/ free(values) /*@*/;
+    free(values);  // FIX ME
     values = NULL;
 
     printf("Memory freed successfully.\n");
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

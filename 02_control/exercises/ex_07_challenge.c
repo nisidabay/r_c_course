@@ -32,12 +32,15 @@
  * HINT: Use the modulo operator (%) to check divisibility:
  *       if (x % 3 == 0) means x is divisible by 3.
  *
- * Safe C Standard: use fgets + sscanf (do NOT use scanf).
+ * Safe C Standard: use fgets + strtol (do NOT use scanf).
  * Compile with: gcc -std=c11 -Wall -Wextra -pedantic ex_07_challenge.c -o ex_07_challenge
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFSZ 64
 
@@ -47,9 +50,46 @@ int main(void) {
 
     /* --- Your code below --- */
 
+    printf("Enter a positive integer: ");
+    if (fgets(buf, BUFSZ, stdin) == NULL) {
+        fprintf(stderr, "Error reading input\n");
+        return EXIT_FAILURE;
+    }
+    buf[strcspn(buf, "\n")] = '\0';
 
+    char *endptr;
+    errno = 0;
+    long val = strtol(buf, &endptr, 10);
 
+    if (errno == ERANGE) {
+        fprintf(stderr, "Number out of range\n");
+        return EXIT_FAILURE;
+    }
+    if (endptr == buf || *endptr != '\0') {
+        fprintf(stderr, "Invalid input\n");
+        return EXIT_FAILURE;
+    }
+    if (val < INT_MIN || val > INT_MAX) {
+        fprintf(stderr, "Out of int range\n");
+        return EXIT_FAILURE;
+    }
+    n = (int)val;
+    if (n < 1) {
+        fprintf(stderr, "Must be at least 1\n");
+        return EXIT_FAILURE;
+    }
 
+    for (int i = 1; i <= n; i++) {
+        if (i % 3 == 0 && i % 5 == 0) {
+            printf("FizzBuzz\n");
+        } else if (i % 3 == 0) {
+            printf("Fizz\n");
+        } else if (i % 5 == 0) {
+            printf("Buzz\n");
+        } else {
+            printf("%d\n", i);
+        }
+    }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

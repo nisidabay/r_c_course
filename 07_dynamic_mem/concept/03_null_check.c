@@ -23,7 +23,7 @@ int main(void)
     scores = malloc(count * sizeof(int));
     if (scores == NULL) {
         perror("malloc failed for scores");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill and print */
@@ -41,7 +41,7 @@ int main(void)
     if (more == NULL) {
         perror("malloc failed for more");
         free(scores);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     for (size_t i = 0; i < 5; i++) {
@@ -59,7 +59,7 @@ int main(void)
     free(more);
 
     printf("\nAll memory freed.  Every allocation was checked.\n");
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

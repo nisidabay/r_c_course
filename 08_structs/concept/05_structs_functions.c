@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char name[64];
@@ -46,7 +47,7 @@ int main(void) {
            avg1, stu.average);
     printf("By ptr:    average = %.1f\n", avg2);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

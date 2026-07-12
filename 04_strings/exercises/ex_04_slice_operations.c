@@ -34,18 +34,18 @@ String_Slice slice_from_cstring(char *cstring) {
 /* Compare two slices for equality.
  * Returns 1 if same length AND same characters in same order. */
 int slice_eq(String_Slice a, String_Slice b) {
-    if (/*@*/) return 0;          /* different lengths → not equal */
+    if (a.len != b.len) return 0;          /* different lengths → not equal */ // FIX ME
     for (size_t i = 0; i < a.len; ++i) {
-        if (/*@*/) return 0;      /* character mismatch */
+        if (a.data[i] != b.data[i]) return 0;      /* character mismatch */ // FIX ME
     }
     return 1;                      /* all characters match */
 }
 
 /* Check if a slice starts with a given prefix slice. */
 int slice_starts_with(String_Slice s, String_Slice prefix) {
-    if (/*@*/) return 0;          /* prefix can't be longer than string */
+    if (prefix.len > s.len) return 0;          /* prefix can't be longer than string */ // FIX ME
     for (size_t i = 0; i < prefix.len; ++i) {
-        if (/*@*/) return 0;      /* character mismatch */
+        if (s.data[i] != prefix.data[i]) return 0;      /* character mismatch */ // FIX ME
     }
     return 1;
 }

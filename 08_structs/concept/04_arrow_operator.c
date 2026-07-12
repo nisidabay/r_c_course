@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char title[64];
@@ -33,7 +34,7 @@ int main(void) {
     (*ptr).pages = 320;
     printf("Updated pages via (*ptr): %d\n", (*ptr).pages);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

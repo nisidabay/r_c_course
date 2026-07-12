@@ -27,7 +27,7 @@ int main(void) {
     /* Manual walk — this is what strlen does internally */
     char *p = greeting;
     size_t walked = 0;
-    while (/*@*/) {
+    while (*p != '\0') { // FIX ME
         ++walked;
         ++p;
     }
@@ -38,7 +38,7 @@ int main(void) {
     good_buf[0] = 'H';
     good_buf[1] = 'i';
     good_buf[2] = '!';
-    good_buf[3] = /*@*/;
+    good_buf[3] = '\0'; // FIX ME
     printf("good_buf = \"%s\"  strlen = %zu  (fits because we left room)\n",
            good_buf, strlen(good_buf));
 

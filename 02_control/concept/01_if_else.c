@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int score = 82;
@@ -33,7 +34,7 @@ int main(void) {
         puts("Advisory: Moderate weather.");
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define ROWS 3
 #define COLS 4
@@ -52,7 +53,7 @@ int main(void) {
         printf("Assignment %d average: %d\n", c + 1, col_sum / ROWS);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* Attempt to swap two ints — this FAILS because C passes by value */
 void swap_attempt(int a, int b)
@@ -63,7 +64,7 @@ int main(void)
     puts("\nKey takeaway: functions receive COPIES of the arguments.");
     puts("To actually change a variable, we need pointers (Group 06).");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

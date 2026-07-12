@@ -67,7 +67,7 @@ int main(void) {
     Result  *results = malloc(n * sizeof(Result));
     if (!results) {
         fprintf(stderr, "malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     int       iv  = 7;
@@ -103,7 +103,7 @@ int main(void) {
     printf("\n");
 
     free(results);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

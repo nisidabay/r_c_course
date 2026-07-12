@@ -21,34 +21,35 @@ int main(void) {
     FILE *fp;
 
     /* ---- Write three names to names.txt ---- */
-    fp = fopen("names.txt", /*@*/);
-    if (/*@*/) {
+    fp = fopen("names.txt", "w"); // FIX ME
+    if (fp == NULL) { // FIX ME
         puts("[FAIL] Could not open names.txt for writing.");
         return 1;
     }
 
-    /*@*/(fp, "Alice\\n");
-    /*@*/(fp, "Bob\\n");
-    /*@*/(fp, "Charlie\\n");
+    // FIX ME
+    fprintf(fp, "Alice\n"); // FIX ME
+    fprintf(fp, "Bob\n"); // FIX ME
+    fprintf(fp, "Charlie\n"); // FIX ME
 
-    /*@*/;
+    fclose(fp); // FIX ME
     puts("[OK] Wrote 3 names to names.txt.");
 
     /* ---- Read them back ---- */
-    fp = fopen("names.txt", /*@*/);
-    if (/*@*/) {
+    fp = fopen("names.txt", "r"); // FIX ME
+    if (fp == NULL) { // FIX ME
         puts("[FAIL] Could not open names.txt for reading.");
         return 1;
     }
 
     puts("--- Names in file ---");
     int count = 0;
-    while (/*@*/(line, sizeof line, fp)) {
+    while (fgets(line, sizeof line, fp)) { // FIX ME
         printf("Name %d: %s", count + 1, line);
-        /*@*/;
+        ++count; // FIX ME
     }
     puts("---------------------");
-    printf("[OK] Read %d names from names.txt.\\n", count);
+    printf("[OK] Read %d names from names.txt.\n", count);
 
     fclose(fp);
     remove("names.txt");

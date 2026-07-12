@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>   /* NULL */
 
 int main(void)
@@ -37,7 +38,7 @@ int main(void)
 
     printf("Program finished safely because we checked before using.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

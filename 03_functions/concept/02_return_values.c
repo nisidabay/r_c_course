@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* void function — prints, no return value */
 void print_separator(void)
@@ -39,12 +40,12 @@ char first_letter(void)
 int sign_of(int value)
 {
     if (value > 0) {
-        return 1;
+        return EXIT_FAILURE;
     }
     if (value < 0) {
         return -1;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main(void)
@@ -76,7 +77,7 @@ int main(void)
     print_separator();
     puts("Done.");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

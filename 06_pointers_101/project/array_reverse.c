@@ -7,12 +7,14 @@
  *
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic array_reverse.c -o array_reverse
  *
- * Concepts: pointers, pointer arithmetic, fgets + sscanf, no array subscripts
+ * Concepts: pointers, pointer arithmetic, fgets + strtol, no array subscripts
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
-#include <string.h>  /* for strlen */
-#include <stdlib.h>  /* for EXIT_SUCCESS */
+#include <stdlib.h>
+#include <string.h>
 
 #define ARRAY_SIZE 10
 #define LINE_SIZE 64
@@ -71,8 +73,6 @@ int main(void)
     while (count < ARRAY_SIZE)
     {
         int   val;
-        int   parsed;
-        size_t len;
 
         /* read a line */
         if (fgets(line, sizeof line, stdin) == NULL)
@@ -80,24 +80,25 @@ int main(void)
             break;  /* EOF or read error */
         }
 
-        /* strip trailing newline (for cleaner display) */
-        len = strlen(line);
-        if (len > 0 && line[len - 1] == '\n')
-        {
-            line[len - 1] = '\0';
-        }
+        /* strip trailing newline */
+        line[strcspn(line, "\n")] = '\0';
 
-        /* parse an integer from the line */
-        parsed = sscanf(line, "%d", &val);
-        if (parsed == 1)
-        {
-            nums[count] = val;
-            count++;
-        }
-        else
-        {
+        /* parse an integer from the line using strtol */
+        char *endptr;
+        errno = 0;
+        long v = strtol(line, &endptr, 10);
+        if (errno == ERANGE || endptr == line || *endptr != '\0') {
             printf("Invalid input, please enter an integer.\n");
+            continue;
         }
+        if (v < INT_MIN || v > INT_MAX) {
+            printf("Number out of range.\n");
+            continue;
+        }
+        val = (int)v;
+
+        nums[count] = val;
+        count++;
     }
 
     /* print original order */

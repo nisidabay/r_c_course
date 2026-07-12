@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     /* Full initialization — all 5 elements set explicitly */
@@ -31,7 +32,7 @@ int main(void) {
            readings[0], readings[1], readings[2],
            readings[3], readings[4], readings[5]);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

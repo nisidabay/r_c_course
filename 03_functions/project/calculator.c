@@ -12,25 +12,14 @@
  * first unparsed character; you'll master pointers there!)
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>   /* strtol */
-#include <string.h>   /* strcspn */
+#include <stdlib.h>
+#include <string.h>
 
 /* Error code for division/modulo by zero */
 #define ERROR_DIV_ZERO 2147483647  /* close to INT_MAX, unlikely as valid result */
-
-/* Buffer size for input lines */
-
-/**
- * consume_remaining - Clear stdin of any leftover chars beyond what fgets read.
- * Call when truncation is detected (buf doesn't end with '\n').
- */
-static void consume_remaining(void)
-{
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF)
-        ;
-}
 
 /* Buffer size for input lines */
 #define LINE_BUF 64
@@ -116,11 +105,8 @@ int main(void)
             printf("\nGoodbye!\n");
             break;
         }
-        size_t len = strlen(line);
-        if (len > 0 && line[len - 1] != '\n')
-            consume_remaining();
 
-        /* Strip newline so "q\n" becomes "\0" */
+        /* Strip newline */
         line[strcspn(line, "\n")] = '\0';
 
         /* Check for quit */
@@ -129,9 +115,14 @@ int main(void)
         }
 
         /* Parse first number */
+        errno = 0;
         long tmp = strtol(line, &endptr, 10);
-        if (endptr == line || *endptr != '\0') {
+        if (errno == ERANGE || endptr == line || *endptr != '\0') {
             printf("Invalid input. Enter a number or 'q' to quit.\n");
+            continue;
+        }
+        if (tmp < INT_MIN || tmp > INT_MAX) {
+            printf("Number out of range.\n");
             continue;
         }
         a = (int)tmp;
@@ -142,9 +133,11 @@ int main(void)
             printf("\nGoodbye!\n");
             break;
         }
-        len = strlen(line);
-        if (len > 0 && line[len - 1] != '\n')
-            consume_remaining();
+        line[strcspn(line, "\n")] = '\0';
+        if (strlen(line) == 0) {
+            printf("No operator entered.\n");
+            continue;
+        }
         op = line[0];
 
         /* ---- Read second number ---- */
@@ -153,13 +146,16 @@ int main(void)
             printf("\nGoodbye!\n");
             break;
         }
-        len = strlen(line);
-        if (len > 0 && line[len - 1] != '\n')
-            consume_remaining();
+        line[strcspn(line, "\n")] = '\0';
 
+        errno = 0;
         tmp = strtol(line, &endptr, 10);
-        if (endptr == line || *endptr != '\n') {
+        if (errno == ERANGE || endptr == line || *endptr != '\0') {
             printf("Invalid input. Please enter a valid integer.\n");
+            continue;
+        }
+        if (tmp < INT_MIN || tmp > INT_MAX) {
+            printf("Number out of range.\n");
             continue;
         }
         b = (int)tmp;
@@ -195,5 +191,5 @@ int main(void)
     }
 
     printf("Goodbye!\n");
-    return 0;
+    return EXIT_SUCCESS;
 }

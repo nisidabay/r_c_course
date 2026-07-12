@@ -1,57 +1,55 @@
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-
-/* consume_remaining: discard any leftover characters in stdin if the
- * buffer was too small to hold the full input line.
- */
-static void consume_remaining(void)
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
 
 int main(void)
 {
     /* buffer for user's name — large enough for typical names */
     char name[32];
-    /* buffer for favorite number string — 12 = 10 digits + possible '-' + newline + null */
-    char favorite_str[12];
+    /* buffer for favorite number string */
+    char favorite_str[64];
     int fav;
 
     printf("Enter your name: ");
     if (fgets(name, sizeof(name), stdin) == NULL) {
-        printf("Error reading input.\n");
-        return 1;
+        fprintf(stderr, "Error reading input.\n");
+        return EXIT_FAILURE;
     }
-    /* If the input was longer than 31 chars, flush the rest from stdin */
-    size_t len = strlen(name);
-    if (len > 0 && name[len - 1] != '\n')
-        consume_remaining();
-    /* Strip trailing newline so the output fits on one line */
+    /* Strip trailing newline */
     name[strcspn(name, "\n")] = '\0';
 
     printf("Enter your favorite number: ");
     if (fgets(favorite_str, sizeof(favorite_str), stdin) == NULL) {
-        printf("Error reading input.\n");
-        return 1;
+        fprintf(stderr, "Error reading input.\n");
+        return EXIT_FAILURE;
     }
-    len = strlen(favorite_str);
-    if (len > 0 && favorite_str[len - 1] != '\n')
-        consume_remaining();
+    favorite_str[strcspn(favorite_str, "\n")] = '\0';
 
     /*
-     * sscanf returns how many items it matched. Always check!
-     * Here it parses the favorite_str buffer as an integer.
-     * Later (Group 03+) you'll use strtol for full error detection
-     * (pointers from Group 06 make it click).
+     * strtol parses a string into a long with full error detection.
+     * Always check the result with errno and endptr.
      */
-    if (sscanf(favorite_str, "%d", &fav) != 1) {
-        printf("Invalid input: expected a number.\n");
-        return 1;
+    char *endptr;
+    errno = 0;
+    long val = strtol(favorite_str, &endptr, 10);
+
+    if (errno == ERANGE) {
+        fprintf(stderr, "Number out of range\n");
+        return EXIT_FAILURE;
     }
+    if (endptr == favorite_str || *endptr != '\0') {
+        fprintf(stderr, "Invalid input: expected a number.\n");
+        return EXIT_FAILURE;
+    }
+    if (val < INT_MIN || val > INT_MAX) {
+        fprintf(stderr, "Out of int range\n");
+        return EXIT_FAILURE;
+    }
+    fav = (int)val;
 
     printf("Hello, %s! Your favorite number is %d.\n", name, fav);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

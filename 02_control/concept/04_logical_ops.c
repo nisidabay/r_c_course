@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int age = 22;
@@ -37,7 +38,7 @@ int main(void) {
                ? "Eligible to enroll"
                : "Prerequisite not met");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

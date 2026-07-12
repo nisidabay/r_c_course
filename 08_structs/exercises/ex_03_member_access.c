@@ -4,7 +4,7 @@
  * Concept: The dot (.) operator for direct access to struct members,
  * including nested structs.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program defines a nested struct (Address inside Employee) and
  * prints employee details using chained dot access.
  *
@@ -12,6 +12,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     char street[64];
@@ -32,14 +34,14 @@ int main(void) {
     e.id = 1001;
 
     /* Fill in the chained dot access to set nested members */
-    snprintf(e./*@*/.street, sizeof e.addr.street, "%s", "456 Pine Rd");
-    snprintf(e.addr./*@*/, sizeof e.addr.city, "%s", "Seattle");
-    e./*@*/./*@*/ = 98101;
+    snprintf(e.addr.street, sizeof e.addr.street, "%s", "456 Pine Rd");  // FIX ME
+    snprintf(e.addr.city, sizeof e.addr.city, "%s", "Seattle");  // FIX ME
+    e.addr.zip = 98101;  // FIX ME  // FIX ME
 
     printf("Employee: %s (ID: %d)\n", e.name, e.id);
-    printf("Address:  %s\n", /*@*/.addr.street);
-    printf("City:     %s\n", e./*@*/./*@*/);
+    printf("Address:  %s\n", e.addr.street);  // FIX ME
+    printf("City:     %s\n", e.addr.city);  // FIX ME  // FIX ME
     printf("ZIP:      %d\n", e.addr.zip);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

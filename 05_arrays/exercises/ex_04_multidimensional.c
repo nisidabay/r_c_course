@@ -3,11 +3,12 @@
  * Group 05 — Arrays
  * Exercise 04: multi-dimensional arrays
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * Work with a 2D integer matrix using nested loops.
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define ROWS 3
 #define COLS 4
@@ -24,9 +25,9 @@ int main(void) {
 
     /* 1. Print the matrix in row-major order (rows x columns) */
     printf("Matrix:\n");
-    for (r = 0; r < /* @FILL_ME */; ++r) {
-        for (c = 0; c < /* @FILL_ME */; ++c) {
-            printf("%3d ", matrix[/* @FILL_ME */][/* @FILL_ME */]);
+    for (r = 0; r < ROWS; ++r) {  // FIX ME
+        for (c = 0; c < COLS; ++c) {  // FIX ME
+            printf("%3d ", matrix[r][c]);  // FIX ME  // FIX ME
         }
         putchar('\n');
     }
@@ -35,7 +36,7 @@ int main(void) {
     int total = 0;
     for (r = 0; r < ROWS; ++r) {
         for (c = 0; c < COLS; ++c) {
-            total /* @FILL_ME */ matrix[r][c];
+            total += matrix[r][c];  // FIX ME
         }
     }
     printf("Total sum = %d (expected: 78)\n", total);
@@ -51,7 +52,7 @@ int main(void) {
         putchar('\n');
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

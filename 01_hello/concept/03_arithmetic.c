@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int a = 15;
@@ -23,7 +24,7 @@ int main(void) {
     result = (a + b) * 2;
     printf("(a + b) * 2 = %d  (parentheses override precedence)\n", result);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

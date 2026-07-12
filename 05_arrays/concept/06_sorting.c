@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /*
  * Swap two integers via pointers — the standard C idiom.
@@ -57,7 +58,7 @@ int main(void) {
     printf("After sort:  ");
     print_array(temps, n);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

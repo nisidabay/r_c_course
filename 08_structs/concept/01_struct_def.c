@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 struct Person {
@@ -34,7 +35,7 @@ int main(void) {
     printf("Age:    %d\n", bob.age);
     printf("Height: %.2f m\n", bob.height);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

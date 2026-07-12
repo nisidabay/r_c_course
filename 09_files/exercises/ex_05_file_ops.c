@@ -22,7 +22,7 @@ int main(void) {
 
     /* ---- Create a file ---- */
     fp = fopen("original.txt", "w");
-    if (/*@*/) {
+    if (fp == NULL) { // FIX ME
         perror("fopen");
         return 1;
     }
@@ -31,8 +31,8 @@ int main(void) {
     puts("[OK] Created original.txt.");
 
     /* ---- Check if it exists ---- */
-    fp = fopen("original.txt", /*@*/);
-    if (/*@*/) {
+    fp = fopen("original.txt", "r"); // FIX ME
+    if (fp != NULL) { // FIX ME
         puts("[OK] original.txt exists.");
         fclose(fp);
     } else {
@@ -41,7 +41,7 @@ int main(void) {
     }
 
     /* ---- Rename it ---- */
-    if (rename("original.txt", "renamed.txt") /*@*/ 0) {
+    if (rename("original.txt", "renamed.txt") == 0) { // FIX ME
         puts("[OK] Renamed original.txt -> renamed.txt");
     } else {
         perror("rename");
@@ -50,7 +50,7 @@ int main(void) {
 
     /* ---- Check old name no longer exists ---- */
     fp = fopen("original.txt", "r");
-    if (/*@*/) {
+    if (fp == NULL) { // FIX ME
         puts("[OK] original.txt no longer exists after rename.");
     } else {
         puts("[FAIL] original.txt should not exist!");
@@ -58,7 +58,7 @@ int main(void) {
     }
 
     /* ---- Delete the renamed file ---- */
-    if (/*@*/("renamed.txt") == 0) {
+    if (remove("renamed.txt") == 0) { // FIX ME
         puts("[OK] Deleted renamed.txt.");
     } else {
         perror("remove");

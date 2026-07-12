@@ -10,29 +10,32 @@
  * and prints the local value. Then in main, show that the original is unchanged.
  * Also define a function 'add_them' that takes two ints and returns their sum.
  *
- * Safe C Standard: use fgets + sscanf (do NOT use scanf).
+ * Safe C Standard: use fgets + strtol (do NOT use scanf).
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFSZ 64
 
-/*@*/
+// FIX ME
 /* Define triple: takes int n, multiplies by 3, prints local value, returns nothing */
-void triple(/*@*/)
+void triple(int n)  // FIX ME
 {
-    /*@*/
-    n = n /*@*/ 3;
+    // FIX ME
+    n = n * 3;  // FIX ME
     printf("  Inside triple: n = %d\n", n);
-    /*@*/
+    // FIX ME
 }
 
-/*@*/
+// FIX ME
 /* Define add_them: takes int a and int b, returns their sum */
-int add_them(/*@*/)
+int add_them(int a, int b)  // FIX ME
 {
-    return /*@*/;
+    return a + b;  // FIX ME
 }
 
 int main(void) {
@@ -40,18 +43,41 @@ int main(void) {
     int x, y;
 
     printf("Enter two integers separated by space: ");
-    if (fgets(buf, BUFSZ, stdin) == NULL)
-        return 1;
+    if (fgets(buf, BUFSZ, stdin) == NULL) {
+        fprintf(stderr, "Error reading input\n");
+        return EXIT_FAILURE;
+    }
+    buf[strcspn(buf, "\n")] = '\0';
 
-    if (sscanf(buf, "%d %d", &x, &y) != 2)
-        return 1;
+    /* parse first number */
+    char *endptr;
+    errno = 0;
+    long vx = strtol(buf, &endptr, 10);
+    if (errno == ERANGE || endptr == buf || vx < INT_MIN || vx > INT_MAX) {
+        fprintf(stderr, "Invalid input for x\n");
+        return EXIT_FAILURE;
+    }
+    x = (int)vx;
+
+    /* parse second number */
+    errno = 0;
+    long vy = strtol(endptr, &endptr, 10);
+    if (errno == ERANGE || vy < INT_MIN || vy > INT_MAX) {
+        fprintf(stderr, "Invalid input for y\n");
+        return EXIT_FAILURE;
+    }
+    if (*endptr != '\0' && *endptr != '\n') {
+        fprintf(stderr, "Trailing characters\n");
+        return EXIT_FAILURE;
+    }
+    y = (int)vy;
 
     printf("Before triple: x = %d\n", x);
-    triple(/*@*/);
+    triple(x);  // FIX ME
     printf("After triple:  x = %d (unchanged!)\n", x);
 
-    int sum = add_them(/*@*/, /*@*/);
+    int sum = add_them(x, y);  // FIX ME  // FIX ME
     printf("add_them(%d, %d) = %d\n", x, y, sum);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

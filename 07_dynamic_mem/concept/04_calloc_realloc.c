@@ -20,7 +20,7 @@ int main(void)
     int *data = calloc(count, sizeof(int));
     if (data == NULL) {
         perror("calloc failed");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("After calloc (all zeroed):");
@@ -46,7 +46,7 @@ int main(void)
     if (temp == NULL) {
         perror("realloc failed to grow");
         free(data);
-        return 1;
+        return EXIT_FAILURE;
     }
     data = temp;          /* only assign after success */
     temp = NULL;
@@ -67,7 +67,7 @@ int main(void)
     printf("      realloc used a TEMP pointer — safe against NULL return.\n");
 
     free(data);
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

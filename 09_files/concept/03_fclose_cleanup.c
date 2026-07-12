@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     FILE *fp = NULL;
@@ -18,7 +19,7 @@ int main(void) {
     fp = fopen("config", "w");
     if (!fp) {
         puts("[FAIL] fopen failed for config.");
-        return 1;
+        return EXIT_FAILURE;
     }
     fprintf(fp, "theme=dark\nversion=1\n");
     fclose(fp);
@@ -29,7 +30,7 @@ int main(void) {
     fp = fopen("leaked.txt", "w");
     if (!fp) {
         puts("[FAIL] fopen failed for leaked.txt.");
-        return 1;
+        return EXIT_FAILURE;
     }
     fprintf(fp, "I will never be closed...\n");
     /* fclose(fp) missing — the handle leaks here */
@@ -39,7 +40,7 @@ int main(void) {
     remove("config");
     remove("leaked.txt");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

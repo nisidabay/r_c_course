@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* ---------- enum definition ---------- */
 typedef enum {
@@ -75,7 +76,7 @@ int main(void) {
         printf("%s\n", buf);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

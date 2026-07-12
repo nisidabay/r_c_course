@@ -4,8 +4,11 @@
  * Reads integers until 0, sums only the positive ones.
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFSZ 64
 
@@ -20,8 +23,25 @@ int main(void) {
         if (fgets(buf, BUFSZ, stdin) == NULL)
             break;
 
-        if (sscanf(buf, "%d", &num) != 1)
+        buf[strcspn(buf, "\n")] = '\0';
+
+        char *endptr;
+        errno = 0;
+        long val = strtol(buf, &endptr, 10);
+
+        if (errno == ERANGE) {
+            fprintf(stderr, "Number out of range\n");
             continue;
+        }
+        if (endptr == buf || *endptr != '\0') {
+            fprintf(stderr, "Invalid input\n");
+            continue;
+        }
+        if (val < INT_MIN || val > INT_MAX) {
+            fprintf(stderr, "Out of int range\n");
+            continue;
+        }
+        num = (int)val;
 
         if (num == 0) {
             break;               /* exit the loop */
@@ -36,5 +56,5 @@ int main(void) {
 
     printf("Sum of positives = %d\n", sum);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

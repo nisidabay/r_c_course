@@ -10,31 +10,34 @@
  * Also define a void function 'print_result' that prints whether a number
  * is even or odd.
  *
- * Safe C Standard: use fgets + sscanf (do NOT use scanf).
+ * Safe C Standard: use fgets + strtol (do NOT use scanf).
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFSZ 64
 
 /* Define is_even: returns 1 if n is even, 0 otherwise */
-/*@*/
-int is_even(/*@*/)
+// FIX ME
+int is_even(int n)  // FIX ME
 {
-    /*@*/
-    if (n /*@*/ 2 == 0) {
-        return /*@*/;
+    // FIX ME
+    if (n % 2 == 0) {  // FIX ME
+        return 1;  // FIX ME
     }
-    return /*@*/;
+    return 0;  // FIX ME
 }
 
 /* Define print_result: void function that prints the check result */
-/*@*/
+// FIX ME
 void print_result(int n, int even_flag)
 {
-    /*@*/
-    if (/*@*/) {
+    // FIX ME
+    if (even_flag) {  // FIX ME
         printf("%d is even.\n", n);
     } else {
         printf("%d is odd.\n", n);
@@ -46,17 +49,35 @@ int main(void) {
     int num;
 
     printf("Enter an integer: ");
-    if (fgets(buf, BUFSZ, stdin) == NULL)
-        return 1;
+    if (fgets(buf, BUFSZ, stdin) == NULL) {
+        fprintf(stderr, "Error reading input\n");
+        return EXIT_FAILURE;
+    }
+    buf[strcspn(buf, "\n")] = '\0';
 
-    if (sscanf(buf, "%d", &num) != 1)
-        return 1;
+    char *endptr;
+    errno = 0;
+    long val = strtol(buf, &endptr, 10);
+
+    if (errno == ERANGE) {
+        fprintf(stderr, "Number out of range\n");
+        return EXIT_FAILURE;
+    }
+    if (endptr == buf || *endptr != '\0') {
+        fprintf(stderr, "Invalid input\n");
+        return EXIT_FAILURE;
+    }
+    if (val < INT_MIN || val > INT_MAX) {
+        fprintf(stderr, "Out of int range\n");
+        return EXIT_FAILURE;
+    }
+    num = (int)val;
 
     /* capture the return value of is_even */
-    int flag = is_even(/*@*/);
+    int flag = is_even(num);  // FIX ME
 
     /* pass to print_result */
-    print_result(/*@*/, /*@*/);
+    print_result(num, flag);  // FIX ME  // FIX ME
 
-    return 0;
+    return EXIT_SUCCESS;
 }

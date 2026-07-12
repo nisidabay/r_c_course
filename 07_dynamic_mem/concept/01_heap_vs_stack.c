@@ -55,7 +55,7 @@ int main(void)
     printf("The heap (malloc/calloc/realloc) lets us allocate\n");
     printf("exactly what we need, when we need it.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

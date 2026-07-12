@@ -39,7 +39,7 @@ int compare_by_score(const void *a, const void *b) {
 
     if (pa->score > pb->score) return +1;
     if (pa->score < pb->score) return -1;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /* ---------- comparator: sort players by name alphabetically ---------- */
@@ -56,7 +56,7 @@ int main(void) {
     Player *players = malloc(n * sizeof(Player));
     if (!players) {
         fprintf(stderr, "malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* initialise (group 07: safe string building via snprintf) */
@@ -100,7 +100,7 @@ int main(void) {
     printf("%s\n", buf);
 
     free(players);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

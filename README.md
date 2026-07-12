@@ -30,7 +30,8 @@ demonstrates the approach end-to-end.
 
 **Safe C Standard.** This course enforces a strict safe subset of C11. Banned
 functions include `strcpy`, `strcat`, `sprintf`, `scanf`, `atoi`, and `atof`.
-All input uses `fgets` + `sscanf`. All string building uses `snprintf`. All
+All numeric input uses `fgets` + `strtol` with full `errno`/`endptr` validation.
+For non-numeric input, `fgets` + `sscanf` is acceptable. All string building uses `snprintf`. All
 number parsing uses `strtol`/`strtod`. Every `malloc`/`calloc`/`realloc` call
 is followed by a NULL check with `perror`. See the [Safe C Standard](#safe-c-standard) section for the full table.
 
@@ -144,7 +145,7 @@ been replaced with a safe alternative.
 | `strcpy` | `snprintf(dst, sizeof dst, "%s", src)` or `memcpy` with explicit bounds | No bounds checking; buffer overflow |
 | `strcat` | `snprintf(dst + offset, remaining, "%s", src)` | No bounds checking; buffer overflow |
 | `sprintf` | `snprintf(buf, sizeof buf, fmt, ...)` | No bounds checking; buffer overflow |
-| `scanf` | `fgets(buf, sizeof buf, stdin)` + `sscanf(buf, ...)` | No bounds checking on input; undefined behavior on overflow |
+| `scanf` | `fgets(buf, sizeof buf, stdin)` + `sscanf(buf, ...)` for strings; `strtol(buf, &endptr, 10)` for numbers | No bounds checking on input; undefined behavior on overflow |
 | `atoi` | `strtol(str, &endptr, 10)` | No error detection; undefined on overflow |
 | `atof` | `strtod(str, &endptr)` | No error detection; undefined on overflow |
 | `gets` | `fgets(buf, sizeof buf, stdin)` | Buffer overflow (removed from C11 standard) |
@@ -165,126 +166,94 @@ idiomatic C way to report what went wrong.
 
 ---
 
-## Input Safety Best Practices
+## Input Safety
 
-### The problem: `fgets` may not read a full line
+### The one true input pattern
 
-C11, §7.21.7.2:
-
-> *"The fgets function reads **at most one less than the number of characters
-> specified by n** from the stream... No additional characters are read after a
-> new-line character (which is retained) or after end-of-file."*
-
-`fgets(buf, 32, stdin)` reads **at most 31 characters**. If the user types 50,
-the remaining 19 characters (plus `\n`) stay in `stdin`. The **next** `fgets`
-will read them, not the user's intended input.
-
-The same applies to `getchar()`: it reads exactly **one** byte. The `\n` from Enter stays behind.
-
-### How to detect and fix it
-
-After every `fgets` call, check whether the buffer contains the newline that
-signals a complete line was read:
+Every file in this course that reads a number from the user follows this exact pattern:
 
 ```c
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-/*
- * consume_remaining — discard characters from stdin until \n or EOF.
- * Needed only when fgets truncates (buffer too small for the input line)
- * or after getchar().
- *
- * Calling this unconditionally is safe but unnecessary — fgets already
- * consumes the \n when the input fits. Only call it when truncation is
- * detected.
- */
-static void consume_remaining(void)
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
+int main(void) {
+    char buf[64];
+    int num;
 
-int main(void)
-{
-    char buf[16];  /* intentionally small for demonstration */
-
-    printf("Enter a long string: ");
-    if (fgets(buf, sizeof buf, stdin) == NULL)
-        return 1;
-
-    size_t len = strlen(buf);
-    if (len > 0 && buf[len - 1] != '\n') {
-        /* Truncation detected — consume the rest of the line */
-        consume_remaining();
+    printf("Enter an integer: ");
+    if (fgets(buf, sizeof(buf), stdin) == NULL) {
+        fprintf(stderr, "Error reading input\n");
+        return EXIT_FAILURE;
     }
+    buf[strcspn(buf, "\n")] = '\0';   // strip trailing newline
 
-    printf("First 15 chars: %s\n", buf);
+    char *endptr;
+    errno = 0;
+    long val = strtol(buf, &endptr, 10);
 
-    return 0;
+    if (errno == ERANGE) {
+        fprintf(stderr, "Number out of range\n");
+        return EXIT_FAILURE;
+    }
+    if (endptr == buf || *endptr != '\0') {
+        fprintf(stderr, "Invalid input\n");
+        return EXIT_FAILURE;
+    }
+    if (val < INT_MIN || val > INT_MAX) {
+        fprintf(stderr, "Out of int range\n");
+        return EXIT_FAILURE;
+    }
+    num = (int)val;
+
+    // ... use num ...
+
+    return EXIT_SUCCESS;
 }
 ```
 
-### When it's needed vs. not
+This pattern is repeated identically in every file. There is exactly one way to read integer input in this course.
 
-| Scenario | Cleanup needed? | Reason |
-|----------|----------------|--------|
-| `fgets()` with no truncation (buffer large enough for typical input) | ❌ No | `fgets` consumed everything including `\n`. The check `buf[len-1] != '\n'` returns false. |
-| `fgets()` with truncation (buffer too small for the line typed) | ✅ Yes | Characters beyond `size-1` remain in stdin. The next read will pick up garbage. |
-| `getchar()` for menu selection | ✅ Yes | `getchar()` reads exactly one byte; `\n` stays in stdin. |
-| `fflush(stdin)` | ❌ Never | **Undefined behavior.** C11, §7.21.5.2: `fflush` on an input stream is UB. The standard explicitly says so. |
+**For numeric input** — `fgets` + `strtol` with full `errno`/`endptr` validation (see pattern above).
 
-### The guard pattern
+**For non-numeric input** — `fgets` + `sscanf` is acceptable (reading names, splitting tokens, etc.).
 
-The canonical way to call `consume_remaining` only when needed:
+**Why not `atoi` or `scanf`?** `atoi` has no error detection at all. `scanf` skips whitespace and can leave unread input in the buffer, causing subtle bugs. With `fgets` you control exactly what gets read.
 
+**Why not `consume_remaining`?** With properly sized buffers (64-256 bytes), the entire input line almost always fits in a single `fgets` call. Using `strcspn(buf, "\n")` to strip the trailing newline is all that's needed — no `consume_remaining`, no `fflush(stdin)` (which is undefined behavior per C11 §7.21.5.2).
+
+### File and memory patterns
+
+**File opening** — every file follows this exact pattern:
 ```c
-char buf[32];
-if (fgets(buf, sizeof buf, stdin) == NULL)
-    return 1;
-
-size_t len = strlen(buf);
-if (len > 0 && buf[len - 1] != '\n') {
-    consume_remaining();  /* input was truncated — clear the residue */
+FILE *fp = fopen("filename", "r");
+if (fp == NULL) {
+    perror("fopen");
+    return EXIT_FAILURE;
 }
 ```
 
-After `getchar()`, call it unconditionally — the `\n` is always there:
-
+**Memory allocation** — every allocation follows this exact pattern:
 ```c
-int choice = getchar();
-consume_remaining();  /* getchar always leaves \n behind */
+int *arr = malloc(n * sizeof(*arr));
+if (arr == NULL) {
+    perror("malloc");
+    return EXIT_FAILURE;
+}
 ```
 
-### What NOT to do
+### What NOT to do for NUMERIC input
 
 | Anti-pattern | Why it's wrong |
 |-------------|----------------|
-| `fflush(stdin)` | Undefined behavior per C11 §7.21.5.2. Works on some implementations, crashes on others, and the standard guarantees nothing. |
-| `while(getchar() != '\n');` without `EOF` check | Infinite loop if stdin closes (pipe or redirected input). Always check for `EOF`. |
-| Consuming unconditionally after every `fgets` | Wastes cycles and can discard valid input when the line fit perfectly. Use the `buf[len-1] != '\n'` guard. |
+| `atoi` / `atof` | No error detection; undefined on overflow |
+| `scanf("%d", ...)` directly (without fgets) | Skips whitespace, leaves unread input; no bounds checking |
+| `fflush(stdin)` | Undefined behavior per C11 §7.21.5.2 |
+| `consume_remaining` | Unnecessary with properly sized buffers; adds complexity |
 
-### Reference
-
-- ISO/IEC 9899:2011 (C11), §7.21.5.2 — `fflush` behavior on input streams
-- ISO/IEC 9899:2011 (C11), §7.21.7.2 — `fgets` semantics
-- K.3.5.4.1 (Annex K) — recommended practice for `fgets` and newline detection
-
-### Where you'll see it in this course
-
-The `consume_remaining` helper (or an inline equivalent) appears in every file that reads interactive input:
-
-| File | Why it's there |
-|------|---------------|
-| `01_hello/concept/05_simple_input.c` | Two sequential `fgets` calls; the second would read garbage if the first truncated. |
-| `01_hello/exercises/ex_05_input_solution.c` | Same pattern — name buffer, then number buffer. |
-| `01_hello/exercises/ex_06_challenge_solution.c` | Two small `char[12]` buffers for year input. |
-| `01_hello/project/madlibs.c` | Five sequential `fgets` calls — one truncated input would poison every subsequent prompt. |
-| `02_control/project/number_guess.c` | Single `fgets` in a loop — truncation poisons the next iteration. |
-| `03_functions/project/calculator.c` | Three sequential `fgets` calls per iteration (number, operator, number). |
-| `08_structs/exercises/ex_07_challenge_solution.c` | Four `fgets` calls per student record. |
-| `08_structs/project/student_db.c` | `getchar()` for menu selection — the `\n` is always there. |
+**`sscanf` is fine for non-numeric input** (strings, formatted tokens, etc.).
 
 ---
 

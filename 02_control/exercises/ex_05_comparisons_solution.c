@@ -4,8 +4,11 @@
  * Reads two integers and prints which is greater or if they're equal.
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUFSZ 64
 
@@ -14,11 +17,32 @@ int main(void) {
     int a, b;
 
     printf("Enter two integers (space-separated): ");
-    if (fgets(buf, BUFSZ, stdin) == NULL)
-        return 1;
+    if (fgets(buf, BUFSZ, stdin) == NULL) {
+        fprintf(stderr, "Error reading input\n");
+        return EXIT_FAILURE;
+    }
+    buf[strcspn(buf, "\n")] = '\0';
 
-    if (sscanf(buf, "%d %d", &a, &b) != 2)
-        return 1;
+    char *endptr;
+    errno = 0;
+    long val1 = strtol(buf, &endptr, 10);
+    if (errno == ERANGE || endptr == buf || val1 < INT_MIN || val1 > INT_MAX) {
+        fprintf(stderr, "Invalid input for a\n");
+        return EXIT_FAILURE;
+    }
+    a = (int)val1;
+
+    errno = 0;
+    long val2 = strtol(endptr, &endptr, 10);
+    if (errno == ERANGE || val2 < INT_MIN || val2 > INT_MAX) {
+        fprintf(stderr, "Invalid input for b\n");
+        return EXIT_FAILURE;
+    }
+    if (*endptr != '\0' && *endptr != '\n') {
+        fprintf(stderr, "Trailing characters\n");
+        return EXIT_FAILURE;
+    }
+    b = (int)val2;
 
     if (a > b) {
         printf("a is greater\n");
@@ -28,5 +52,5 @@ int main(void) {
         printf("equal\n");
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

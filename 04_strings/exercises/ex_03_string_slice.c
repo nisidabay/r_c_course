@@ -21,16 +21,16 @@
 
 /* Define the String_Slice struct: a char* data and a size_t len */
 typedef struct {
-    /*@*/  *data;
-    /*@*/  len;
+    char   *data; // FIX ME
+    size_t  len;  // FIX ME
 } String_Slice;
 
 /* Build a slice from a null-terminated C string.
  * strlen is called ONCE during construction, never again. */
 String_Slice slice_from_cstring(char *cstring) {
     return (String_Slice){
-        .data = /*@*/,
-        .len  = /*@*/,
+        .data = cstring,         // FIX ME
+        .len  = strlen(cstring), // FIX ME
     };
 }
 

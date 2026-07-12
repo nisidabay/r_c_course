@@ -3,7 +3,7 @@
  * Group 10 — Advanced
  * Exercise 05: _Generic (C11 type-generic macros)
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * Read the comments to understand what each line should do.
  *
  * _Generic syntax:
@@ -24,10 +24,10 @@ static void print_str(const char *v) { printf("str:\"%s\"", v); }
 
 /* ---------- type-generic print macro ---------- */
 #define print_val(x) _Generic((x),                              \
-    int:         /* @FILL_ME */,                                \
+    int:         print_int,                                \
     double:      print_double,                                  \
     char*:       print_str,                                     \
-    const char*: /* @FILL_ME */                                 \
+    const char*: print_str                                 \
 )(x)
 
 /* ---------- square implementations ---------- */
@@ -36,8 +36,8 @@ static double    square_double(double v) { return v * v; }
 
 /* ---------- type-generic square macro ---------- */
 #define square(x) _Generic((x),         \
-    int:    /* @FILL_ME */,             \
-    double: /* @FILL_ME */              \
+    int:    square_int,             \
+    double: square_double              \
 )(x)
 
 typedef struct {
@@ -52,7 +52,7 @@ int main(void) {
 
     /* Use the square macro to compute values */
     int    sq_i = square(iv);
-    double sq_d = /* @FILL_ME */;
+    double sq_d = square(dv);
 
     /* Build result strings using snprintf (safe — no sprintf) */
     Result results[3];
@@ -73,12 +73,12 @@ int main(void) {
 
     /* Demonstrate print_val dispatching */
     printf("\n  print_val(iv)  → ");
-    /* @FILL_ME */;
+    print_val(iv);
     printf("\n  print_val(dv)  → ");
     print_val(dv);
     printf("\n  print_val(sv)  → ");
     print_val(sv);
     printf("\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

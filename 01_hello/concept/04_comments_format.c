@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     // This is a single-line comment -- the compiler ignores everything after //
@@ -21,7 +22,7 @@ int main(void) {
 
     printf("Total: %d\n", total);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C: Comments exist only for humans -- the compiler strips them

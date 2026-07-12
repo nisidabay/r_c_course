@@ -12,6 +12,7 @@
 
 #include <stddef.h>   // size_t is an unsigned integer type from <stddef.h>, used for sizes and indices
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct {
@@ -33,7 +34,7 @@ int slice_eq(String_Slice a, String_Slice b) {
     for (size_t i = 0; i < a.len; ++i) {
         if (a.data[i] != b.data[i]) return 0;   /* character mismatch */
     }
-    return 1;                               /* all characters match */
+    return EXIT_FAILURE;                               /* all characters match */
 }
 
 /* Check if a slice starts with a given prefix slice. */
@@ -42,7 +43,7 @@ int slice_starts_with(String_Slice s, String_Slice prefix) {
     for (size_t i = 0; i < prefix.len; ++i) {
         if (s.data[i] != prefix.data[i]) return 0;  /* character mismatch */
     }
-    return 1;
+    return EXIT_FAILURE;
 }
 
 int main(void) {
@@ -79,7 +80,7 @@ int main(void) {
 
     printf("\nAll comparisons use the stored length — no '\\0' scanning needed.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -1,10 +1,12 @@
 /*
  * Student Database
  * Concepts: structs, typedef, member access, arrays of structs,
- *           structs in functions, string ops, fgets+sscanf
+ *           structs in functions, string ops, fgets+strtol
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic student_db.c -o student_db
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,13 +25,33 @@ typedef struct {
 static Student db[100];
 static size_t  count = 0;
 
-/* ---------- helper: clear stdin after fgets ---------- */
+/* ---------- helper: read an integer from stdin with full validation ---------- */
 
-static void clear_stdin(void)
+static int read_int(const char *prompt, int *out)
 {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
+    char buf[64];
+    int valid;
+
+    do {
+        printf("%s", prompt);
+        if (fgets(buf, sizeof buf, stdin) == NULL) return 0;
+        buf[strcspn(buf, "\n")] = '\0';
+
+        char *endptr;
+        errno = 0;
+        long val = strtol(buf, &endptr, 10);
+        if (errno == ERANGE || endptr == buf || *endptr != '\0') {
+            printf("Invalid input. Try again.\n");
+            valid = 0;
+        } else if (val < INT_MIN || val > INT_MAX) {
+            printf("Out of range. Try again.\n");
+            valid = 0;
+        } else {
+            *out = (int)val;
+            valid = 1;
+        }
+    } while (!valid);
+    return 1;
 }
 
 /* ---------- menu actions ---------- */
@@ -43,7 +65,6 @@ static void add_student(void)
 
     Student s;
     char buf[128];
-    int valid;
 
     /* name */
     printf("Enter name: ");
@@ -53,21 +74,13 @@ static void add_student(void)
     s.name[sizeof s.name - 1] = '\0';
 
     /* id */
-    do {
-        printf("Enter ID: ");
-        if (fgets(buf, sizeof buf, stdin) == NULL) return;
-        valid = sscanf(buf, "%d", &s.id);
-        if (valid != 1) printf("Invalid ID. Try again.\n");
-    } while (valid != 1);
+    if (!read_int("Enter ID: ", &s.id)) return;
 
     /* scores */
     for (int i = 0; i < 5; i++) {
-        do {
-            printf("Enter score %d: ", i + 1);
-            if (fgets(buf, sizeof buf, stdin) == NULL) return;
-            valid = sscanf(buf, "%d", &s.scores[i]);
-            if (valid != 1) printf("Invalid score. Try again.\n");
-        } while (valid != 1);
+        char prompt[32];
+        snprintf(prompt, sizeof prompt, "Enter score %d: ", i + 1);
+        if (!read_int(prompt, &s.scores[i])) return;
     }
 
     /* calculate average */
@@ -104,15 +117,8 @@ static void search_by_id(void)
         return;
     }
 
-    char buf[64];
-    int search_id, valid;
-
-    do {
-        printf("Enter ID to search: ");
-        if (fgets(buf, sizeof buf, stdin) == NULL) return;
-        valid = sscanf(buf, "%d", &search_id);
-        if (valid != 1) printf("Invalid ID. Try again.\n");
-    } while (valid != 1);
+    int search_id;
+    if (!read_int("Enter ID to search: ", &search_id)) return;
 
     for (size_t i = 0; i < count; i++) {
         if (db[i].id == search_id) {
@@ -136,6 +142,7 @@ static void search_by_id(void)
 int main(void)
 {
     char choice;
+    char buf[64];
 
     printf("=== Student Database ===\n");
     printf("a - Add student\n");
@@ -145,8 +152,8 @@ int main(void)
 
     for (;;) {
         printf("\nEnter choice: ");
-        choice = getchar();
-        clear_stdin();
+        if (fgets(buf, sizeof buf, stdin) == NULL) break;
+        choice = buf[0];
 
         switch (choice) {
         case 'a':
@@ -160,10 +167,11 @@ int main(void)
             break;
         case 'q':
             printf("Goodbye.\n");
-            return 0;
+            return EXIT_SUCCESS;
         default:
             printf("Unknown option '%c'. Try a/l/s/q.\n", choice);
             break;
         }
     }
+    return EXIT_SUCCESS;
 }

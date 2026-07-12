@@ -3,7 +3,7 @@
  *
  * Concept: EVERY heap allocation must be NULL-checked.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program should:
  *   1. Allocate an array of 12 floats
  *   2. NULL-check both allocations
@@ -23,9 +23,9 @@ int main(void)
 
     /* First allocation */
     float *arr = malloc(count * sizeof(float));
-    if (/*@*/arr == NULL/*@*/) {
+    if (arr == NULL) {
         perror("malloc failed for arr");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill first array */
@@ -40,11 +40,11 @@ int main(void)
 
     /* Second allocation */
     size_t count2 = 6;
-    float *more = /*@*/ malloc(count2 * sizeof(float)) /*@*/;
+    float *more = malloc(count2 * sizeof(float));  // FIX ME
     if (more == NULL) {
         perror("malloc failed for more");
-        /*@*/ free(arr) /*@*/;
-        return 1;
+        free(arr);  // FIX ME
+        return EXIT_FAILURE;
     }
 
     /* Fill second array */
@@ -59,11 +59,11 @@ int main(void)
     putchar('\n');
 
     /* Clean up both */
-    /*@*/ free(arr) /*@*/;
-    /*@*/ free(more) /*@*/;
+    free(arr);  // FIX ME
+    free(more);  // FIX ME
 
     printf("All memory freed. Every allocation was checked.\n");
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

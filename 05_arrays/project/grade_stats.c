@@ -8,14 +8,17 @@
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic grade_stats.c -o grade_stats
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stddef.h>   /* size_t */
 #include <stdlib.h>   /* EXIT_FAILURE */
+#include <string.h>
 
 #define MAX_SCORES 20
 
 /*
- * read_scores — read integer scores from stdin using fgets + sscanf.
+ * read_scores — read integer scores from stdin using fgets + strtol.
  * Returns the number of scores successfully read.
  */
 static size_t read_scores(int scores[], size_t capacity)
@@ -25,9 +28,18 @@ static size_t read_scores(int scores[], size_t capacity)
 
     while (count < capacity && fgets(line, sizeof line, stdin) != NULL) {
         int val;
-        if (sscanf(line, "%d", &val) != 1) {
+        line[strcspn(line, "\n")] = '\0';
+
+        char *endptr;
+        errno = 0;
+        long v = strtol(line, &endptr, 10);
+        if (errno == ERANGE || endptr == line || *endptr != '\0') {
             continue;               /* skip blank / non-numeric lines */
         }
+        if (v < INT_MIN || v > INT_MAX) {
+            continue;
+        }
+        val = (int)v;
         if (val < 0 || val > 100) {
             continue;               /* skip out-of-range scores */
         }
@@ -160,5 +172,5 @@ int main(void)
     printf("  Average: %.1f\n", avg);
     printf("  Passing (>=60): %zu / %zu\n", pass, count);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

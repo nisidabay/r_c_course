@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void)
 {
@@ -46,7 +47,7 @@ int main(void)
         printf("  arr[%d] = %d\n", i, arr[i]);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

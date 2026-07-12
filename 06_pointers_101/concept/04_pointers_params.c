@@ -13,6 +13,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* -- PART A: swap that FAILS (pass-by-value) -- */
 void swap_fails(int a, int b)
@@ -59,7 +60,7 @@ int main(void)
     printf("The pointer is just a number (an address) on the stack, but\n");
     printf("that number lets the function reach OUTSIDE its own frame.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

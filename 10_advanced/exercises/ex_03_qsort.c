@@ -3,7 +3,7 @@
  * Group 10 — Advanced
  * Exercise 03: qsort with callbacks
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * Read the comments to understand what each line should do.
  *
  * NOTE: The comparator signature for qsort is:
@@ -23,20 +23,20 @@ typedef struct {
 /* ---------- comparator: sort by age ascending ---------- */
 int compare_by_age(const void *a, const void *b) {
     /* cast void* → const Person* */
-    const Person *pa = /* @FILL_ME */;
-    const Person *pb = /* @FILL_ME */;
+    const Person *pa = (const Person *)a;  // FIX ME
+    const Person *pb = (const Person *)b;  // FIX ME
 
     /* compare ages */
     if (pa->age > pb->age) return +1;
-    if (pa->age /* @FILL_ME */ pb->age) return -1;
+    if (pa->age < pb->age) return -1;  // FIX ME
     return 0;
 }
 
 /* ---------- comparator: sort by name alphabetically ---------- */
-int compare_by_name(/* @FILL_ME */, const void *b) {
+int compare_by_name(const void *a, const void *b) {  // FIX ME
     const Person *pa = (const Person *)a;
     const Person *pb = (const Person *)b;
-    return strcmp(/* @FILL_ME */, pb->name);
+    return strcmp(pa->name, pb->name);  // FIX ME
 }
 
 int main(void) {
@@ -50,7 +50,7 @@ int main(void) {
     size_t n = sizeof people / sizeof people[0];
 
     /* --- sort by age --- */
-    qsort(people, n, sizeof(Person), /* @FILL_ME */);
+    qsort(people, n, sizeof(Person), compare_by_age);  // FIX ME
 
     printf("Sorted by age:\n");
     for (size_t i = 0; i < n; i++) {
@@ -58,12 +58,12 @@ int main(void) {
     }
 
     /* --- sort by name --- */
-    qsort(/* @FILL_ME */);
+    qsort(people, n, sizeof(Person), compare_by_name);  // FIX ME
 
     printf("\nSorted by name:\n");
     for (size_t i = 0; i < n; i++) {
         printf("  %s (%d)\n", people[i].name, people[i].age);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -3,7 +3,7 @@
  * Group 10 — Advanced
  * Exercise 04: reentrant tokenisation with strtok_r
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * Read the comments to understand what each line should do.
  *
  * NOTE: strtok_r requires _POSIX_C_SOURCE to be defined BEFORE any includes.
@@ -34,8 +34,8 @@ static char **tokenise(const char *str, const char *delim, size_t *out_count) {
     char  **tokens = malloc(cap * sizeof(char *));
     if (!tokens) { free(work); return NULL; }
 
-    /* @FILL_ME */ *saveptr = NULL;
-    char *token = strtok_r(work, delim, /* @FILL_ME */);
+    char *saveptr = NULL;  // FIX ME
+    char *token = strtok_r(work, delim, &saveptr);  // FIX ME
 
     while (token) {
         if (count >= cap) {
@@ -55,7 +55,7 @@ static char **tokenise(const char *str, const char *delim, size_t *out_count) {
             return NULL;
         }
         count++;
-        token = strtok_r(/* @FILL_ME */, delim, &saveptr);
+        token = strtok_r(NULL, delim, &saveptr);  // FIX ME
     }
 
     free(work);
@@ -73,7 +73,7 @@ int main(void) {
 
     if (!lines) {
         fprintf(stderr, "tokenisation failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("Parsed %zu lines:\n", line_count);
@@ -96,5 +96,5 @@ int main(void) {
 
     for (size_t i = 0; i < line_count; i++) free(lines[i]);
     free(lines);
-    return 0;
+    return EXIT_SUCCESS;
 }

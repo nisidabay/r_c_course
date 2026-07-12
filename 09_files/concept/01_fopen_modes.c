@@ -13,6 +13,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     /* ---- Fail-first: open non-existent file for reading ---- */
@@ -28,7 +29,7 @@ int main(void) {
     fp = fopen("config", "w");
     if (!fp) {
         puts("[FAIL] fopen with \"w\" returned NULL — cannot continue.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] fopen with \"w\" — created/truncated 'config'.");
     fclose(fp);
@@ -37,7 +38,7 @@ int main(void) {
     fp = fopen("config", "a");
     if (!fp) {
         puts("[FAIL] fopen with \"a\" returned NULL.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] fopen with \"a\" — opened 'config' for appending.");
     fclose(fp);
@@ -46,7 +47,7 @@ int main(void) {
     fp = fopen("config", "r");
     if (!fp) {
         puts("[FAIL] fopen with \"r\" returned NULL on existing file.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] fopen with \"r\" — opened existing 'config' for reading.");
     fclose(fp);
@@ -54,7 +55,7 @@ int main(void) {
     /* Clean up */
     remove("config");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

@@ -12,6 +12,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(void) {
@@ -50,7 +51,7 @@ int main(void) {
     printf("\nBut with an ARRAY: sizeof(arr) = %zu  (includes '\\0')\n", sizeof(arr));
     printf("Arrays are NOT pointers, even though they decay into them.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

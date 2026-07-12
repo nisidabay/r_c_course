@@ -4,7 +4,7 @@
  * Concept: Free discipline — every malloc must be freed.
  * free(NULL) is safe. Double-free is UB. NULL after free.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program should:
  *   1. Allocate three arrays of 4 ints each
  *   2. NULL-check all three
@@ -31,7 +31,7 @@ int main(void)
         free(a);
         free(b);
         free(c);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill arrays */
@@ -44,11 +44,11 @@ int main(void)
     printf("Before free: a[2]=%d  b[2]=%d  c[2]=%d\n", a[2], b[2], c[2]);
 
     /* Free everything */
-    /*@*/ free(a) /*@*/;
+    free(a);  // FIX ME
     a = NULL;
 
-    /*@*/ free(b) /*@*/;
-    /*@*/ b = NULL /*@*/;
+    free(b);  // FIX ME
+    b = NULL;  // FIX ME
 
     free(c);
     c = NULL;
@@ -66,7 +66,7 @@ int main(void)
     printf("All pointers NULLed after free.\n");
     printf("Check with: valgrind --leak-check=full ./ex_06_free_valgrind\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

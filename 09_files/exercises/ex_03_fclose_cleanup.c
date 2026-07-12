@@ -20,27 +20,27 @@ int main(void) {
 
     /* ---- Open, write, and close ---- */
     fp = fopen("log.txt", "w");
-    if (/*@*/) {
+    if (fp == NULL) { // FIX ME
         puts("[FAIL] Could not open log.txt.");
         return 1;
     }
 
-    fprintf(fp, "Session started\\n");
-    /*@*/(fp);
-    fp = /*@*/;
+    fprintf(fp, "Session started\n");
+    fclose(fp); // FIX ME
+    fp = NULL; // FIX ME
     puts("[OK] log.txt written and closed.");
 
     /* ---- Open for reading ---- */
     fp = fopen("log.txt", "r");
-    if (/*@*/) {
+    if (fp == NULL) { // FIX ME
         puts("[FAIL] Could not open log.txt for reading.");
         return 1;
     }
     puts("[OK] log.txt opened for reading.");
 
     /* BUG: We forgot to close! Add the missing fclose + NULL. */
-    /*@*/
-    /*@*/
+    fclose(fp); // FIX ME
+    fp = NULL; // FIX ME
 
     /* ---- Clean up files ---- */
     remove("log.txt");

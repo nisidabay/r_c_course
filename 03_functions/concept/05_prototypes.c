@@ -11,6 +11,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* ---- function prototypes (declarations) ---- */
 
@@ -34,7 +35,7 @@ int main(void)
     double avg = average(10.5, 20.5);
     printf("average(10.5, 20.5) = %.1f\n", avg);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /* ---- function definitions (can be anywhere after the prototype) ---- */

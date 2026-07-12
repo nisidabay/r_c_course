@@ -3,7 +3,7 @@
  *
  * Concept: Array of structs — declare, initialise, iterate, modify.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program declares an array of Product structs, prints a catalogue,
  * updates a price, and prints again.
  *
@@ -11,6 +11,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char   name[64];
@@ -27,23 +28,22 @@ int main(void) {
         {"Monitor",   349.99, 15}
     };
 
-    int n = sizeof catalogue /*@*/ sizeof catalogue[0];
+    int n = sizeof catalogue / sizeof catalogue[0];  // FIX ME
 
     printf("Product Catalogue:\n");
     for (int i = 0; i < n; i++) {
         printf("  %d. %-10s $%7.2f  (qty: %d)\n",
                i + 1,
-               catalogue[/*@*/].name,
+               catalogue[i].name,  // FIX ME
                catalogue[i].price,
-               catalogue[i]./*@*/);
+               catalogue[i].quantity);  // FIX ME
     }
 
     /* Update the price of the first product (Laptop) */
-    catalogue[/*@*/].price = 899.99;
+    catalogue[0].price = 899.99;  // FIX ME
 
-    /* Update the quantity of the third product (Keyboard) — arrow style?
-     * No — catalogue[2] is a struct, not a pointer. Use dot. */
-    catalogue[2]./*@*/ = 45;
+    /* Update the quantity of the third product (Keyboard) — use dot */
+    catalogue[2].quantity = 45;  // FIX ME
 
     printf("\nAfter updates:\n");
     for (int i = 0; i < n; i++) {
@@ -54,5 +54,5 @@ int main(void) {
                catalogue[i].quantity);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

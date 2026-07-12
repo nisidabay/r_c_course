@@ -27,14 +27,14 @@ int dynarr_append(DynArr *arr, int value)
         int *temp = realloc(arr->data, new_cap * sizeof(int));
         if (temp == NULL) {
             perror("dynarr_append realloc");
-            return 1;
+            return EXIT_FAILURE;
         }
         arr->data = temp;
         arr->cap  = new_cap;
     }
     arr->data[arr->len] = value;
     arr->len++;
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /* Free all owned memory */
@@ -56,7 +56,7 @@ int main(void)
     for (size_t i = 0; i < n; i++) {
         if (dynarr_append(&items, values[i]) != 0) {
             dynarr_free(&items);
-            return 1;
+            return EXIT_FAILURE;
         }
     }
 
@@ -69,7 +69,7 @@ int main(void)
     printf("The array could keep growing; no fixed limit.\n");
 
     dynarr_free(&items);
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

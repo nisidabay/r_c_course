@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int age = 25;
@@ -13,7 +14,7 @@ int main(void) {
     printf("Size of double: %lu bytes\n", sizeof(price));
     printf("Size of char: %lu byte\n", sizeof(grade));
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

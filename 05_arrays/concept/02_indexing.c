@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int grades[5] = { 87, 92, 76, 94, 81 };
@@ -28,7 +29,7 @@ int main(void) {
     /* grades[-1] is also syntactically valid — and equally dangerous */
     printf("Negative index (grades[-1]): %d  (undefined behaviour)\n", grades[-1]);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

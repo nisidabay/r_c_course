@@ -21,7 +21,7 @@ int main(void)
     data = malloc(count * sizeof(int));
     if (data == NULL) {
         printf("ERROR: malloc failed to allocate memory.\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill the allocated array */
@@ -44,7 +44,7 @@ int main(void)
     data = NULL;   /* optional: prevents dangling pointer reuse */
 
     printf("\nMemory freed successfully.\n");
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

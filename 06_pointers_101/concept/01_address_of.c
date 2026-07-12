@@ -11,6 +11,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void)
 {
@@ -32,7 +33,7 @@ int main(void)
     printf("Each variable lives at a unique address.\n");
     printf("The address is a number that tells us WHERE the data is.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

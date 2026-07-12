@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* ---- function definitions ---- */
 
@@ -52,7 +53,7 @@ int main(void)
 
     printf("max(100, 42) = %d\n", max(100, 42));
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

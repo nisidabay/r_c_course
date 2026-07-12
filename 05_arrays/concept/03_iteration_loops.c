@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int scores[8] = { 83, 91, 76, 88, 95, 72, 89, 84 };
@@ -45,7 +46,7 @@ int main(void) {
     }
     putchar('\n');
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

@@ -6,7 +6,11 @@
  * Prompts for numbers until -1, sorts them, prints array + median.
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAX_NUMBERS 100
 
@@ -45,10 +49,20 @@ int main(void) {
             break;
         }
 
-        if (sscanf(buf, "%d", &val) != 1) {
+        buf[strcspn(buf, "\n")] = '\0';
+
+        char *endptr;
+        errno = 0;
+        long v = strtol(buf, &endptr, 10);
+        if (errno == ERANGE || endptr == buf || *endptr != '\0') {
             printf("Invalid input, try again.\n");
             continue;
         }
+        if (v < INT_MIN || v > INT_MAX) {
+            printf("Number out of range, try again.\n");
+            continue;
+        }
+        val = (int)v;
 
         if (val == -1) {
             break;
@@ -60,7 +74,7 @@ int main(void) {
 
     if (count == 0) {
         printf("No numbers entered.\n");
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     /* Sort */
@@ -84,5 +98,5 @@ int main(void) {
 
     printf("Median: %.1f\n", median);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>    /* size_t */
 
 /* Function that receives an array as a parameter — it decays to a pointer */
@@ -41,7 +42,7 @@ int main(void) {
     printf("\nPrinting via function:\n");
     print_array(scores, count);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

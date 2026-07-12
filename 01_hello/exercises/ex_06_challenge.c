@@ -1,4 +1,8 @@
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void)
 {
@@ -7,9 +11,9 @@ int main(void)
      *
      * Write a program that:
      *   1. Ask the user "Enter your birth year: "
-     *   2. Read the input using fgets + sscanf
+     *   2. Read the input using fgets + strtol
      *   3. Ask the user "Enter current year: "
-     *   4. Read the input using fgets + sscanf
+     *   4. Read the input using fgets + strtol
      *   5. Compute their approximate age (current_year - birth_year)
      *   6. Compute their age in months (age * 12)
      *   7. Print:
@@ -21,19 +25,34 @@ int main(void)
      */
 
     /* buffer for birth year string — 12 = 4 digits + newline + null + padding */
-    char birth_str[12];
-    /* buffer for current year string — 12 = 4 digits + newline + null + padding */
-    char year_str[12];
+    char birth_str[64];
+    /* buffer for current year string */
+    char year_str[64];
     int birth_year = 0;
     int current_year = 0;
+    char *endptr;
 
     // printf("Enter your birth year: ");
-    // fgets(birth_str, sizeof(birth_str), stdin);
-    // sscanf(birth_str, "%d", &birth_year);
+    // if (fgets(birth_str, sizeof(birth_str), stdin) == NULL) return EXIT_FAILURE;
+    // birth_str[strcspn(birth_str, "\n")] = '\0';
+    // errno = 0;
+    // long bv = strtol(birth_str, &endptr, 10);
+    // if (errno == ERANGE || endptr == birth_str || *endptr != '\0') {
+    //     fprintf(stderr, "Invalid input\n");
+    //     return EXIT_FAILURE;
+    // }
+    // birth_year = (int)bv;
 
     // printf("Enter current year: ");
-    // fgets(year_str, sizeof(year_str), stdin);
-    // sscanf(year_str, "%d", &current_year);
+    // if (fgets(year_str, sizeof(year_str), stdin) == NULL) return EXIT_FAILURE;
+    // year_str[strcspn(year_str, "\n")] = '\0';
+    // errno = 0;
+    // long cv = strtol(year_str, &endptr, 10);
+    // if (errno == ERANGE || endptr == year_str || *endptr != '\0') {
+    //     fprintf(stderr, "Invalid input\n");
+    //     return EXIT_FAILURE;
+    // }
+    // current_year = (int)cv;
 
     int age = 0;
     int months = 0;
@@ -43,5 +62,5 @@ int main(void)
     // printf("You are approximately %d years old.\n", age);
     // printf("That is about %d months!\n", months);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

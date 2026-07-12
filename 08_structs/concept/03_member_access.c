@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char street[64];
@@ -36,7 +37,7 @@ int main(void) {
     printf("Lives: %s, %s  %d\n",
            p.addr.street, p.addr.city, p.addr.zip);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

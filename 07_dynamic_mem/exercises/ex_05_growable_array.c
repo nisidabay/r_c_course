@@ -4,7 +4,7 @@
  * Concept: Wrapping a heap buffer in a struct with len/cap.
  * Use realloc with temp pointer to grow when full.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program should:
  *   1. Define a DynArr struct with data, len, cap fields
  *   2. Implement dynarr_append — grows via realloc when len == cap
@@ -19,9 +19,9 @@
 #include <stdlib.h>
 
 typedef struct {
-    /*@*/ int *data /*@*/;
-    /*@*/ size_t len /*@*/;
-    /*@*/ size_t cap /*@*/;
+    int *data;           // FIX ME
+    size_t len;          // FIX ME
+    size_t cap;          // FIX ME
 } DynArr;
 
 /* Append one integer. Doubles capacity when full. */
@@ -29,7 +29,7 @@ int dynarr_append(DynArr *arr, int value)
 {
     if (arr->len == arr->cap) {
         size_t new_cap = arr->cap == 0 ? 4 : arr->cap * 2;
-        int *temp = /*@*/ realloc(arr->data, new_cap * sizeof(int)) /*@*/;
+        int *temp = realloc(arr->data, new_cap * sizeof(int));  // FIX ME
         if (temp == NULL) {
             perror("dynarr_append realloc");
             return 1;
@@ -45,7 +45,7 @@ int dynarr_append(DynArr *arr, int value)
 /* Free all owned memory */
 void dynarr_free(DynArr *arr)
 {
-    /*@*/ free(arr->data) /*@*/;
+    free(arr->data);  // FIX ME
     arr->data = NULL;
     arr->len  = 0;
     arr->cap  = 0;
@@ -58,9 +58,9 @@ int main(void)
     size_t n = sizeof(vals) / sizeof(vals[0]);
 
     for (size_t i = 0; i < n; i++) {
-        if (/*@*/ dynarr_append(&arr, vals[i]) /*@*/ != 0) {
+        if (dynarr_append(&arr, vals[i]) != 0) {  // FIX ME
             dynarr_free(&arr);
-            return 1;
+            return EXIT_FAILURE;
         }
     }
 
@@ -72,8 +72,8 @@ int main(void)
     printf("\nAppended %zu elements — capacity grew to %zu.\n", n, arr.cap);
     printf("The array can keep growing with no fixed limit.\n");
 
-    /*@*/ dynarr_free(&arr) /*@*/;
-    return 0;
+    dynarr_free(&arr);  // FIX ME
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

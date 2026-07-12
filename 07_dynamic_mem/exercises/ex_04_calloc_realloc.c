@@ -6,7 +6,7 @@
  * ptr = realloc(ptr, n), because realloc can return NULL and
  * you would lose the original pointer.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program should:
  *   1. Allocate 4 ints with calloc (all zero-initialised)
  *   2. Fill them with values: 10, 20, 30, 40
@@ -26,10 +26,10 @@ int main(void)
     size_t count = 4;
 
     /* calloc — zero-initialised allocation */
-    int *data = /*@*/ calloc(count, sizeof(int)) /*@*/;
+    int *data = calloc(count, sizeof(int));  // FIX ME
     if (data == NULL) {
         perror("calloc failed");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("After calloc (all zeroed):");
@@ -51,11 +51,11 @@ int main(void)
 
     /* realloc — grow the array (TEMP POINTER pattern!) */
     size_t new_count = 7;
-    int *temp = /*@*/ realloc(data, new_count * sizeof(int)) /*@*/;
-    if (/*@*/temp == NULL/*@*/) {
+    int *temp = realloc(data, new_count * sizeof(int));  // FIX ME
+    if (temp == NULL) {  // FIX ME
         perror("realloc failed");
         free(data);
-        return 1;
+        return EXIT_FAILURE;
     }
     data = temp;
     temp = NULL;
@@ -75,8 +75,8 @@ int main(void)
     printf("realloc preserved the first %zu elements.\n", count);
     printf("The TEMP pointer pattern kept data safe on failure.\n");
 
-    /*@*/ free(data) /*@*/;
-    return 0;
+    free(data);  // FIX ME
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

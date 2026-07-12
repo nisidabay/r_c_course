@@ -10,31 +10,45 @@
  * EXIT_SUCCESS and EXIT_FAILURE are macros defined in <stdlib.h>.
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Divides two ints: prints result, returns 0 on success or 1 on error */
 int safe_divide(int a, int b)
 {
     if (b == 0) {
         printf("  ERROR: division by zero!\n");
-        return 1;       /* error code — caller must check */
+        return EXIT_FAILURE;       /* error code — caller must check */
     }
 
     printf("  %d / %d = %d\n", a, b, a / b);
-    return 0;           /* success code */
+    return EXIT_SUCCESS;           /* success code */
 }
 
 /* Parses and prints an integer from a string; returns 0 on success, 1 on error */
 int try_parse(const char *input)
 {
     int value;
-    if (sscanf(input, "%d", &value) != 1) {
+
+    char *endptr;
+    errno = 0;
+    long val = strtol(input, &endptr, 10);
+
+    if (errno == ERANGE || endptr == input || *endptr != '\0') {
         printf("  ERROR: could not parse '%s' as an integer.\n", input);
-        return 1;
+        return EXIT_FAILURE;
     }
+    if (val < INT_MIN || val > INT_MAX) {
+        printf("  ERROR: '%s' out of int range.\n", input);
+        return EXIT_FAILURE;
+    }
+    value = (int)val;
+
     printf("  Parsed '%s' -> %d\n", input, value);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int main(void)

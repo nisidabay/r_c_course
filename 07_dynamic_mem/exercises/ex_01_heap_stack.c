@@ -3,7 +3,7 @@
  *
  * Concept: Stack arrays are fixed-size; heap allocations can grow.
  *
- * Fill in the blanks (marked /*@*//*@*/) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * The program should:
  *   1. Show that a stack array has a fixed compile-time size
  *   2. Show that a heap allocation can use a runtime-determined size
@@ -22,14 +22,14 @@ int main(void)
     /* Stack array — size fixed at compile time */
     int stack_arr[STACK_SZ];
     printf("Stack array size: %zu elements (fixed at compile time)\n",
-           /*@*/ sizeof(stack_arr) / sizeof(stack_arr[0]) /*@*/);
+           sizeof(stack_arr) / sizeof(stack_arr[0]));  // FIX ME
 
     /* Heap allocation — size determined at runtime */
     size_t heap_sz = 10;
-    int *heap_arr = /*@*/ malloc(heap_sz * sizeof(int)) /*@*/;
-    if (/*@*/heap_arr == NULL/*@*/) {
+    int *heap_arr = malloc(heap_sz * sizeof(int));  // FIX ME
+    if (heap_arr == NULL) {  // FIX ME
         printf("ERROR: malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("Heap array size: %zu elements (set at runtime)\n", heap_sz);
@@ -43,8 +43,8 @@ int main(void)
     printf("heap_arr[0] = %d, heap_arr[9] = %d\n",
            heap_arr[0], heap_arr[9]);
 
-    /*@*/ free(heap_arr) /*@*/;
-    return 0;
+    free(heap_arr);  // FIX ME
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

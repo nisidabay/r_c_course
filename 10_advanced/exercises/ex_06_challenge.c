@@ -45,42 +45,67 @@
 
 /* ---- YOUR CODE HERE ---- */
 
+typedef struct {
+    char title[64];
+    char author[64];
+    int  year;
+} Book;
 
+int compare_by_title(const void *a, const void *b) {
+    const Book *pa = (const Book *)a;
+    const Book *pb = (const Book *)b;
+    return strcmp(pa->title, pb->title);
+}
 
+int compare_by_author(const void *a, const void *b) {
+    const Book *pa = (const Book *)a;
+    const Book *pb = (const Book *)b;
+    return strcmp(pa->author, pb->author);
+}
 
-
-
-
-
-
-
-
-
-
-
-
+int compare_by_year(const void *a, const void *b) {
+    const Book *pa = (const Book *)a;
+    const Book *pb = (const Book *)b;
+    if (pa->year < pb->year) return -1;
+    if (pa->year > pb->year) return 1;
+    return 0;
+}
 
 /* ---- END OF YOUR CODE ---- */
 
 int main(void) {
     /* ---- YOUR CODE HERE ---- */
 
+    Book books[] = {
+        {"1984", "George Orwell", 1949},
+        {"Brave New World", "Aldous Huxley", 1932},
+        {"The Catcher in the Rye", "J.D. Salinger", 1951},
+        {"To Kill a Mockingbird", "Harper Lee", 1960},
+        {"Fahrenheit 451", "Ray Bradbury", 1953},
+    };
+    size_t n = sizeof books / sizeof books[0];
 
+    qsort(books, n, sizeof(Book), compare_by_title);
+    printf("=== Sorted by title ===\n");
+    for (size_t i = 0; i < n; i++) {
+        printf("  \"%s\" by %s (%d)\n", books[i].title, books[i].author, books[i].year);
+    }
+    printf("\n");
 
+    qsort(books, n, sizeof(Book), compare_by_author);
+    printf("=== Sorted by author ===\n");
+    for (size_t i = 0; i < n; i++) {
+        printf("  \"%s\" by %s (%d)\n", books[i].title, books[i].author, books[i].year);
+    }
+    printf("\n");
 
-
-
-
-
-
-
-
-
-
-
-
+    qsort(books, n, sizeof(Book), compare_by_year);
+    printf("=== Sorted by year ===\n");
+    for (size_t i = 0; i < n; i++) {
+        printf("  \"%s\" by %s (%d)\n", books[i].title, books[i].author, books[i].year);
+    }
 
     /* ---- END OF YOUR CODE ---- */
 
-    return 0;
+    return EXIT_SUCCESS;
 }

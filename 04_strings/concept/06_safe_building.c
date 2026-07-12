@@ -48,7 +48,7 @@ int main(void) {
     /* strdup returns NULL if malloc fails — ALWAYS check */
     if (!copy) {
         perror("strdup");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("\nstrdup result:\n");
@@ -76,7 +76,7 @@ int main(void) {
     printf("  2. strdup(src) — but ALWAYS check for NULL return\n");
     printf("  3. free() what you strdup() — ownership is now yours\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -91,14 +91,8 @@ echo "============================================"
 echo "  Compiling Exercise Solutions"
 echo "============================================"
 
-# Find solution files — they follow various naming patterns.
-# 04_strings solutions are now flat in exercises/ (ex_NN_*_solution.c).
-# 03_functions, 06_pointers_101, 09_files use exercises/solutions/.
-# Catch any future */solutions/*.c too.
-for solution_file in $(find "$COURSE_DIR" -path '*/exercises/*solution*' -name '*.c' -o \
-                        -path '*/exercises/*solved*' -name '*.c' -o \
-                        -path '*/exercises/solutions/*.c' -o \
-                        -path '*/solutions/*.c' | sort | uniq); do
+# Find solution files — all groups now use flat ex_NN_*_solution.c naming.
+for solution_file in $(find "$COURSE_DIR" -path '*/exercises/*solution*' -name '*.c' | sort); do
     group_name=$(echo "$solution_file" | sed "s|$COURSE_DIR/||" | cut -d'/' -f1)
     base_name=$(basename "$solution_file" .c)
     compile_test "$solution_file" "[solution] $group_name/$base_name"

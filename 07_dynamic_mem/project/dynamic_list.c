@@ -4,10 +4,12 @@
  * A simple contact manager demonstrating dynamic memory allocation
  * with a growable array of Contact structs.
  *
- * Concepts: malloc, realloc, free, NULL-checking, snprintf, fgets+sscanf
+ * Concepts: malloc, realloc, free, NULL-checking, snprintf, fgets+strtol
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic dynamic_list.c -o dynamic_list
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -138,9 +140,20 @@ int main(void)
             continue;
         }
 
-        /* Otherwise expect "name,phone" */
+        /* Otherwise expect "name,phone" — parse manually */
         Contact c;
-        if (sscanf(line, "%63[^,],%15s", c.name, c.phone) == 2) {
+        char *comma = strchr(line, ',');
+        if (comma != NULL) {
+            size_t name_len = comma - line;
+            if (name_len >= sizeof c.name) name_len = sizeof c.name - 1;
+            memcpy(c.name, line, name_len);
+            c.name[name_len] = '\0';
+
+            const char *phone_str = comma + 1;
+            /* Trim leading spaces from phone */
+            while (*phone_str == ' ') phone_str++;
+            snprintf(c.phone, sizeof c.phone, "%s", phone_str);
+
             if (contactlist_add(&list, c) != 0) {
                 fprintf(stderr, "Failed to add contact.\n");
             } else {
@@ -153,5 +166,5 @@ int main(void)
 
     printf("\nGoodbye!\n");
     contactlist_free(&list);
-    return 0;
+    return EXIT_SUCCESS;
 }

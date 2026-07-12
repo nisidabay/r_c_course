@@ -21,18 +21,18 @@ int main(void) {
     char  arr[]    = "hello";
 
     /* sizeof on a pointer is always the same — the pointer width */
-    printf("sizeof(char*) = %zu bytes\n", /*@*/);
+    printf("sizeof(char*) = %zu bytes\n", sizeof(char *)); // FIX ME
 
     printf("sizeof(greeting) = %zu (pointer width — always 8 on 64-bit)\n",
-           /*@*/);
+           sizeof(greeting)); // FIX ME
 
     /* sizeof on an array includes every byte including the null terminator */
     printf("sizeof(arr) = %zu (array size — includes '\\0')\n",
-           /*@*/);
+           sizeof(arr)); // FIX ME
 
     /* strlen has to scan — always O(n) */
     printf("strlen(greeting) = %zu (must scan %zu chars looking for '\\0')\n",
-           /*@*/, /*@*/);
+           strlen(greeting), strlen(greeting)); // FIX ME
 
     /* String literals are read-only — can't modify */
     printf("\nString literals live in read-only memory.\n");

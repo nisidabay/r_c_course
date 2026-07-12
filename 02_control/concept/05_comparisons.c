@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int a = 10;
@@ -31,7 +32,7 @@ int main(void) {
         puts("Near perfect.");
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -12,6 +12,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(void) {
@@ -56,7 +57,7 @@ int main(void) {
     printf("\nLesson: null terminators are C's way of marking string end.\n");
     printf("But they're invisible, easy to forget, and O(n) to find.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char   name[64];
@@ -25,7 +26,7 @@ int main(void) {
     print_person(alice);
     print_person(bob);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

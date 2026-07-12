@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int total = 0;
@@ -18,7 +19,7 @@ int main(void) {
         printf("7 x %d = %d\n", row, 7 * row);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

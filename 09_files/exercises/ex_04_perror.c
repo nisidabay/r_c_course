@@ -17,7 +17,7 @@
  */
 
 #include <stdio.h>
-/*@*/
+#include <errno.h> // FIX ME
 
 int main(void) {
     char line[128];
@@ -25,9 +25,9 @@ int main(void) {
 
     /* ---- Try opening a restricted file ---- */
     fp = fopen("/root/secret.txt", "r");
-    if (/*@*/) {
-        /*@*/("fopen /root/secret.txt");
-        printf("   (errno = %d)\\n", /*@*/);
+    if (fp == NULL) { // FIX ME
+        perror("fopen /root/secret.txt"); // FIX ME
+        printf("   (errno = %d)\n", errno); // FIX ME
     } else {
         fclose(fp);
     }
@@ -53,7 +53,7 @@ int main(void) {
     }
 
     /* Check if an error occurred during reading */
-    if (/*@*/(fp)) {
+    if (ferror(fp)) { // FIX ME
         perror("fgets error");
     } else {
         puts("[OK] Reached EOF with no errors.");

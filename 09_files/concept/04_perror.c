@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 
 int main(void) {
@@ -28,7 +29,7 @@ int main(void) {
     fp = fopen("data.txt", "w");
     if (!fp) {
         perror("fopen data.txt for writing");
-        return 1;
+        return EXIT_FAILURE;
     }
     fprintf(fp, "hello\nworld\n");
     fclose(fp);
@@ -37,7 +38,7 @@ int main(void) {
     fp = fopen("data.txt", "r");
     if (!fp) {
         perror("fopen data.txt for reading");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Read past EOF to trigger fgets returning NULL */
@@ -55,7 +56,7 @@ int main(void) {
     fclose(fp);
     remove("data.txt");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

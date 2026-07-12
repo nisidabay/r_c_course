@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int count = 1;
@@ -23,7 +24,7 @@ int main(void) {
         printf("Year %d: $%.2f\n", years, balance);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

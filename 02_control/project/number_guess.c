@@ -19,22 +19,20 @@
  * Usage:
  *   ./number_guess
  ******************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-int main(void)
-{
+int main(void) {
     int secret;
     int guess;
     int attempts;
     char buffer[64];
-    int parsed;
+    char *endptr;
 
-    /* Seed the random number generator with the current time */
-    srand(time(0));
+    /* Seed the random number generator with the current time idiomatically */
+    srand(time(NULL));
 
     /* Generate a random number between 1 and 100 */
     secret = (rand() % 100) + 1;
@@ -65,12 +63,13 @@ int main(void)
                 ;
         }
 
-        /* Try to parse an integer from the input */
-        parsed = sscanf(buffer, "%d", &guess);
+        /* Try to parse an integer from the input using strtol */
+        guess = (int)strtol(buffer, &endptr, 10);
 
-        /* Validate: must be exactly one integer read */
-        if (parsed != 1) {
-            printf("Please enter a valid number.\n");
+        /* Validate: Check if nothing was parsed, or if there is trailing
+         * garbage */
+        if (endptr == buffer || (*endptr != '\n' && *endptr != '\0')) {
+            printf("Please enter a strictly valid number.\n");
             continue;
         }
 

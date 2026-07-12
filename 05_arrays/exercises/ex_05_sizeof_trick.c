@@ -3,12 +3,13 @@
  * Group 05 — Arrays
  * Exercise 05: the sizeof trick for array length
  *
- * Fill in the blanks (marked with /* @FILL_ME */) to complete the program.
+ * Fill in the blanks (marked FIX ME) to complete the program.
  * Use sizeof to compute array element counts at compile time.
  */
 
-#include <stdio.h>
 #include <stddef.h>    /* size_t */
+#include <stdio.h>
+#include <stdlib.h>
 
 /*
  * A helper function that prints array elements.
@@ -26,7 +27,7 @@ int main(void) {
                              131, 137, 139, 149, 151, 157 };
 
     /* 1. Compute the number of elements using the sizeof trick */
-    size_t count = sizeof(/* @FILL_ME */) / sizeof(/* @FILL_ME */);
+    size_t count = sizeof(measurements) / sizeof(measurements[0]);  // FIX ME  // FIX ME
     printf("Array has %zu elements (expected: 12)\n", count);
 
     /* 2. Print all elements using the computed count */
@@ -38,13 +39,13 @@ int main(void) {
 
     /* 3. Use the print_ints helper with the computed count */
     printf("Via helper:   ");
-    print_ints(/* @FILL_ME */, /* @FILL_ME */);
+    print_ints(measurements, count);  // FIX ME  // FIX ME
 
     /* 4. Compute total bytes vs element bytes */
-    printf("sizeof(measurements) = %zu bytes\n", sizeof(/* @FILL_ME */));
-    printf("sizeof(measurements[0]) = %zu bytes\n", sizeof(/* @FILL_ME */));
+    printf("sizeof(measurements) = %zu bytes\n", sizeof(measurements));  // FIX ME
+    printf("sizeof(measurements[0]) = %zu bytes\n", sizeof(measurements[0]));  // FIX ME
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

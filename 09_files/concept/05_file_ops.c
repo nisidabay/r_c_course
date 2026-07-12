@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     FILE *fp = NULL;
@@ -18,7 +19,7 @@ int main(void) {
     fp = fopen("original.txt", "w");
     if (!fp) {
         perror("fopen original.txt");
-        return 1;
+        return EXIT_FAILURE;
     }
     fprintf(fp, "Temporary data\n");
     fclose(fp);
@@ -31,7 +32,7 @@ int main(void) {
         fclose(fp);
     } else {
         puts("[FAIL] original.txt should exist but doesn't.");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     fp = fopen("ghost.txt", "r");
@@ -47,7 +48,7 @@ int main(void) {
         puts("[OK] Renamed original.txt → renamed.txt");
     } else {
         perror("rename");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* ---- Remove (delete) ---- */
@@ -55,7 +56,7 @@ int main(void) {
         puts("[OK] Deleted renamed.txt");
     } else {
         perror("remove");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Verify it's gone */
@@ -67,7 +68,7 @@ int main(void) {
         fclose(fp);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

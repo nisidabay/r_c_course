@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* ---- global scope ---- */
 /* visible to every function in this file (after this point) */
@@ -60,7 +61,7 @@ int main(void)
     /* block_demo is the outer one again */
     printf("After block:  block_demo = %d\n", block_demo);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char   name[64];
@@ -48,7 +49,7 @@ int main(void) {
                people[i].height);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 /*
  * Thinking in C:

@@ -45,13 +45,9 @@ typedef struct {
  */
 int dynarr_create(DynIntArr *arr, size_t initial_cap)
 {
-    arr->data = malloc(initial_cap * sizeof(int));
-    if (arr->data == NULL) {
-        return 1;
-    }
-    arr->len = 0;
-    arr->cap = initial_cap;
-    return 0;
+    (void)arr;
+    (void)initial_cap;
+    return 1;  // FIX ME
 }
 
 /*
@@ -61,18 +57,9 @@ int dynarr_create(DynIntArr *arr, size_t initial_cap)
  */
 int dynarr_push(DynIntArr *arr, int value)
 {
-    if (arr->len == arr->cap) {
-        size_t new_cap = arr->cap == 0 ? 4 : arr->cap * 2;
-        int *temp = realloc(arr->data, new_cap * sizeof(int));
-        if (temp == NULL) {
-            return 1;
-        }
-        arr->data = temp;
-        arr->cap = new_cap;
-    }
-    arr->data[arr->len] = value;
-    arr->len++;
-    return 0;
+    (void)arr;
+    (void)value;
+    return 1;  // FIX ME
 }
 
 /*
@@ -82,12 +69,9 @@ int dynarr_push(DynIntArr *arr, int value)
  */
 int dynarr_pop(DynIntArr *arr, int *out)
 {
-    if (arr->len == 0) {
-        return 1;
-    }
-    arr->len--;
-    *out = arr->data[arr->len];
-    return 0;
+    (void)arr;
+    (void)out;
+    return 1;  // FIX ME
 }
 
 /*
@@ -97,20 +81,16 @@ int dynarr_pop(DynIntArr *arr, int *out)
  */
 int dynarr_get(DynIntArr *arr, size_t i, int *out)
 {
-    if (i >= arr->len) {
-        return 1;
-    }
-    *out = arr->data[i];
-    return 0;
+    (void)arr;
+    (void)i;
+    (void)out;
+    return 1;  // FIX ME
 }
 
 /* Free all memory owned by the array and reset fields. */
 void dynarr_free(DynIntArr *arr)
 {
-    free(arr->data);
-    arr->data = NULL;
-    arr->len = 0;
-    arr->cap = 0;
+    (void)arr;  // FIX ME
 }
 
 int main(void)
