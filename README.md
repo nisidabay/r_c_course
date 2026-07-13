@@ -43,7 +43,7 @@ script in the whole course.
 
 ---
 
-## The Path (10 groups)
+## The Path (11 groups)
 
 | # | Group | One Question | Project |
 |---|-------|-------------|---------|
@@ -57,8 +57,9 @@ script in the whole course.
 | 08 | `08_structs/` | How do I group related data into a custom type? | student_db |
 | 09 | `09_files/` | How do I read and write files? | csv_reader |
 | 10 | `10_advanced/` | How do I use enums, function pointers, and `_Generic`? | generic_sorter |
+| 11 | `11_processes/` | How do I launch and control other programs from C? | journal |
 
-Each group has 4–7 concept files, 6–7 exercises (with solutions), a project
+Each group has 4–8 concept files, 6–8 exercises (with solutions), a project
 with `BUILD.md`, and a `verify-exercises.sh` script.
 
 ---

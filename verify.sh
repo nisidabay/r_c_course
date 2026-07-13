@@ -36,12 +36,22 @@ test_group() {
 compile_test() {
     local src="$1"
     local label="$2"
+    local extra_libs=""
+    # Files that need sqlite3
+    case "$src" in
+        *07_sqlite3*)
+            extra_libs="-lsqlite3"
+            ;;
+        */project/journal*)
+            extra_libs="-lsqlite3"
+            ;;
+    esac
     total
-    if "$CC" $CFLAGS -o /tmp/verify_test "$src" 2>/dev/null; then
+    if "$CC" $CFLAGS -o /tmp/verify_test "$src" $extra_libs 2>/dev/null; then
         pass "$label"
     else
         echo "  ${RED}COMPILE ERROR${NC} $label"
-        "$CC" $CFLAGS -o /tmp/verify_test "$src" 2>&1 | sed 's/^/    /' || true
+        "$CC" $CFLAGS -o /tmp/verify_test "$src" $extra_libs 2>&1 | sed 's/^/    /' || true
         fail "$label"
     fi
     rm -f /tmp/verify_test
@@ -217,6 +227,7 @@ GROUPS=(
     "08_structs"
     "09_files"
     "10_advanced"
+    "11_processes"
 )
 
 # Get all source files in order
