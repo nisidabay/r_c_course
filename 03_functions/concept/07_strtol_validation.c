@@ -18,8 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main(void)
-{
+int main(void) {
     char buf[64];
 
     printf("Enter an integer: ");
@@ -70,4 +69,5 @@ int main(void)
 // strtol is the ONLY safe way to parse integers from strings.
 // sscanf and atoi give you no way to detect errors — strtol tells
 // you exactly what went wrong through errno and endptr inspection.
+// strcspn remove "\n" from a string.
 // Always perform all four checks; skipping even one is a bug.
