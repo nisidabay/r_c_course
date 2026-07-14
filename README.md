@@ -52,7 +52,7 @@ script in the whole course.
 | 03 | `03_functions/` | How do I define, call, and organize reusable code? | calculator |
 | 04 | `04_strings/` | How do I handle text safely without copying? | fstab_parser |
 | 05 | `05_arrays/` | How do I store and process collections of data? | grade_stats |
-| 06 | `06_pointers_101/` | What is a pointer and how do I use one? | array_reverse |
+| 06 | `06_pointers/` | What is a pointer and how do I use one? | array_reverse |
 | 07 | `07_dynamic_mem/` | How do I allocate memory at runtime? | dynamic_list |
 | 08 | `08_structs/` | How do I group related data into a custom type? | student_db |
 | 09 | `09_files/` | How do I read and write files? | csv_reader |
