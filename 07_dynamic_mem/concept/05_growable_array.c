@@ -27,14 +27,14 @@ int dynarr_append(DynArr *arr, int value)
         int *temp = realloc(arr->data, new_cap * sizeof(int));
         if (temp == NULL) {
             perror("dynarr_append realloc");
-            return EXIT_FAILURE;
+            return -1;
         }
         arr->data = temp;
         arr->cap  = new_cap;
     }
     arr->data[arr->len] = value;
     arr->len++;
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 /* Free all owned memory */

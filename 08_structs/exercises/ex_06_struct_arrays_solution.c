@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char   name[64];
@@ -47,5 +48,5 @@ int main(void) {
                catalogue[i].quantity);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

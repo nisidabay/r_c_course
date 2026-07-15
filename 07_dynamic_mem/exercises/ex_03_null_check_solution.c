@@ -18,7 +18,7 @@ int main(void)
     float *arr = malloc(count * sizeof(float));
     if (arr == NULL) {
         perror("malloc failed for arr");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill first array */
@@ -37,7 +37,7 @@ int main(void)
     if (more == NULL) {
         perror("malloc failed for more");
         free(arr);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill second array */
@@ -56,5 +56,5 @@ int main(void)
     free(more);
 
     printf("All memory freed. Every allocation was checked.\n");
-    return 0;
+    return EXIT_SUCCESS;
 }

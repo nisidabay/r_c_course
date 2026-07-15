@@ -12,6 +12,7 @@
 
 #include <stddef.h>   // size_t is an unsigned integer type from <stddef.h>, used for sizes and indices
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /* Define the String_Slice struct: a char* data and a size_t len */
@@ -52,5 +53,5 @@ int main(void) {
     printf("\nEach slice knows its length instantly — no scanning required.\n");
     printf("The char* still points to the original memory. Nothing was copied.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

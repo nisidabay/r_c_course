@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(void) {
@@ -33,5 +34,5 @@ int main(void) {
     printf("\nString literals live in read-only memory.\n");
     printf("Uncommenting greeting[0] = 'H' would segfault.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

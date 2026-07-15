@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     char line[128];
@@ -16,7 +17,7 @@ int main(void) {
     fp = fopen("names.txt", "w");
     if (!fp) {
         puts("[FAIL] Could not open names.txt for writing.");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     fprintf(fp, "Alice\n");
@@ -30,7 +31,7 @@ int main(void) {
     fp = fopen("names.txt", "r");
     if (!fp) {
         puts("[FAIL] Could not open names.txt for reading.");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     puts("--- Names in file ---");
@@ -45,5 +46,5 @@ int main(void) {
     fclose(fp);
     remove("names.txt");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

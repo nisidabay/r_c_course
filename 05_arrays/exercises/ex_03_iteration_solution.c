@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int values[10] = { 3, 7, 2, 9, 4, 8, 1, 6, 5, 0 };
@@ -35,5 +36,5 @@ int main(void) {
     }
     printf("(expected: 2 4 8 6 0)\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     FILE *fp;
@@ -24,7 +25,7 @@ int main(void) {
     fp = fopen("test_data.txt", "w");
     if (!fp) {
         puts("[FAIL] Could not open test_data.txt for writing.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] Created test_data.txt with mode \"w\".");
     fclose(fp);
@@ -33,7 +34,7 @@ int main(void) {
     fp = fopen("test_data.txt", "a");
     if (!fp) {
         puts("[FAIL] Could not open test_data.txt for appending.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] Opened test_data.txt with mode \"a\".");
     fclose(fp);
@@ -42,7 +43,7 @@ int main(void) {
     fp = fopen("test_data.txt", "r");
     if (!fp) {
         puts("[FAIL] Could not re-open test_data.txt for reading.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] Re-opened test_data.txt with mode \"r\".");
     fclose(fp);
@@ -51,5 +52,5 @@ int main(void) {
     remove("test_data.txt");
     puts("[OK] Cleaned up test_data.txt.");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

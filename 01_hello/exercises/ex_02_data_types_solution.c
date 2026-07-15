@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void)
 {
@@ -10,5 +11,5 @@ int main(void)
     printf("Price: %.2f\n", price);
     printf("Letter: %c\n", letter);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

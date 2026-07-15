@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char model[64];
@@ -36,5 +37,5 @@ int main(void) {
     snprintf(ptr->model, sizeof ptr->model, "%s", "Model Y");
     printf("Updated model: %s\n", (*ptr).model);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

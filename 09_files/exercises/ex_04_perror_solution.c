@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <stdlib.h>
 
 int main(void) {
     char line[128];
@@ -26,7 +27,7 @@ int main(void) {
     fp = fopen("data.txt", "w");
     if (!fp) {
         perror("fopen data.txt");
-        return 1;
+        return EXIT_FAILURE;
     }
     fprintf(fp, "Hello\nWorld\n");
     fclose(fp);
@@ -34,7 +35,7 @@ int main(void) {
     fp = fopen("data.txt", "r");
     if (!fp) {
         perror("fopen data.txt for reading");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Read the file until EOF */
@@ -52,5 +53,5 @@ int main(void) {
     fclose(fp);
     remove("data.txt");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

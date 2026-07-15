@@ -17,7 +17,7 @@ int main(void)
     double *values = malloc(count * sizeof(double));
     if (values == NULL) {
         printf("ERROR: malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill with values */
@@ -39,5 +39,5 @@ int main(void)
     values = NULL;
 
     printf("Memory freed successfully.\n");
-    return 0;
+    return EXIT_SUCCESS;
 }

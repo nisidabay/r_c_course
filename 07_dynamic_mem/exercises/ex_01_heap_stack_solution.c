@@ -23,7 +23,7 @@ int main(void)
     int *heap_arr = malloc(heap_sz * sizeof(int));
     if (heap_arr == NULL) {
         printf("ERROR: malloc failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("Heap array size: %zu elements (set at runtime)\n", heap_sz);
@@ -38,5 +38,5 @@ int main(void)
            heap_arr[0], heap_arr[9]);
 
     free(heap_arr);
-    return 0;
+    return EXIT_SUCCESS;
 }

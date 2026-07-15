@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     /* 1. & 2. Declare an array with 6 elements, initialize with brace-enclosed list */
@@ -24,5 +25,5 @@ int main(void) {
     printf("flags[4]   = %d (expected: 1)\n", flags[4]);
     printf("flags[1]   = %d (expected: 0)\n", flags[1]);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

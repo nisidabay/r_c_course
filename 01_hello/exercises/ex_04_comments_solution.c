@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void)
 {
@@ -17,5 +18,5 @@ int main(void)
 
     printf("In %d years you will be %d.\n", years, future_age);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

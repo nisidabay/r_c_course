@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 typedef struct {
     double x;
@@ -51,5 +52,5 @@ int main(void) {
     printf("p1 after scale = ");
     print_point(&p1);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

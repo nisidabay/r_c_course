@@ -12,6 +12,7 @@
 
 #include <stddef.h>   // size_t is an unsigned integer type from <stddef.h>, used for sizes and indices
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct {
@@ -78,5 +79,5 @@ int main(void) {
 
     printf("\nAll comparisons use the stored length — no '\\0' scanning needed.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

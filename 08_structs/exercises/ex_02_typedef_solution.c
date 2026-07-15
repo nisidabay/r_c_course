@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* Solution: typedef with Movie alias */
 typedef struct {
@@ -29,5 +30,5 @@ int main(void) {
     print_movie(m1);
     print_movie(m2);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

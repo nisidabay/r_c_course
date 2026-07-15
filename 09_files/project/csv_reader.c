@@ -112,7 +112,7 @@ int main(void)
     fp = fopen("students.csv", "r");
     if (fp == NULL) {
         perror("fopen(students.csv)");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* ── Read & parse ──────────────────────────────────────── */
@@ -136,7 +136,7 @@ int main(void)
     /* ── No data guard ─────────────────────────────────────── */
     if (count == 0) {
         fprintf(stderr, "No valid student records found.\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* ── Print table header ────────────────────────────────── */
@@ -163,5 +163,5 @@ int main(void)
     printf("Minimum grade  : %d\n", min_grade);
     printf("\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

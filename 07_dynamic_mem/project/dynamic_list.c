@@ -94,15 +94,6 @@ void contactlist_free(ContactList *list)
     list->cap      = 0;
 }
 
-/* ── Helper: trim trailing newline ─────────────────────────────────── */
-
-static void chomp(char *s)
-{
-    size_t n = strlen(s);
-    while (n > 0 && (s[n - 1] == '\n' || s[n - 1] == '\r'))
-        s[--n] = '\0';
-}
-
 /* ── Main ───────────────────────────────────────────────────────────── */
 
 int main(void)
@@ -125,7 +116,7 @@ int main(void)
             /* EOF — treat as quit */
             break;
         }
-        chomp(line);
+        line[strcspn(line, "\n")] = '\0';   /* strip trailing newline */
 
         /* Empty input — re-prompt */
         if (line[0] == '\0')

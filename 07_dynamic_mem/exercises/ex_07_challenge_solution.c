@@ -102,7 +102,7 @@ int main(void)
     /* Create with initial capacity 4 */
     if (dynarr_create(&arr, 4) != 0) {
         printf("ERROR: dynarr_create failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Push 10, 20, 30, 40, 50 (triggers growth) */
@@ -111,7 +111,7 @@ int main(void)
         if (dynarr_push(&arr, i * 10) != 0) {
             printf("\nERROR: dynarr_push failed\n");
             dynarr_free(&arr);
-            return 1;
+            return EXIT_FAILURE;
         }
         printf(" %d", i * 10);
     }
@@ -134,9 +134,9 @@ int main(void)
 
     /* Push 60 */
     if (dynarr_push(&arr, 60) != 0) {
-        printf("ERROR: dynarr_push failed\n");
-        dynarr_free(&arr);
-        return 1;
+            printf("ERROR: dynarr_push failed\n");
+            dynarr_free(&arr);
+            return EXIT_FAILURE;
     }
 
     printf("After push 60:");
@@ -155,5 +155,5 @@ int main(void)
     dynarr_free(&arr);
     printf("Final array freed.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

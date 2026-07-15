@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* Solution: define a struct named 'Book' */
 struct Book {
@@ -27,5 +28,5 @@ int main(void) {
     printf("Book 2: %s by %s (%d)\n",
            book2.title, book2.author, book2.year);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

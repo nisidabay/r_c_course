@@ -20,7 +20,7 @@ int main(void)
     /* Allocate space for 'count' integers */
     data = malloc(count * sizeof(int));
     if (data == NULL) {
-        printf("ERROR: malloc failed to allocate memory.\n");
+        perror("malloc");
         return EXIT_FAILURE;
     }
 

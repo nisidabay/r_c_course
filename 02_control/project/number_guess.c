@@ -19,6 +19,8 @@
  * Usage:
  *   ./number_guess
  ******************************************************************************/
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,23 +57,23 @@ int main(void) {
             break;
         }
 
-        /* Check for truncation: if input didn't fit, drain the residue */
-        size_t len = strlen(buffer);
-        if (len > 0 && buffer[len - 1] != '\n') {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF)
-                ;
-        }
+        /* Strip trailing newline */
+        buffer[strcspn(buffer, "\n")] = '\0';
 
         /* Try to parse an integer from the input using strtol */
-        guess = (int)strtol(buffer, &endptr, 10);
+        errno = 0;
+        long tmp = strtol(buffer, &endptr, 10);
 
-        /* Validate: Check if nothing was parsed, or if there is trailing
-         * garbage */
-        if (endptr == buffer || (*endptr != '\n' && *endptr != '\0')) {
+        /* Validate: Check if nothing was parsed, or trailing garbage */
+        if (endptr == buffer || *endptr != '\0') {
             printf("Please enter a strictly valid number.\n");
             continue;
         }
+        if (errno == ERANGE || tmp < INT_MIN || tmp > INT_MAX) {
+            printf("Number out of range.\n");
+            continue;
+        }
+        guess = (int)tmp;
 
         attempts = attempts + 1;
 
@@ -94,5 +96,5 @@ int main(void) {
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

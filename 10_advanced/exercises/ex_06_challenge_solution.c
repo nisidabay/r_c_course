@@ -74,5 +74,5 @@ int main(void) {
     qsort(books, n, sizeof(Book), compare_by_year);
     print_books(books, n, "Sorted by year");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

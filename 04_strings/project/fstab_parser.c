@@ -1,6 +1,7 @@
 #include <ctype.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /* ------------------------------------------------------------------ */
@@ -78,7 +79,7 @@ int main(void) {
     FILE *f = fopen("/etc/fstab", "r");
     if (!f) {
         perror("fopen");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     static const char *field_names[] = {
@@ -124,5 +125,5 @@ int main(void) {
     }
 
     fclose(f);
-    return 0;
+    return EXIT_SUCCESS;
 }

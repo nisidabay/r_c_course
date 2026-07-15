@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define ROWS 3
 #define COLS 4
@@ -45,5 +46,5 @@ int main(void) {
         printf("Row %d sum = %d\n", r, row_sum);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

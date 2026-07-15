@@ -18,7 +18,7 @@ int main(void)
     int *data = calloc(count, sizeof(int));
     if (data == NULL) {
         perror("calloc failed");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("After calloc (all zeroed):");
@@ -44,7 +44,7 @@ int main(void)
     if (temp == NULL) {
         perror("realloc failed");
         free(data);
-        return 1;
+        return EXIT_FAILURE;
     }
     data = temp;
     temp = NULL;
@@ -65,5 +65,5 @@ int main(void)
     printf("The TEMP pointer pattern kept data safe on failure.\n");
 
     free(data);
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     FILE *fp = NULL;
@@ -15,7 +16,7 @@ int main(void) {
     fp = fopen("log.txt", "w");
     if (!fp) {
         puts("[FAIL] Could not open log.txt.");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     fprintf(fp, "Session started\n");
@@ -27,7 +28,7 @@ int main(void) {
     fp = fopen("log.txt", "r");
     if (!fp) {
         puts("[FAIL] Could not open log.txt for reading.");
-        return 1;
+        return EXIT_FAILURE;
     }
     puts("[OK] log.txt opened for reading.");
 
@@ -39,5 +40,5 @@ int main(void) {
     remove("log.txt");
     puts("[OK] Cleaned up.");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     FILE *fp;
@@ -15,7 +16,7 @@ int main(void) {
     fp = fopen("original.txt", "w");
     if (!fp) {
         perror("fopen");
-        return 1;
+        return EXIT_FAILURE;
     }
     fprintf(fp, "Temporary content\n");
     fclose(fp);
@@ -28,7 +29,7 @@ int main(void) {
         fclose(fp);
     } else {
         puts("[FAIL] original.txt should exist!");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* ---- Rename it ---- */
@@ -36,7 +37,7 @@ int main(void) {
         puts("[OK] Renamed original.txt -> renamed.txt");
     } else {
         perror("rename");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* ---- Check old name no longer exists ---- */
@@ -53,9 +54,9 @@ int main(void) {
         puts("[OK] Deleted renamed.txt.");
     } else {
         perror("remove");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     puts("[OK] All file operations completed successfully.");
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define MAX_LINE 1024
 
@@ -22,7 +23,7 @@ int main(void) {
     fp = fopen("sample.txt", "r");
     if (!fp) {
         perror("fopen sample.txt");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     while (fgets(buf, sizeof buf, fp)) {
@@ -44,5 +45,5 @@ int main(void) {
     printf("Longest line length: %d\n", max_len);
     printf("Longest line: %s", longest);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

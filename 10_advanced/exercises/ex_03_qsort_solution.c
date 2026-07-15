@@ -52,5 +52,5 @@ int main(void) {
         printf("  %s (%d)\n", people[i].name, people[i].age);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

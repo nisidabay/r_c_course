@@ -11,6 +11,8 @@
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic madlibs.c -o madlibs
  * Run:    ./madlibs
  */
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,13 +36,18 @@ int main(void) {
     read_input("Enter a number: ", number_str, sizeof(number_str));
 
     char *endptr;
+    errno = 0;
     long number = strtol(number_str, &endptr, 10);
 
     // Check if no conversion happened OR if trailing garbage was left behind
     if (endptr == number_str || *endptr != '\0') {
         fprintf(stderr, "Invalid input: expected a whole number without "
                         "trailing characters.\n");
-        return 1;
+        return EXIT_FAILURE;
+    }
+    if (errno == ERANGE) {
+        fprintf(stderr, "Number out of range.\n");
+        return EXIT_FAILURE;
     }
 
     puts("\n=== Your MadLibs Story ===\n");
@@ -52,7 +59,7 @@ int main(void) {
     printf("looked around with a puzzled expression, and walked away.\n");
     printf("The end!\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 static void read_input(char *prompt, char *buffer, size_t size) {
@@ -62,6 +69,6 @@ static void read_input(char *prompt, char *buffer, size_t size) {
             '\0'; // Remove newline character if present.
     } else {
         fprintf(stderr, "Error reading input.\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 }

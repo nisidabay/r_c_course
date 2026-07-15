@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stddef.h>    /* size_t */
 
 static void print_ints(int arr[], size_t count) {
@@ -37,5 +38,5 @@ int main(void) {
     printf("sizeof(measurements) = %zu bytes\n", sizeof(measurements));
     printf("sizeof(measurements[0]) = %zu bytes\n", sizeof(measurements[0]));
 
-    return 0;
+    return EXIT_SUCCESS;
 }

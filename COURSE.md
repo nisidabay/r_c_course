@@ -16,13 +16,14 @@ gcc -std=c11 -Wall -Wextra -pedantic 01_hello/concept/01_hello_world.c -o /tmp/d
 gcc -std=c11 -Wall -Wextra -pedantic 01_hello/concept/02_data_types.c -o /tmp/demo && /tmp/demo
 ```
 
-**Exercises.** Each group has exercises with matching solution files. To verify your work:
+**Exercise solutions.** Each group has solution files that demonstrate the
+canonical implementation. Run them to see the expected output:
 
 ```bash
 # Run the group's verification script (compiles and tests all solutions)
 bash 01_hello/exercises/verify-exercises.sh
 
-# Or compile an exercise and its solution side by side
+# Or compile and run a specific solution directly
 gcc -std=c11 -Wall -Wextra -pedantic 01_hello/exercises/ex_01_hello_world_solution.c -o /tmp/demo && /tmp/demo
 ```
 

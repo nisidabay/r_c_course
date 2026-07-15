@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef enum {
     RED,
@@ -42,5 +43,5 @@ int main(void) {
         int primary = is_primary(c);
         printf("Colour %d: %-8s  primary=%d\n", i, name, primary);
     }
-    return 0;
+    return EXIT_SUCCESS;
 }

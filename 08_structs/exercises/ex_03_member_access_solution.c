@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char street[64];
@@ -34,5 +35,5 @@ int main(void) {
     printf("City:     %s\n", e.addr.city);
     printf("ZIP:      %d\n", e.addr.zip);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

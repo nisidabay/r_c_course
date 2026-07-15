@@ -1,12 +1,11 @@
-# Calculator CLI — BUILD.md
+# Calculator — BUILD.md
 
 ## Overview
 
 A simple integer calculator that reads two numbers and an operator (`+`, `-`,
-`*`, `/`, `%`) and prints the result. Enter `q` at any number prompt to quit.
-Demonstrates function definitions, pass-by-value, return values, division-by-
-zero handling with a sentinel, and a `do-while` program loop with three
-sequential `fgets` calls per iteration.
+`*`, `/`, `%`) and prints the result. Demonstrates function definitions,
+parameters, return values, and input validation via `strtol` — core concepts
+from group 03.
 
 ## Requirements
 
@@ -25,27 +24,33 @@ gcc -std=c11 -Wall -Wextra -pedantic calculator.c -o calculator
 ./calculator
 ```
 
+Enter the first number, an operator, and the second number when prompted.
+Type `q` at any prompt to quit:
+
 ```text
-Enter number 1 (or 'q' to quit): 42
-Enter number 2 (or 'q' to quit): 5
-Enter operator (+, -, *, /, %): /
-42 / 5 = 8
+=== Integer Calculator ===
+Enter 'q' or press Ctrl+D at any prompt to quit.
 
-Enter number 1 (or 'q' to quit): 5
-Enter number 2 (or 'q' to quit): 0
-Enter operator (+, -, *, /, %): /
-Error: division by zero
+Enter a number: 10
+Enter operator (+ - * / %): *
+Enter a number: 3
+10 * 3 = 30
 
-Enter number 1 (or 'q' to quit): q
-Goodbye!
+Enter a number: 100
+Enter operator (+ - * / %): /
+Enter a number: 7
+100 / 7 = 14
+
+Enter a number: q
+
+Exiting calculator.
 ```
 
 ## Concepts Used
 
-- Function definitions with `int` parameters and return values
-- Pass-by-value semantics
-- Division-by-zero detection with `ERROR_DIV_ZERO` sentinel
-- `do-while` loop for the REPL (read-eval-print loop)
-- Three `fgets` + `strtol` calls per iteration
-- `consume_remaining` guard for each input
-- Exit-controlled loop design (`do-while`)
+- Function definition and calls (`add`, `subtract`, `multiply`, `divide`, `modulo`)
+- Parameters and return values
+- `strtol` for safe integer parsing with full error detection
+- `fgets` + `strcspn` for safe input
+- `strchr` for operator validation
+- Edge case handling: division by zero, `INT_MIN / -1` overflow

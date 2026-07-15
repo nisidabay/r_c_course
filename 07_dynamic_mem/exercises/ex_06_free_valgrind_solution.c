@@ -22,7 +22,7 @@ int main(void)
         free(a);
         free(b);
         free(c);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Fill arrays */
@@ -57,5 +57,5 @@ int main(void)
     printf("All pointers NULLed after free.\n");
     printf("Check with: valgrind --leak-check=full ./ex_06_free_valgrind\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }

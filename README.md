@@ -49,8 +49,9 @@ discipline and understanding, not from the compiler.
 | 10 | `10_advanced/` | How do I use enums, function pointers, and `_Generic`? | generic_sorter |
 | 11 | `11_processes/` | How do I launch and control other programs from C? | journal |
 
-Each group has 5–12 concept files, 6–8 exercises (with solutions), a project
-with `BUILD.md`, and a `verify-exercises.sh` script.
+Each group has 5–12 concept files, 6–8 exercise solutions, a project
+with `BUILD.md`, and a `verify-exercises.sh` script that compiles and
+runs every solution to confirm correctness.
 
 ---
 
@@ -63,7 +64,7 @@ Compile any concept file and run it:
 gcc -std=c11 -Wall -Wextra -pedantic 01_hello/concept/01_hello_world.c -o /tmp/demo && /tmp/demo
 ```
 
-Check your work with the verification script:
+Run the exercise solutions and confirm they produce correct output:
 
 ```bash
 bash 01_hello/exercises/verify-exercises.sh
@@ -77,6 +78,41 @@ bash verify.sh
 
 For the complete course guide — safe C standard, input patterns, feature flags,
 and the Fibonacci study system — see [`COURSE.md`](COURSE.md).
+
+---
+
+## Fibonacci Study System
+
+This course uses **Fibonacci-spaced repetition** to schedule reviews. The
+rhythm is 1–2–3–5–8 days between successive reviews of the same unit, following
+the Fibonacci sequence. Each unit is seen 5 times total: 1 introduction + 4
+reviews at progressively longer intervals, moving knowledge from working memory
+into long-term retention.
+
+**Getting started.** Run this script from the course root to generate the study
+queue:
+
+```bash
+./regenerate_crons.sh
+```
+
+This reads `learning_schedule.md` and creates one file per session in
+`.fibonacci/queue/`.
+
+**Using the queue.**
+
+```bash
+# See what's next
+ls .fibonacci/queue/ | head -1
+
+# See how many sessions remain
+ls .fibonacci/queue/ | wc -l
+
+# When you finish a session, remove its file
+rm .fibonacci/queue/session_001.md
+```
+
+See [`learning_schedule.md`](learning_schedule.md) for the full study plan.
 
 ---
 

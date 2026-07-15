@@ -53,7 +53,7 @@ int main(void)
     for (size_t i = 0; i < n; i++) {
         if (dynarr_append(&arr, vals[i]) != 0) {
             dynarr_free(&arr);
-            return 1;
+            return EXIT_FAILURE;
         }
     }
 
@@ -66,5 +66,5 @@ int main(void)
     printf("The array can keep growing with no fixed limit.\n");
 
     dynarr_free(&arr);
-    return 0;
+    return EXIT_SUCCESS;
 }

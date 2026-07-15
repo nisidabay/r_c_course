@@ -64,7 +64,7 @@ int main(void) {
 
     if (!lines) {
         fprintf(stderr, "tokenisation failed\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("Parsed %zu lines:\n", line_count);
@@ -86,5 +86,5 @@ int main(void) {
 
     for (size_t i = 0; i < line_count; i++) free(lines[i]);
     free(lines);
-    return 0;
+    return EXIT_SUCCESS;
 }

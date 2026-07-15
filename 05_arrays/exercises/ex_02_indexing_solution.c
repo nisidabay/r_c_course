@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
     int data[7] = { 5, 15, 25, 35, 45, 55, 65 };
@@ -25,5 +26,5 @@ int main(void) {
     printf("After swap, data[0] = %d (expected: 65)\n", data[0]);
     printf("After swap, data[6] = %d (expected: 5)\n", data[6]);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

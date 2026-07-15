@@ -37,5 +37,5 @@ int main(void) {
     int diff = reduce(data, n, 0, fn);
     printf("Diff (0-1-2-3-4-5): %d (expected: -15)\n", diff);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

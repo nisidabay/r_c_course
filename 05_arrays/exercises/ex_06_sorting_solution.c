@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 static void swap(int *a, int *b) {
     int tmp = *a;
@@ -45,5 +46,5 @@ int main(void) {
     printf("After:  ");
     print_array(scores, n);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -64,5 +64,5 @@ int main(void) {
     print_val(sv);
     printf("\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
