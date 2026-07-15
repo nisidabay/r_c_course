@@ -1,28 +1,73 @@
 # References — Modern C (C11)
 
-## Core References
+> Where this course comes from.
 
-| Resource | Why |
-|----------|-----|
-| *Effective C* (Seacord, 2nd ed, 2024) | The core C reference for this course. Covers safe C programming, undefined behavior, and modern C11/C17 practices. Every concept file in this course is designed to be understood alongside the corresponding chapter in Seacord. |
-| GCC manual (`man gcc`) | Understanding compiler flags (`-std=c11`, `-Wall`, `-Wextra`, `-pedantic`, `-fsanitize=address`) and platform-specific behaviour. |
+---
 
-## Essential Tools
+## Foundations
 
-| Resource | Why |
-|----------|-----|
-| valgrind (`man valgrind`) | Memory leak detection and heap profiling. Used in `07_dynamic_mem` to verify `malloc`/`free` discipline. Run with: `valgrind --leak-check=full ./program` |
-| AddressSanitizer (`-fsanitize=address`) | Runtime bounds checking and use-after-free detection. Compile with `-fsanitize=address -g` to catch buffer overflows, stack overflows, and heap corruption that valgrind might miss. |
+These are the works that shaped the design and safety standards of this course.
+We don't expect you to read them — but if you ever wonder *"why does this
+course do X instead of Y?"*, the answer lives here.
+
+---
+
+### *Effective C* (Seacord, 2nd ed, 2024)
+
+The language-lawyer backbone. Seacord codifies safe C11/C17 practices,
+undefined behavior classification, and the rationale behind banning the
+functions this course bans. Every concept file in this course maps to a
+Seacord chapter — not because the course is "based on the book", but because
+Seacord is *the* authoritative modern C reference that says *what* to do and,
+more importantly, *why*.
+
+### GNU/Linux
+
+This course is built on and for GNU/Linux. The compiler is `gcc`, the
+toolchain is POSIX, the process model (fork, exec, pipe) is Unix. Every
+command in every BUILD.md works on a stock Arch/Debian/Fedora system. The
+course doesn't teach Linux — it teaches C *through* Linux, because that's
+where C and the OS meet.
+
+### The C Standards Committee (ISO/IEC 9899)
+
+The C11 standard (and its C17 correction) defines what the language is. When
+this course says "this is undefined behavior per C11 §7.21.5.2", it's not
+being pedantic — it's citing the contract between the programmer and the
+compiler. Understanding that contract is the whole point.
+
+---
 
 ## Inspiration
 
-| Resource | Why |
-|----------|-----|
-| [Tony Banters - "Strings Aren't Real"](https://www.youtube.com/watch?v=fUVvfDkDb-Y) | The talk that inspired Group 04's `String_Slice` approach. Argues that null-terminated C strings are not real data types and demonstrates the `char*` + `size_t` pattern. |
-| [string.c by tonybanters](https://github.com/tonybanters/string.c) | Source code for the fstab parser project in Group 04. A practical demonstration of zero-copy string processing with `String_Slice`. |
+### "Strings Aren't Real" — Tony Banters
 
-## What's NOT Here
+[Talk](https://www.youtube.com/watch?v=fUVvfDkDb-Y) |
+[Source code](https://github.com/tonybanters/string.c)
 
-- **K&R (*The C Programming Language*)** — Not included. The code style in K&R predates C99 and C11, uses banned functions (`strcpy`, `sprintf`, `scanf`), and teaches patterns that the Safe C Standard explicitly prohibits.
-- **cppreference.com** — Not included as a primary reference. Online references change without versioning and mix standards. *Effective C* is the stable, curated source.
-- **GDB** — Not included. This course focuses on static correctness (compiler warnings, Safe C Standard) and dynamic analysis (valgrind, AddressSanitizer). Debugging is out of scope.
+The idea that C strings are not a real data type — just a pointer with a
+convention — came from this talk. Group 04's `String_Slice` (a `char*` +
+`size_t` struct) is a direct application of Tony's approach. Every string
+operation becomes O(1) for length, bounds-safe, and zero-copy. The group's
+project (an fstab parser) demonstrates it end-to-end.
+
+### The Linux Kernel
+
+The kernel is the largest and most battle-tested C codebase in existence.
+This course looks to it not for code style (kernel style is too specialized
+for a teaching course) but for *attitude*: safety through discipline,
+simplicity over cleverness, and the conviction that the programmer — not
+the language — is responsible for correctness.
+
+---
+
+## What's Not Here
+
+- **K&R (*The C Programming Language*)** — A classic, but pre-dates C99 and
+  C11. It uses `strcpy`, `sprintf`, and `gets` without warning. Teaching its
+  patterns would contradict this course's Safe C Standard.
+- **cppreference.com** — Changes without versioning. *Effective C* is the
+  stable, curated source.
+- **GDB** — This course focuses on static correctness (compiler warnings,
+  Safe C Standard) and dynamic analysis (valgrind, AddressSanitizer).
+  Interactive debugging is a separate skill, out of scope here.
