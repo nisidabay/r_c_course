@@ -222,7 +222,7 @@ GROUPS=(
     "03_functions"
     "04_strings"
     "05_arrays"
-    "06_pointers_101"
+    "06_pointers"
     "07_dynamic_mem"
     "08_structs"
     "09_files"

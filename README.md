@@ -49,7 +49,7 @@ discipline and understanding, not from the compiler.
 | 10 | `10_advanced/` | How do I use enums, function pointers, and `_Generic`? | generic_sorter |
 | 11 | `11_processes/` | How do I launch and control other programs from C? | journal |
 
-Each group has 4–8 concept files, 6–8 exercises (with solutions), a project
+Each group has 5–12 concept files, 6–8 exercises (with solutions), a project
 with `BUILD.md`, and a `verify-exercises.sh` script.
 
 ---

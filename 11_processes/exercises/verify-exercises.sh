@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # verify-exercises.sh — Tests all exercise solutions in group 11 (Processes)
 set -euo pipefail
+cd "$(dirname "$0")"
 
 PASS=0
 FAIL=0
