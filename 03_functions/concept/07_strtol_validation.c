@@ -38,13 +38,19 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    /* Check 2: no digits or trailing garbage */
-    if (endptr == buf || *endptr != '\0') {
-        fprintf(stderr, "Invalid input format\n");
+    /* Check 2: no digits found */
+    if (endptr == buf) {
+        fprintf(stderr, "Invalid input format: no digits found\n");
         return EXIT_FAILURE;
     }
 
-    /* Check 3: bounds before downcasting to int */
+    /* Check 3: trailing garbage */
+    if (*endptr != '\0') {
+        fprintf(stderr, "Invalid input format: trailing characters\n");
+        return EXIT_FAILURE;
+    }
+
+    /* Check 4: bounds before downcasting to int */
     if (number < INT_MIN || number > INT_MAX) {
         fprintf(stderr, "Number is out of range for an integer\n");
         return EXIT_FAILURE;
