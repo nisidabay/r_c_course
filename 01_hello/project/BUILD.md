@@ -4,7 +4,7 @@
 
 A fill-in-the-blank word game that reads five inputs (noun, verb, adjective,
 adverb, number) and weaves them into a story. Demonstrates sequential `fgets`
-calls with `consume_remaining` guards — a core input safety pattern used
+calls with a `read_input` wrapper — a core input safety pattern used
 throughout the course.
 
 ## Requirements
@@ -47,7 +47,7 @@ The end!
 
 ## Concepts Used
 
-- `fgets` + `consume_remaining` guard for safe input
-- Five sequential reads with truncation protection
-- `snprintf` for safe string building
+- `read_input` wrapper with `fgets` + `strcspn` for safe input
+- Five sequential reads via helper function
+- `strtol` for safe number parsing
 - Prompt-and-response interaction pattern
