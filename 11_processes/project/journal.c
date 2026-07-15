@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <limits.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -188,7 +190,18 @@ static int cmd_list(sqlite3 *db)
     }
 
     for (int r = 1; r <= rows; r++) {
-        int id       = atoi(result[r * cols + 0]);
+        const char *id_str = result[r * cols + 0];
+        char *endptr;
+        errno = 0;
+        long id_long = strtol(id_str, &endptr, 10);
+        int id;
+        if (errno == ERANGE || endptr == id_str || *endptr != '\0'
+            || id_long < INT_MIN || id_long > INT_MAX) {
+            fprintf(stderr, "Error: invalid ID in database: %s\n", id_str);
+            sqlite3_free_table(result);
+            return EXIT_FAILURE;
+        }
+        id = (int)id_long;
         const char *content  = result[r * cols + 1];
         const char *date     = result[r * cols + 2];
 
@@ -436,8 +449,19 @@ int main(int argc, char *argv[])
             fprintf(stderr, "Usage: %s edit <id>\n", argv[0]);
             result = EXIT_FAILURE;
         } else {
-            int entry_id = atoi(argv[optind + 1]);
-            result = cmd_edit(db, entry_id, editor);
+            const char *id_str = argv[optind + 1];
+            char *endptr;
+            errno = 0;
+            long id_long = strtol(id_str, &endptr, 10);
+            int entry_id;
+            if (errno == ERANGE || endptr == id_str || *endptr != '\0'
+                || id_long < INT_MIN || id_long > INT_MAX) {
+                fprintf(stderr, "Error: invalid entry ID: %s\n", id_str);
+                result = EXIT_FAILURE;
+            } else {
+                entry_id = (int)id_long;
+                result = cmd_edit(db, entry_id, editor);
+            }
         }
     } else {
         fprintf(stderr, "Unknown command: %s\n", cmd);
