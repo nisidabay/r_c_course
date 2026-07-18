@@ -18,43 +18,39 @@ int main(void)
 {
 	/* ---- Step 1: sizeof on array of pointers ---- */
 	/* lines: array of char pointers, compiler-sized from initializer */
-	char *lines[] = { "Alpha", "Beta", "Gamma", NULL };
+	char *lines[] = {"Alpha", "Beta", "Gamma", NULL};
 
 	/* sizeof(lines) = total bytes of the array (4 pointers × 8 = 32) */
 	printf("sizeof(lines) = %zu bytes  (entire array)\n", sizeof(lines));
 	/* sizeof(lines[0]) = width of one pointer (always 8 on 64-bit) */
-	printf("sizeof(lines[0]) = %zu bytes  (one pointer)\n",
-	       sizeof(lines[0]));
+	printf("sizeof(lines[0]) = %zu bytes  (one pointer)\n", sizeof(lines[0]));
 	/* element count = total bytes ÷ pointer width */
-	printf("Element count = %zu  (includes NULL sentinel)\n",
-	       sizeof(lines) / sizeof(lines[0]));
+	printf("Element count = %zu  (includes NULL sentinel)\n", sizeof(lines) / sizeof(lines[0]));
 
 	/* ---- Step 2: Iterate with NULL sentinel ---- */
 	printf("\nArray of pointers:\n");
 	for (int i = 0; lines[i] != NULL; ++i) {
-		printf("  lines[%d] = \"%s\"\t(strlen = %zu)\n",
-		       i, lines[i], strlen(lines[i]));
+		printf("  lines[%d] = \"%s\"\t(strlen = %zu)\n", i, lines[i], strlen(lines[i]));
 	}
 
 	/* ---- Step 3: Different-sized strings ---- */
 	/* mixed: strings of varying lengths — each is a separate char* */
-	char *mixed[] = { "a", "Hello, world!", "", "C11", NULL };
+	char *mixed[] = {"a", "Hello, world!", "", "C11", NULL};
 
 	printf("\nDifferent-sized strings:\n");
 	for (int j = 0; mixed[j] != NULL; ++j) {
 		/* sizeof(mixed[j]) is always 8 — pointer width */
 		/* strlen(mixed[j]) varies — actual string length */
-		printf("  mixed[%d] = \"%s\"\t(sizeof = %zu, strlen = %zu)\n",
-		       j, mixed[j], sizeof(mixed[j]), strlen(mixed[j]));
+		printf("  mixed[%d] = \"%s\"\t(sizeof = %zu, strlen = %zu)\n", j, mixed[j],
+		       sizeof(mixed[j]), strlen(mixed[j]));
 	}
 
-	printf("\n  Key insight: sizeof is always %zu (pointer width).\n",
-	       sizeof(mixed[0]));
+	printf("\n  Key insight: sizeof is always %zu (pointer width).\n", sizeof(mixed[0]));
 	printf("  strlen varies — it measures the actual string length.\n");
 
 	/* ---- Step 4: Empty array edge case ---- */
 	/* empty: only the sentinel — no real strings */
-	char *empty[] = { NULL };
+	char *empty[] = {NULL};
 
 	printf("\nEmpty array (just NULL):\n");
 	printf("  sizeof(empty) = %zu bytes\n", sizeof(empty));
