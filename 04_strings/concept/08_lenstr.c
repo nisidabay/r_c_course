@@ -10,41 +10,42 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* ---- manual strlen: walk pointer until '\0' ---- */
 static int lenstr(const char *s)
 {
-    int n = 0;
-    while (*s != '\0') {
-        n++;
-        s++;
-    }
-    return n;
+	int n = 0;
+	while (*s != '\0') {
+		n++;
+		s++;
+	}
+	return n;
 }
 
 int main(void)
 {
-    const char *test = "Hello, world!";
+	const char *test = "Hello, world!";
 
-    int len = lenstr(test);
+	int len = lenstr(test);
 
-    printf("String: \"%s\"\n", test);
-    printf("Length: %d\n", len);
+	printf("String: \"%s\"\n", test);
+	printf("Length: %d\n", len);
 
-    /* Verify against the standard library version */
-    if ((size_t)len == sizeof("Hello, world!") - 1) {
-        puts("Match — result equals built-in strlen behavior.");
-    } else {
-        puts("Mismatch!");
-    }
+	/* Verify against the standard library version */
+	if ((size_t)len == strlen("Hello, world!")) {
+		puts("Match — result equals built-in strlen behavior.");
+	} else {
+		puts("Mismatch!");
+	}
 
-    /* Test edge cases */
-    printf("\nEdge cases:\n");
-    printf("  lenstr(\"\")           = %d  (empty string)\n", lenstr(""));
-    printf("  lenstr(\"a\")          = %d  (single char)\n",     lenstr("a"));
-    printf("  lenstr(\"abc\")        = %d  (short string)\n",   lenstr("abc"));
+	/* Test edge cases */
+	printf("\nEdge cases:\n");
+	printf("  lenstr(\"\")           = %d  (empty string)\n", lenstr(""));
+	printf("  lenstr(\"a\")          = %d  (single char)\n", lenstr("a"));
+	printf("  lenstr(\"abc\")        = %d  (short string)\n", lenstr("abc"));
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 // Thinking in C:

@@ -17,37 +17,37 @@
 
 int main(void)
 {
-    char line[] = "apple,banana,cherry";
+	char line[] = "apple,banana,cherry";
 
-    printf("Original string: %s\n", line);
+	printf("Original string: %s\n", line);
 
-    /* ---- Tokenize ---- */
-    char *tokens[10];   /* array to store token pointers */
-    int index = 0;
+	/* ---- Tokenize ---- */
+	char *tokens[10]; /* array to store token pointers */
+	int index = 0;
 
-    printf("\nTokens:\n");
+	printf("\nTokens:\n");
 
-    char *token = strtok(line, ",");
-    while (token != NULL) {
-        tokens[index++] = token;
-        printf("  %s\n", token);
-        token = strtok(NULL, ",");
-    }
+	char *token = strtok(line, ",");
+	while (token != NULL) {
+		tokens[index++] = token;
+		printf("  %s\n", token);
+		token = strtok(NULL, ",");
+	}
 
-    /* ---- Show the side effect: strtok overwrites delimiters ---- */
-    printf("\nOriginal string after strtok (delimiters replaced by '/'):\n  ");
-    for (size_t i = 0; i < sizeof(line); i++) {
-        putchar(line[i] ? line[i] : '/');
-    }
-    printf("\n");
+	/* ---- Show the side effect: strtok overwrites delimiters ---- */
+	printf("\nOriginal string after strtok (delimiters replaced by '/'):\n  ");
+	for (size_t i = 0; i < sizeof(line); i++) {
+		putchar(line[i] ? line[i] : '/');
+	}
+	printf("\n");
 
-    /* ---- Stored tokens still point into the modified line ---- */
-    printf("\nStored tokens (still valid — point into modified line):\n");
-    for (int i = 0; i < index; i++) {
-        printf("  %s\n", tokens[i]);
-    }
+	/* ---- Stored tokens still point into the modified line ---- */
+	printf("\nStored tokens (still valid — point into modified line):\n");
+	for (int i = 0; i < index; i++) {
+		printf("  %s\n", tokens[i]);
+	}
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 // Thinking in C:

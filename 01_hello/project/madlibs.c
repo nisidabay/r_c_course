@@ -12,7 +12,6 @@
  * Run:    ./madlibs
  */
 #include <errno.h>
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,11 +50,10 @@ int main(void) {
     }
 
     puts("\n=== Your MadLibs Story ===\n");
-    printf("One day, a %s decided to take a walk in the park.\n", noun);
+    printf("One day,  %s decided to take a walk in the park.\n", noun);
     printf("Suddenly, it spotted a %s squirrel and began to %s %s.\n",
            adjective, verb, adverb);
-    printf("After exactly %ld seconds of this, the %s stopped,\n", number,
-           noun);
+    printf("After exactly %ld seconds of this, %s stopped,\n", number, noun);
     printf("looked around with a puzzled expression, and walked away.\n");
     printf("The end!\n");
 

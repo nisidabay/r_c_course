@@ -13,70 +13,71 @@
  * gcc -std=c11 -Wall -Wextra -pedantic 06_safe_building.c -o 06_safe_building
  */
 
-#define _POSIX_C_SOURCE 200809L   /* for strdup (POSIX.1-2008) */
+#define _POSIX_C_SOURCE 200809L /* for strdup (POSIX.1-2008) */
 
-#include <stddef.h>   // size_t is an unsigned integer type from <stddef.h>, used for sizes and indices
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int main(void) {
-    /* --- snprintf: safe formatted construction --- */
-    char greeting[64];
-    char *name = "Alice";
-    int count = 42;
+int main(void)
+{
+	/* --- snprintf: safe formatted construction --- */
+	char greeting[64];
+	char *name = "Alice";
+	int count = 42;
 
-    /* snprintf writes AT MOST sizeof(greeting)-1 chars, then always null-terminates.
-     * Returns how many characters it WOULD have written (excluding \0) if space were unlimited.
-     * If return >= sizeof(buf), output was truncated — you can detect it. */
-    int needed = snprintf(greeting, sizeof(greeting),
-                          "Hello %s, you have %d messages.", name, count);
+	/* snprintf writes AT MOST sizeof(greeting)-1 chars, then always null-terminates.
+	 * Returns how many characters it WOULD have written (excluding \0) if space were unlimited.
+	 * If return >= sizeof(buf), output was truncated — you can detect it. */
+	int needed = snprintf(greeting, sizeof(greeting), "Hello %s, you have %d messages.", name,
+			      count);
 
-    printf("snprintf result:\n");
-    printf("  Needed: %d characters (would need %zu-byte buffer for full output)\n",
-           needed, (size_t)needed + 1);
-    printf("  Wrote:  \"%s\"\n", greeting);
+	printf("snprintf result:\n");
+	printf("  Needed: %d characters (would need %zu-byte buffer for full output)\n", needed,
+	       (size_t)needed + 1);
+	printf("  Wrote:  \"%s\"\n", greeting);
 
-    if ((size_t)needed >= sizeof(greeting)) {
-        printf("  (Output was TRUNCATED — buffer too small)\n");
-    }
+	if ((size_t)needed >= sizeof(greeting)) {
+		printf("  (Output was TRUNCATED — buffer too small)\n");
+	}
 
-    /* --- strdup: safe duplication with NULL check --- */
-    char *original = "This text needs to be copied to a new location.";
-    char *copy = strdup(original);
+	/* --- strdup: safe duplication with NULL check --- */
+	char *original = "This text needs to be copied to a new location.";
+	char *copy = strdup(original);
 
-    /* strdup returns NULL if malloc fails — ALWAYS check */
-    if (!copy) {
-        perror("strdup");
-        return EXIT_FAILURE;
-    }
+	/* strdup returns NULL if malloc fails — ALWAYS check */
+	if (!copy) {
+		perror("strdup");
+		return EXIT_FAILURE;
+	}
 
-    printf("\nstrdup result:\n");
-    printf("  Original: \"%s\"  (at %p)\n", original, (void *)original);
-    printf("  Copy:     \"%s\"  (at %p)\n", copy, (void *)copy);
-    printf("  Different addresses -> copy IS a real, independent allocation.\n");
+	printf("\nstrdup result:\n");
+	printf("  Original: \"%s\"  (at %p)\n", original, (void *)original);
+	printf("  Copy:     \"%s\"  (at %p)\n", copy, (void *)copy);
+	printf("  Different addresses -> copy IS a real, independent allocation.\n");
 
-    /* Modify the copy — safe because it's our own memory */
-    copy[0] = 't';
-    printf("  Modified copy: \"%s\"  (original unchanged)\n", copy);
+	/* Modify the copy — safe because it's our own memory */
+	copy[0] = 't';
+	printf("  Modified copy: \"%s\"  (original unchanged)\n", copy);
 
-    /* Always free what strdup gave you */
-    free(copy);
+	/* Always free what strdup gave you */
+	free(copy);
 
-    /* --- snprintf for path construction --- */
-    char path[256];
-    char *dir  = "/home/alice";
-    char *file = "documents/report.txt";
+	/* --- snprintf for path construction --- */
+	char path[256];
+	char *dir = "/home/alice";
+	char *file = "documents/report.txt";
 
-    snprintf(path, sizeof(path), "%s/%s", dir, file);
-    printf("\nConstructed path: \"%s\"\n", path);
+	snprintf(path, sizeof(path), "%s/%s", dir, file);
+	printf("\nConstructed path: \"%s\"\n", path);
 
-    printf("\nSafe building rules:\n");
-    printf("  1. snprintf(buf, sizeof(buf), ...) — always bound the output\n");
-    printf("  2. strdup(src) — but ALWAYS check for NULL return\n");
-    printf("  3. free() what you strdup() — ownership is now yours\n");
+	printf("\nSafe building rules:\n");
+	printf("  1. snprintf(buf, sizeof(buf), ...) — always bound the output\n");
+	printf("  2. strdup(src) — but ALWAYS check for NULL return\n");
+	printf("  3. free() what you strdup() — ownership is now yours\n");
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 // Thinking in C:
