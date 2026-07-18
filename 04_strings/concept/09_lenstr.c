@@ -1,5 +1,5 @@
 /*
- * 08_lenstr.c — Manual strlen implementation
+ * 09_lenstr.c — Manual strlen implementation
  * Group 04 - Strings
  *
  * strlen counts characters by walking a pointer forward until it
