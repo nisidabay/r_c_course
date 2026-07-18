@@ -18,9 +18,9 @@
  *   1 << 10 = 1024 =  00000000 00000000 00000100 00000000
  *
  * Hints:
- *   - Read a line with fgets, parse it with sscanf(buf, "%u %c %u", ...)
- *   - Use switch on the operator character
- *   - strtoul is fine too — parse the two numbers and operator manually
+ *   - Read a line with fgets, parse numbers with strtoul
+ *   - Read the operator character(s) manually between the two numbers
+ *   - Use strcmp on the operator string (& | ^ << >>)
  */
 
 #include <stdio.h>

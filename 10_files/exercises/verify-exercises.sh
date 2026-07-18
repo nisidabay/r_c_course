@@ -197,6 +197,28 @@ fi
 echo ""
 
 # ============================================================
+# Exercise 07 — Opening Files
+# ============================================================
+echo "--- ex_07_opening_files ---"
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_07_opening_files_solution.c" "ex_07_opening_files_solution")
+if [ $? -eq 0 ]; then
+    pushd "$EXERCISES_DIR" > /dev/null 2>&1 || true
+    out=$("$bin" 2>&1; echo "EXIT:$?")
+    popd > /dev/null 2>&1 || true
+    # test.txt does not exist; perror should print an error and exit code should be 1
+    if echo "$out" | grep -q "fopen test.txt" && \
+       echo "$out" | grep -q "EXIT:1"; then
+        pass "ex_07_opening_files_solution"
+    else
+        fail "ex_07_opening_files_solution (output mismatch)"
+        echo "    Got: $out"
+    fi
+    rm -f "$bin"
+fi
+echo ""
+
+# ============================================================
 # Summary
 # ============================================================
 echo "============================================"

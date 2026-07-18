@@ -189,6 +189,73 @@ fi
 echo ""
 
 # ============================================================
+# Exercise 07 — swap by value (fails)
+# ============================================================
+echo "--- ex_07_swap_value ---"
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_07_swap_value_solution.c" "ex_07_swap_value_solution")
+if [ $? -eq 0 ]; then
+    actual=$("$bin" 2>&1)
+    ex_pass=true
+    echo "$actual" | grep -q "Before: a = 5, b = 10"         || { echo "  FAIL: expected Before: a=5, b=10"; ex_pass=false; }
+    echo "$actual" | grep -q "After:  a = 5, b = 10"         || { echo "  FAIL: expected After: a=5, b=10 (unchanged)"; ex_pass=false; }
+    echo "$actual" | grep -q "inside swap_by_value: x = 10"   || { echo "  FAIL: expected inside swap output"; ex_pass=false; }
+    echo "$actual" | grep -q "UNCHANGED"                      || { echo "  FAIL: expected UNCHANGED message"; ex_pass=false; }
+    if $ex_pass; then
+        pass "ex_07_swap_value_solution"
+    else
+        fail "ex_07_swap_value_solution (output mismatch)"
+        echo "    Got: $(echo "$actual" | head -10)"
+    fi
+    rm -f "$bin"
+fi
+echo ""
+
+# ============================================================
+# Exercise 08 — const pointers (int *const vs const int *)
+# ============================================================
+echo "--- ex_08_const_pointers ---"
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_08_const_pointers_solution.c" "ex_08_const_pointers_solution")
+if [ $? -eq 0 ]; then
+    actual=$("$bin" 2>&1)
+    ex_pass=true
+    echo "$actual" | grep -q "int \\*const p"                 || { echo "  FAIL: expected int *const p section header"; ex_pass=false; }
+    echo "$actual" | grep -q "const int \\*p"                 || { echo "  FAIL: expected const int *p section header"; ex_pass=false; }
+    echo "$actual" | grep -q "x = 10"                         || { echo "  FAIL: expected x=10"; ex_pass=false; }
+    echo "$actual" | grep -q "After \\*p = 99"                || { echo "  FAIL: expected After *p=99"; ex_pass=false; }
+    echo "$actual" | grep -q "After p = &y"                   || { echo "  FAIL: expected After p=&y"; ex_pass=false; }
+    if $ex_pass; then
+        pass "ex_08_const_pointers_solution"
+    else
+        fail "ex_08_const_pointers_solution (output mismatch)"
+        echo "    Got: $(echo "$actual" | head -10)"
+    fi
+    rm -f "$bin"
+fi
+echo ""
+
+# ============================================================
+# Exercise 09 — check endianness
+# ============================================================
+echo "--- ex_09_check_endian ---"
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_09_check_endian_solution.c" "ex_09_check_endian_solution")
+if [ $? -eq 0 ]; then
+    actual=$("$bin" 2>&1)
+    ex_pass=true
+    echo "$actual" | grep -qi "Endian"                        || { echo "  FAIL: expected Little Endian or Big Endian"; ex_pass=false; }
+    if $ex_pass; then
+        pass "ex_09_check_endian_solution"
+    else
+        fail "ex_09_check_endian_solution (output mismatch)"
+        echo "    Got: $(echo "$actual" | head -5)"
+    fi
+    rm -f "$bin"
+fi
+echo ""
+
+# ============================================================
 # Summary
 # ============================================================
 echo "============================================"

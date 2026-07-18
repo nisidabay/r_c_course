@@ -12,7 +12,7 @@
 
 set -u
 
-GROUP="03_functions"
+GROUP="04_functions"
 EXERCISES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CC="${CC:-gcc}"
 CFLAGS="-std=c11 -Wall -Wextra -pedantic"
@@ -49,7 +49,7 @@ check_compile() {
 
 # ---- header ----
 echo "============================================"
-echo "  Group 03 — Functions — Exercise Verifier"
+echo "  Group 04 — Functions — Exercise Verifier"
 echo "============================================"
 echo ""
 
@@ -238,6 +238,55 @@ if [ $? -eq 0 ]; then
         pass "ex_07_challenge_solution / 3! = 6"
     else
         fail "ex_07_challenge_solution / 3! = 6"
+        echo "    Got: $out"
+    fi
+    cleanup
+fi
+echo ""
+
+# ============================================================
+# Exercise 08 — Validate Integer (is_valid_int)
+# ============================================================
+echo "--- ex_08_validate_int ---"
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_08_validate_int_solution.c" "ex_08_validate_int_solution")
+if [ $? -eq 0 ]; then
+    out=$(printf "42\\n" | "$bin" 2>&1)
+    if echo "$out" | grep -q "Valid: 42"; then
+        pass "ex_08_validate_int_solution / valid"
+    else
+        fail "ex_08_validate_int_solution / valid"
+        echo "    Got: $out"
+    fi
+    cleanup
+fi
+
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_08_validate_int_solution.c" "ex_08_validate_int_solution")
+if [ $? -eq 0 ]; then
+    out=$(printf "abc\\n" | "$bin" 2>&1; echo "EXIT:$?")
+    if echo "$out" | grep -q "Invalid input" && echo "$out" | grep -q "EXIT:1"; then
+        pass "ex_08_validate_int_solution / invalid"
+    else
+        fail "ex_08_validate_int_solution / invalid"
+        echo "    Got: $out"
+    fi
+    cleanup
+fi
+echo ""
+
+# ============================================================
+# Exercise 09 — Print Wrapper (my_print)
+# ============================================================
+echo "--- ex_09_print_wrapper ---"
+total
+bin=$(check_compile "${EXERCISES_DIR}/ex_09_print_wrapper_solution.c" "ex_09_print_wrapper_solution")
+if [ $? -eq 0 ]; then
+    out=$(printf "" | "$bin" 2>&1)
+    if echo "$out" | grep -q "Value: 42| " && echo "$out" | grep -q "Value: 99$"; then
+        pass "ex_09_print_wrapper_solution"
+    else
+        fail "ex_09_print_wrapper_solution (output mismatch)"
         echo "    Got: $out"
     fi
     cleanup

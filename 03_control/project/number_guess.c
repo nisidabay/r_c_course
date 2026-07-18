@@ -6,7 +6,7 @@
  * was too high or too low, and keeps track of the number of attempts.
  *
  * Concepts used:
- *   - stdio: printf, fgets, sscanf
+ *   - stdio: printf, fgets, strtol
  *   - stdlib: rand, srand
  *   - time: time
  *   - if/else, while, break
