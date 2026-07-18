@@ -1,26 +1,46 @@
 /*
  * Exercise 04 — Slice Operations
  *
- * Extract the first word from a sentence by finding the first space
- * and replacing it with '\0'.
+ * Implement slice_eq and slice_starts_with using String_Slice's stored
+ * length — compare without scanning for '\0'.
  *
  * Expected output:
- *   Full sentence: The quick brown fox
- *   First word: The
+ *   a = "hello world" (11 chars)
+ *   b = "hello world" (11 chars)
+ *   c = "hello there" (11 chars)
+ *
+ *   slice_eq(a, b) = 1  (same text → equal)
+ *   slice_eq(a, c) = 0  (different → not equal)
+ *
+ *   slice_starts_with(a, "hello") = 1
+ *   slice_starts_with(a, "world") = 0
+ *
+ *   path = "/usr/local/bin/gcc"
+ *   dir  = "/usr/local"
+ *   slice_starts_with(path, dir) = 1
  *
  * Hints:
- *   - char sentence[] = "The quick brown fox";
- *   - Walk until you find ' ' or '\0'
- *   - Replace the space with '\0' to truncate
- *   - Print sentence — it now stops at the first word
- *   - #include <stdio.h>, <stdlib.h>, <stddef.h>
+ *   - Reuse String_Slice and slice_from_cstring from Exercise 03
+ *   - slice_eq(a, b): if lengths differ → 0, then compare char by char
+ *   - slice_starts_with(s, prefix): if prefix.len > s.len → 0, then compare
+ *   - Both return 1 for match, 0 for mismatch
+ *   - #include <stddef.h>, <stdio.h>, <stdlib.h>, <string.h>
  */
+
+#include <stddef.h>   // size_t
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
+#include <string.h>
+
+// Your code here
 
 int main(void)
 {
+    char *greeting = "hello world";
+    char *same     = "hello world";
+    char *different = "hello there";
+
     // Your code here
+
     return EXIT_SUCCESS;
 }

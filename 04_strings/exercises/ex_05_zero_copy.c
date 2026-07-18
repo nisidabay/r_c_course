@@ -1,27 +1,38 @@
 /*
  * Exercise 05 — Zero Copy
  *
- * Print all substrings separated by spaces without copying the original string.
- * Walk through with two pointers (start and end).
+ * Implement slice_take and slice_drop — zero-copy slicing that creates
+ * new String_Slice values by adjusting the data pointer and length.
+ * NO malloc, NO memcpy, NO character copying.
  *
  * Expected output:
- *   apple
- *   banana
- *   cherry
+ *   Original:  "hello world"  (data = 0x..., len = 11)
+ *
+ *   slice_take(full, 5):  "hello"  (data = 0x..., len = 5)  <- SAME data pointer
+ *   slice_drop(full, 6):  "world"  (data = 0x..., len = 5)  <- data pointer ADVANCED by 6
+ *   slice_take(slice_drop(full, 6), 5):  "world"  (data = 0x..., len = 5)
  *
  * Hints:
- *   - char str[] = "apple banana cherry";
- *   - Use char *start = str, then find next space → print with %.*s
- *   - Or temporarily replace spaces with '\0' and print each slice
- *   - Move start past the space and repeat until '\0'
- *   - #include <stdio.h>, <stdlib.h>, <stddef.h>
+ *   - Reuse String_Slice and slice_from_cstring from earlier exercises
+ *   - slice_take(s, n): if n > s.len, n = s.len; return { s.data, n }
+ *   - slice_drop(s, n): if n > s.len, n = s.len; return { s.data + n, s.len - n }
+ *   - print_slice(s): helper that prints characters using s.len
+ *   - Use %p to print the data pointer and verify zero-copy
+ *   - #include <stddef.h>, <stdio.h>, <stdlib.h>, <string.h>
  */
+
+#include <stddef.h>   // size_t
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
+#include <string.h>
+
+// Your code here
 
 int main(void)
 {
+    char *text = "hello world";
+
     // Your code here
+
     return EXIT_SUCCESS;
 }
