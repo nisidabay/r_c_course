@@ -1,5 +1,5 @@
 /*
- * 07_strtok.c — strtok for string splitting
+ * 08_strtok.c — strtok for string splitting
  * Group 04 - Strings
  *
  * strtok breaks a string into tokens based on delimiter characters.
