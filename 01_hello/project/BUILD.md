@@ -47,7 +47,7 @@ The end!
 
 ## Concepts Used
 
-- `read_input` wrapper with `fgets` + `strcspn` for safe input
+- `read_input` wrapper with `fgets` + truncation detection for safe input
 - Five sequential reads via helper function
 - `strtol` for safe number parsing
 - Prompt-and-response interaction pattern

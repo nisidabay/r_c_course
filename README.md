@@ -33,23 +33,24 @@ discipline and understanding, not from the compiler.
 
 ---
 
-## The Path (11 groups)
+## The Path (12 groups)
 
 | # | Group | One Question | Project |
 |---|-------|-------------|---------|
 | 01 | `01_hello/` | How do I write, compile, and run a C program? | madlibs |
-| 02 | `02_control/` | How do I make decisions and repeat work in C? | number_guess |
-| 03 | `03_functions/` | How do I define, call, and organize reusable code? | calculator |
-| 04 | `04_strings/` | How do I handle text safely without copying? | fstab_parser |
-| 05 | `05_arrays/` | How do I store and process collections of data? | grade_stats |
-| 06 | `06_pointers/` | What is a pointer and how do I use one? | array_reverse |
-| 07 | `07_dynamic_mem/` | How do I allocate memory at runtime? | dynamic_list |
-| 08 | `08_structs/` | How do I group related data into a custom type? | student_db |
-| 09 | `09_files/` | How do I read and write files? | csv_reader |
-| 10 | `10_advanced/` | How do I use enums, function pointers, and `_Generic`? | generic_sorter |
-| 11 | `11_processes/` | How do I launch and control other programs from C? | journal |
+| 02 | `02_bitwise/` | How do I manipulate individual bits in integers? | permission_cli |
+| 03 | `03_control/` | How do I make decisions and repeat work in C? | number_guess |
+| 04 | `04_functions/` | How do I define, call, and organize reusable code? | calculator |
+| 05 | `05_strings/` | How do I handle text safely without copying? | fstab_parser |
+| 06 | `06_arrays/` | How do I store and process collections of data? | grade_stats |
+| 07 | `07_pointers/` | What is a pointer and how do I use one? | array_reverse |
+| 08 | `08_dynamic_mem/` | How do I allocate memory at runtime? | dynamic_list |
+| 09 | `09_structs/` | How do I group related data into a custom type? | student_db |
+| 10 | `10_files/` | How do I read and write files? | csv_reader |
+| 11 | `11_advanced/` | How do I use enums, function pointers, and `_Generic`? | generic_sorter |
+| 12 | `12_processes/` | How do I launch and control other programs from C? | journal |
 
-Each group has 5–12 concept files, 6–8 exercise solutions, a project
+Each group has 5–12 concept files, 6–9 exercise solutions, a project
 with `BUILD.md`, and a `verify-exercises.sh` script that compiles and
 runs every solution to confirm correctness.
 

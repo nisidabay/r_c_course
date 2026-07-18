@@ -1,0 +1,24 @@
+total 96
+drwxr-xr-x 2 nisidabay nisidabay  4096 Jul 19 00:46 .
+drwxr-xr-x 5 nisidabay nisidabay  4096 Jul 13 09:29 ..
+-rw------- 1 nisidabay nisidabay   487 Jul 16 01:55 ex_01_fork_exec.c
+-rw------- 1 nisidabay nisidabay   709 Jul 13 09:24 ex_01_fork_exec_solution.c
+-rw------- 1 nisidabay nisidabay   395 Jul 16 01:55 ex_02_exec.c
+-rw------- 1 nisidabay nisidabay   791 Jul 13 09:30 ex_02_exec_solution.c
+-rw------- 1 nisidabay nisidabay   384 Jul 16 01:55 ex_03_system.c
+-rw------- 1 nisidabay nisidabay  1528 Jul 13 09:31 ex_03_system_solution.c
+-rw------- 1 nisidabay nisidabay   551 Jul 16 01:55 ex_04_pipe.c
+-rw------- 1 nisidabay nisidabay  1899 Jul 13 09:24 ex_04_pipe_solution.c
+-rw------- 1 nisidabay nisidabay   628 Jul 16 01:55 ex_05_dup2.c
+-rw------- 1 nisidabay nisidabay  1066 Jul 13 09:31 ex_05_dup2_solution.c
+-rw------- 1 nisidabay nisidabay   389 Jul 16 01:55 ex_06_getenv.c
+-rw------- 1 nisidabay nisidabay  1034 Jul 13 09:31 ex_06_getenv_solution.c
+-rw------- 1 nisidabay nisidabay   504 Jul 16 01:55 ex_07_sqlite3.c
+-rw------- 1 nisidabay nisidabay  1918 Jul 13 09:46 ex_07_sqlite3_solution.c
+-rw------- 1 nisidabay nisidabay   667 Jul 16 01:55 ex_08_challenge.c
+-rw------- 1 nisidabay nisidabay  1802 Jul 13 09:25 ex_08_challenge_solution.c
+-rw------- 1 nisidabay nisidabay   641 Jul 19 00:44 ex_09_signal.c
+-rw------- 1 nisidabay nisidabay   607 Jul 19 00:44 ex_09_signal_solution.c
+-rw-r--r-- 1 nisidabay nisidabay     0 Jul 19 00:47 listing.txt
+-rw-r--r-- 1 nisidabay nisidabay 12288 Jul 19 00:46 notes.db
+-rw------- 1 nisidabay nisidabay  2927 Jul 15 12:20 verify-exercises.sh

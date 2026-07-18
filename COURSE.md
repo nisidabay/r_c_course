@@ -112,7 +112,7 @@ idiomatic C way to report what went wrong.
 
 ### The one true input pattern
 
-Every file in this course that reads a number from the user follows this exact pattern:
+Every file in this course that reads interactive input from the user follows this exact pattern:
 
 ```c
 #include <errno.h>
@@ -120,6 +120,13 @@ Every file in this course that reads a number from the user follows this exact p
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
 
 int main(void) {
     char buf[64];
@@ -130,7 +137,13 @@ int main(void) {
         fprintf(stderr, "Error reading input\n");
         return EXIT_FAILURE;
     }
-    buf[strcspn(buf, "\n")] = '\0';   // strip trailing newline
+
+    size_t len = strlen(buf);
+    if (len > 0 && buf[len - 1] != '\n') {
+        consume_remaining();   /* input was truncated — drain residue */
+    } else if (len > 0) {
+        buf[len - 1] = '\0';   /* strip trailing newline */
+    }
 
     char *endptr;
     errno = 0;
@@ -156,15 +169,19 @@ int main(void) {
 }
 ```
 
-This pattern is repeated identically in every file. There is exactly one way to read integer input in this course.
+This is the canonical pattern for reading from stdin in this course. You will find it — or the compact `consume_remaining` guard inline — in every file that reads interactive input.
+
+**Two exceptions** prove the rule and are documented in their respective files:
+- **File I/O** (group 10, `05_dup2.c`): `fgets` from a `FILE *`, not from stdin. No `consume_remaining` needed — the file's content is fixed and known.
+- **Single-char menus** (`generic_sorter.c`, group 10): only the first character of the input matters. `line[0]` is used directly; the newline is irrelevant.
 
 **For numeric input** — `fgets` + `strtol` with full `errno`/`endptr` validation (see pattern above).
 
-**For non-numeric input** — `fgets` + `sscanf` is acceptable (reading names, splitting tokens, etc.).
+**For non-numeric input** — `fgets` + `sscanf` is acceptable (reading names, splitting tokens, etc.), always with the same `consume_remaining` guard.
 
 **Why not `atoi` or `scanf`?** `atoi` has no error detection at all. `scanf` skips whitespace and can leave unread input in the buffer, causing subtle bugs. With `fgets` you control exactly what gets read.
 
-**Why not `consume_remaining`?** With properly sized buffers (64-256 bytes), the entire input line almost always fits in a single `fgets` call. Using `strcspn(buf, "\n")` to strip the trailing newline is all that's needed — no `consume_remaining`, no `fflush(stdin)` (which is undefined behavior per C11 §7.21.5.2).
+**Why `consume_remaining`?** `fgets` reads at most `n-1` characters (C11 §7.21.7.2). If the user's input line is longer than the buffer, the remainder stays in `stdin`. The next `fgets` would read that residue, not the user's intended input — a silent data corruption. The `consume_remaining` guard detects when the line didn't fit (the last character before `\0` is NOT `\n`) and drains the residue. This is not paranoia — it's basic correctness. A `strcspn`-only approach discards this detection and leaves stdin in an unknown state.
 
 ### File and memory patterns
 
@@ -193,7 +210,6 @@ if (arr == NULL) {
 | `atoi` / `atof` | No error detection; undefined on overflow |
 | `scanf("%d", ...)` directly (without fgets) | Skips whitespace, leaves unread input; no bounds checking |
 | `fflush(stdin)` | Undefined behavior per C11 §7.21.5.2 |
-| `consume_remaining` | Unnecessary with properly sized buffers; adds complexity |
 
 **`sscanf` is fine for non-numeric input** (strings, formatted tokens, etc.).
 

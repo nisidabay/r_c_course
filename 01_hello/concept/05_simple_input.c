@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
 int main(void) {
     char name[32];
     char age_str[5];  // 3 digits + newline + null → max plausible age 122
@@ -14,8 +21,12 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    // fgets keeps the trailing newline — remove it
-    name[strcspn(name, "\n")] = '\0';
+    size_t len = strlen(name);
+    if (len > 0 && name[len - 1] != '\n') {
+        consume_remaining();   /* input was truncated — drain residue */
+    } else if (len > 0) {
+        name[len - 1] = '\0';  /* strip trailing newline */
+    }
 
     printf("Enter your age: ");
     if (fgets(age_str, sizeof(age_str), stdin) == NULL) {
@@ -23,7 +34,12 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    age_str[strcspn(age_str, "\n")] = '\0';
+    len = strlen(age_str);
+    if (len > 0 && age_str[len - 1] != '\n') {
+        consume_remaining();   /* input was truncated — drain residue */
+    } else if (len > 0) {
+        age_str[len - 1] = '\0';  /* strip trailing newline */
+    }
 
     // strtol parses a string into a long with full error detection.
     char *endptr;
@@ -56,16 +72,18 @@ int main(void) {
 // redirecting input from a file.
 //
 // fgets reads up to the buffer size or until a newline, whichever comes
-// first. It includes the newline in the buffer. We strip it with strcspn,
-// which finds the position of '\n' so we can replace it with '\0'.
+// first. It includes the newline in the buffer. We check if the line fit:
+// if the last character before '\0' is NOT '\n', the input was truncated
+// and we drain the residue from stdin with consume_remaining().
+// Otherwise we strip the trailing newline.
 //
 // strtol is the safe way to convert a string to a number. It reports parse
 // errors through the endptr pointer: if endptr == age_str after the call, no
 // digits were consumed (not a number). We also check errno for ERANGE to
 // detect overflow.
 //
-// With properly sized buffers (64+ bytes), the entire input line almost
-// always fits in a single fgets call, so no consume_remaining is needed.
+// With consume_remaining(), the next fgets always reads fresh input even
+// when a line was longer than the buffer.
 //
 // Always check the return value of fgets. It returns NULL when stdin
 // reaches end-of-file or a read error occurs.

@@ -218,16 +218,17 @@ echo ""
 # Define groups in order
 GROUPS=(
     "01_hello"
-    "02_control"
-    "03_functions"
-    "04_strings"
-    "05_arrays"
-    "06_pointers"
-    "07_dynamic_mem"
-    "08_structs"
-    "09_files"
-    "10_advanced"
-    "11_processes"
+    "02_bitwise"
+    "03_control"
+    "04_functions"
+    "05_strings"
+    "06_arrays"
+    "07_pointers"
+    "08_dynamic_mem"
+    "09_structs"
+    "10_files"
+    "11_advanced"
+    "12_processes"
 )
 
 # Get all source files in order

@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
 int main(void) {
     /* buffer for birth year string */
     char birth_str[64];
@@ -17,7 +24,12 @@ int main(void) {
         fprintf(stderr, "Error reading input.\n");
         return EXIT_FAILURE;
     }
-    birth_str[strcspn(birth_str, "\n")] = '\0';
+    size_t len = strlen(birth_str);
+    if (len > 0 && birth_str[len - 1] != '\n') {
+        consume_remaining();
+    } else if (len > 0) {
+        birth_str[len - 1] = '\0';
+    }
 
     /*
      * strtol parses a string into a long with full error detection.
@@ -45,7 +57,12 @@ int main(void) {
         fprintf(stderr, "Error reading input.\n");
         return EXIT_FAILURE;
     }
-    year_str[strcspn(year_str, "\n")] = '\0';
+    len = strlen(year_str);
+    if (len > 0 && year_str[len - 1] != '\n') {
+        consume_remaining();
+    } else if (len > 0) {
+        year_str[len - 1] = '\0';
+    }
 
     errno = 0;
     val = strtol(year_str, &endptr, 10);

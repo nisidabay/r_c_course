@@ -12,7 +12,7 @@
  *   - fgets(name, sizeof(name), stdin) to read a string
  *   - fgets(favorite_str, sizeof(favorite_str), stdin) to read the number as
  * text
- *   - strcspn(name, "\n") to strip the trailing newline
+ *   - strlen(name) to find length, then check name[len-1] for newline
  *   - strtol(favorite_str, &endptr, 10) to parse the number
  *   - Check errno == ERANGE and *endptr != '\0' for validation
  *   - #include <errno.h>, <limits.h>, <string.h>, <stdlib.h>, <stdio.h>

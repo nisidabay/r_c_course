@@ -4,8 +4,8 @@
  * Prompts the user for a noun, verb, adjective, adverb, and number,
  * then prints a silly story with the user's words inserted.
  *
- * Safe C Standard: uses fgets for all input, strcspn to strip newlines,
- * strtol for number parsing (see `06_pointers_101` — you'll master
+ * Safe C Standard: uses fgets for all input with truncation detection,
+ * strtol for number parsing (see `07_pointers_101` — you'll master
  * pointers there! For now: strtol uses endptr to detect invalid input).
  *
  * Compile: gcc -std=c11 -Wall -Wextra -pedantic madlibs.c -o madlibs
@@ -63,8 +63,14 @@ int main(void) {
 static void read_input(char *prompt, char *buffer, size_t size) {
     printf("%s", prompt);
     if (fgets(buffer, size, stdin) != NULL) {
-        buffer[strcspn(buffer, "\n")] =
-            '\0'; // Remove newline character if present.
+        size_t len = strlen(buffer);
+        if (len > 0 && buffer[len - 1] != '\n') {
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;   /* input was truncated — drain residue */
+        } else if (len > 0) {
+            buffer[len - 1] = '\0';  /* strip trailing newline */
+        }
     } else {
         fprintf(stderr, "Error reading input.\n");
         exit(EXIT_FAILURE);

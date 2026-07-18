@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
 int main(void)
 {
     /* buffer for user's name — large enough for typical names */
@@ -17,15 +24,25 @@ int main(void)
         fprintf(stderr, "Error reading input.\n");
         return EXIT_FAILURE;
     }
-    /* Strip trailing newline */
-    name[strcspn(name, "\n")] = '\0';
+    /* Check for truncation, then strip trailing newline */
+    size_t len = strlen(name);
+    if (len > 0 && name[len - 1] != '\n') {
+        consume_remaining();
+    } else if (len > 0) {
+        name[len - 1] = '\0';
+    }
 
     printf("Enter your favorite number: ");
     if (fgets(favorite_str, sizeof(favorite_str), stdin) == NULL) {
         fprintf(stderr, "Error reading input.\n");
         return EXIT_FAILURE;
     }
-    favorite_str[strcspn(favorite_str, "\n")] = '\0';
+    len = strlen(favorite_str);
+    if (len > 0 && favorite_str[len - 1] != '\n') {
+        consume_remaining();
+    } else if (len > 0) {
+        favorite_str[len - 1] = '\0';
+    }
 
     /*
      * strtol parses a string into a long with full error detection.
