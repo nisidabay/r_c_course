@@ -48,7 +48,7 @@ int main(void) {
     size_t n = 6;
     int   *scores = malloc(n * sizeof(int));
     if (!scores) {
-        fprintf(stderr, "malloc failed\n");
+        perror("malloc");
         return EXIT_FAILURE;
     }
 

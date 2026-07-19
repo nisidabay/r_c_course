@@ -2,6 +2,7 @@
  * Exercise 08 — Time: Date formatter — SOLUTION
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,9 +41,12 @@ int main(void)
         line[len - 1] = '\0';
     }
     char *endptr;
+    errno = 0;
     year = (int)strtol(line, &endptr, 10);
-    if (endptr == line || *endptr != '\0')
+    if (errno == ERANGE || endptr == line || *endptr != '\0') {
+        fprintf(stderr, "Invalid year\n");
         return EXIT_FAILURE;
+    }
 
     printf("Enter month: ");
     if (fgets(line, sizeof line, stdin) == NULL)
@@ -55,7 +59,13 @@ int main(void)
     } else if (len > 0) {
         line[len - 1] = '\0';
     }
-    month = (int)strtol(line, &endptr, 10);
+    char *endptr_m = NULL;  // separate endptr for month
+    errno = 0;
+    month = (int)strtol(line, &endptr_m, 10);
+    if (errno == ERANGE || endptr_m == line || *endptr_m != '\0') {
+        fprintf(stderr, "Invalid month\n");
+        return EXIT_FAILURE;
+    }
 
     printf("Enter day:   ");
     if (fgets(line, sizeof line, stdin) == NULL)
@@ -68,7 +78,13 @@ int main(void)
     } else if (len > 0) {
         line[len - 1] = '\0';
     }
-    day = (int)strtol(line, &endptr, 10);
+    char *endptr_d = NULL;  // separate endptr for day
+    errno = 0;
+    day = (int)strtol(line, &endptr_d, 10);
+    if (errno == ERANGE || endptr_d == line || *endptr_d != '\0') {
+        fprintf(stderr, "Invalid day\n");
+        return EXIT_FAILURE;
+    }
 
     /* Build a struct tm and let mktime normalise it */
     struct tm target = { 0 };

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #define MAX_STUDENTS 128
 #define NAME_LEN     32
@@ -64,7 +65,9 @@ static int parse_student(const char *line, struct Student *s)
     if (*p < '0' || *p > '9')
         return 0;                     /* missing or non-numeric */
     while (*p >= '0' && *p <= '9') {
-        s->id = s->id * 10 + (int)(*p - '0');
+        int digit = *p - '0';
+        if (s->id > (INT_MAX - digit) / 10) return 0;  /* overflow guard */
+        s->id = s->id * 10 + digit;
         p++;
         i++;
     }
@@ -82,7 +85,9 @@ static int parse_student(const char *line, struct Student *s)
     if (*p < '0' || *p > '9')
         return 0;                     /* missing or non-numeric */
     while (*p >= '0' && *p <= '9') {
-        s->grade = s->grade * 10 + (int)(*p - '0');
+        int digit = *p - '0';
+        if (s->grade > (INT_MAX - digit) / 10) return 0;  /* overflow guard */
+        s->grade = s->grade * 10 + digit;
         p++;
         i++;
     }

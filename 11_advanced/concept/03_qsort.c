@@ -39,7 +39,7 @@ int compare_by_score(const void *a, const void *b) {
 
     if (pa->score > pb->score) return +1;
     if (pa->score < pb->score) return -1;
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 /* ---------- comparator: sort players by name alphabetically ---------- */

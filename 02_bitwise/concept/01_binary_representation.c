@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 /*
  * print_bits — print the binary representation of an unsigned int.
@@ -26,57 +27,58 @@
  */
 static void print_bits(unsigned int n)
 {
-    /* Print a space every 8 bits for readability */
-    for (int i = 31; i >= 0; i--) {
-        putchar((n >> i) & 1 ? '1' : '0');
-        if (i > 0 && i % 8 == 0)
-            putchar(' ');
-    }
-    putchar('\n');
+	/* Print a space every 8 bits for readability */
+	for (int i = 31; i >= 0; i--) {
+		putchar((n >> i) & 1 ? '1' : '0');
+		if (i > 0 && i % 8 == 0)
+			putchar(' ');
+	}
+	putchar('\n');
 }
 
 int main(void)
 {
-    printf("=== Binary Representation ===\n\n");
+	printf("=== Binary Representation ===\n\n");
 
-    /* Some examples */
-    unsigned int vals[] = {0, 1, 7, 42, 255, 1024, 123456};
-    int n = sizeof vals / sizeof vals[0];
+	/* Some examples */
+	unsigned int vals[] = {0, 1, 7, 42, 255, 1024, 123456};
+	int n = sizeof vals / sizeof vals[0];
 
-    for (int i = 0; i < n; i++) {
-        printf("%7u  decimal  =  ", vals[i]);
-        print_bits(vals[i]);
-    }
+	for (int i = 0; i < n; i++) {
+		printf("%7u  decimal  =  ", vals[i]);
+		print_bits(vals[i]);
+	}
 
-    printf("\n--- Try your own ---\n");
-    printf("Enter an unsigned integer: ");
+	printf("\n--- Try your own ---\n");
+	printf("Enter an unsigned integer: ");
 
-    char buf[64];
-    if (fgets(buf, sizeof buf, stdin) == NULL) {
-        fprintf(stderr, "Error reading input\n");
-        return EXIT_FAILURE;
-    }
+	char buf[64];
+	if (fgets(buf, sizeof buf, stdin) == NULL) {
+		fprintf(stderr, "Error reading input\n");
+		return EXIT_FAILURE;
+	}
 
-    size_t len = strlen(buf);
-    if (len > 0 && buf[len - 1] != '\n') {
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF)
-            ;
-    } else if (len > 0) {
-        buf[len - 1] = '\0';
-    }
+	size_t len = strlen(buf);
+	if (len > 0 && buf[len - 1] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF)
+			;
+	} else if (len > 0) {
+		buf[len - 1] = '\0';
+	}
 
-    char *endptr;
-    unsigned long val = strtoul(buf, &endptr, 10);
-    if (endptr == buf || *endptr != '\0') {
-        fprintf(stderr, "Invalid input\n");
-        return EXIT_FAILURE;
-    }
+	char *endptr;
+	errno = 0;
+	unsigned long val = strtoul(buf, &endptr, 10);
+	if (errno == ERANGE || endptr == buf || *endptr != '\0') {
+		fprintf(stderr, "Invalid input\n");
+		return EXIT_FAILURE;
+	}
 
-    printf("%lu  decimal  =  ", val);
-    print_bits((unsigned int)val);
+	printf("%lu  decimal  =  ", val);
+	print_bits((unsigned int)val);
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 // Thinking in C:

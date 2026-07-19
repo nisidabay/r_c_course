@@ -40,7 +40,10 @@ int main(void)
 
         /* Convert FILE* to fd, then dup2 onto stdout */
         int fd = fileno(fp);
-        dup2(fd, STDOUT_FILENO);
+        if (dup2(fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            exit(EXIT_FAILURE);
+        }
         fclose(fp);          /* dup2 copied it, close original */
 
         execlp("ls", "ls", "-la", NULL);
@@ -83,7 +86,10 @@ int main(void)
         }
 
         int fd = fileno(fp);
-        dup2(fd, STDIN_FILENO);
+        if (dup2(fd, STDIN_FILENO) == -1) {
+            perror("dup2");
+            exit(EXIT_FAILURE);
+        }
         fclose(fp);
 
         execlp("head", "head", "-3", NULL);

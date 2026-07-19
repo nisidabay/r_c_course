@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 static void print_bits(unsigned int n)
 {
@@ -45,8 +46,9 @@ int main(void)
     }
 
     char *endptr;
+    errno = 0;
     unsigned long val = strtoul(buf, &endptr, 10);
-    if (endptr == buf || *endptr != '\0') {
+    if (errno == ERANGE || endptr == buf || *endptr != '\0') {
         fprintf(stderr, "Invalid input\n");
         return EXIT_FAILURE;
     }

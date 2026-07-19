@@ -109,7 +109,8 @@ static int cmd_new(sqlite3 *db, const char *editor)
         exit(EXIT_FAILURE);
     }
 
-    waitpid(pid, NULL, 0);
+    while (waitpid(pid, NULL, 0) == -1 && errno == EINTR)
+        ;
 
     /* Read the temp file back */
     FILE *fp = fopen(tmpfile, "r");
@@ -251,7 +252,7 @@ static int cmd_edit(sqlite3 *db, int entry_id, const char *editor)
         return EXIT_FAILURE;
     }
 
-    const char *content = result[cols + 1];  /* skip header row */
+    const char *content = result[cols];  /* skip header row */
 
     /* Write content to a temp file */
     const char *tmpdir = getenv("TMPDIR");
@@ -273,7 +274,14 @@ static int cmd_edit(sqlite3 *db, int entry_id, const char *editor)
     }
 
     /* Write the content */
-    write(fd, content, strlen(content));
+    ssize_t written = write(fd, content, strlen(content));
+    if (written < 0) {
+        perror("write");
+        close(fd);
+        unlink(tmpfile);
+        sqlite3_free_table(result);
+        return EXIT_FAILURE;
+    }
     close(fd);
 
     /* Launch editor */
@@ -291,7 +299,8 @@ static int cmd_edit(sqlite3 *db, int entry_id, const char *editor)
         exit(EXIT_FAILURE);
     }
 
-    waitpid(pid, NULL, 0);
+    while (waitpid(pid, NULL, 0) == -1 && errno == EINTR)
+        ;
 
     /* Read back */
     FILE *fp = fopen(tmpfile, "r");

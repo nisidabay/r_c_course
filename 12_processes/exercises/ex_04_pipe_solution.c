@@ -5,6 +5,7 @@
  * Implements: echo "hello" | tr 'a-z' 'A-Z'
  */
 
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -31,12 +32,12 @@ int main(void)
         close(fd[0]);                     /* close unused read end */
         if (dup2(fd[1], STDOUT_FILENO) < 0) {
             perror("dup2");
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
         close(fd[1]);                     /* original fd no longer needed */
         execlp("echo", "echo", "hello", (char *)NULL);
         perror("execlp");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     /* Fork second child — tr reader */
@@ -51,12 +52,12 @@ int main(void)
         close(fd[1]);                     /* close unused write end */
         if (dup2(fd[0], STDIN_FILENO) < 0) {
             perror("dup2");
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         }
         close(fd[0]);                     /* original fd no longer needed */
         execlp("tr", "tr", "a-z", "A-Z", (char *)NULL);
         perror("execlp");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     /* Parent: close both ends, wait for both children */

@@ -64,6 +64,9 @@ int main(void)
 
     if (pid_wc < 0) {
         perror("fork (wc)");
+        close(fds[0]);
+        close(fds[1]);
+        waitpid(pid_ls, NULL, WNOHANG);  // don't block if ls already finished
         return EXIT_FAILURE;
     }
 

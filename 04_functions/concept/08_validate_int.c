@@ -31,7 +31,7 @@ static void consume_remaining(void)
 int is_valid_int(const char *s, long *out)
 {
     if (s == NULL || *s == '\0') {
-        return EXIT_SUCCESS;
+        return 0;
     }
 
     char *endptr;
@@ -39,19 +39,19 @@ int is_valid_int(const char *s, long *out)
     long val = strtol(s, &endptr, 10);
 
     if (errno == ERANGE) {
-        return EXIT_SUCCESS;
+        return 0;
     }
     if (endptr == s || *endptr != '\0') {
-        return EXIT_SUCCESS;
+        return 0;
     }
     if (val < INT_MIN || val > INT_MAX) {
-        return EXIT_SUCCESS;
+        return 0;
     }
 
     if (out != NULL) {
         *out = val;
     }
-    return EXIT_FAILURE;
+    return 1;
 }
 
 int main(void)

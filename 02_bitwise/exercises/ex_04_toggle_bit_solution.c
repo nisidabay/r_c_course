@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 static unsigned int toggle_bit(unsigned int n, int i)
 {
@@ -38,8 +39,9 @@ int main(void)
     }
 
     char *endptr;
+    errno = 0;
     unsigned long val = strtoul(buf, &endptr, 10);
-    if (endptr == buf || *endptr != '\0') {
+    if (errno == ERANGE || endptr == buf || *endptr != '\0') {
         fprintf(stderr, "Invalid input\n");
         return EXIT_FAILURE;
     }
@@ -62,8 +64,9 @@ int main(void)
         buf[len - 1] = '\0';
     }
 
+    errno = 0;
     long pos = strtol(buf, &endptr, 10);
-    if (endptr == buf || *endptr != '\0' || pos < 0 || pos > 31) {
+    if (errno == ERANGE || endptr == buf || *endptr != '\0' || pos < 0 || pos > 31) {
         fprintf(stderr, "Invalid position\n");
         return EXIT_FAILURE;
     }

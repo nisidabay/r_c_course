@@ -28,8 +28,6 @@ int safe_divide(int a, int b)
 int main(void) {
     char buf[BUFSZ];
     int x, y;
-    int status = 0;
-
     printf("Enter two integers (numerator and denominator): ");
     if (fgets(buf, BUFSZ, stdin) == NULL) {
         fprintf(stderr, "Error reading input\n");
@@ -54,10 +52,11 @@ int main(void) {
     }
     x = (int)vx;
 
-    /* parse second number */
+    /* parse second number — save endptr first to detect empty input */
+    char *endptr2 = endptr;  // capture position after first number
     errno = 0;
     long vy = strtol(endptr, &endptr, 10);
-    if (errno == ERANGE || vy < INT_MIN || vy > INT_MAX) {
+    if (errno == ERANGE || endptr == endptr2 || vy < INT_MIN || vy > INT_MAX) {
         fprintf(stderr, "Invalid input for y\n");
         return EXIT_FAILURE;
     }

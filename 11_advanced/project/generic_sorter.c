@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 /* ======================== 1. Struct Product (groups 02, 03) ======================== */
 
@@ -116,7 +117,7 @@ Product *catalog_copy(const Product *src, int count)
     /* Group 07: malloc */
     Product *copy = (Product *)malloc((size_t)count * sizeof(Product));
     if (copy == NULL) {
-        fprintf(stderr, "ERROR: malloc failed\n");   /* group 08: fprintf */
+        perror("malloc");
         exit(EXIT_FAILURE);
     }
     /* group 06: pointer arithmetic via memcpy */
@@ -159,6 +160,13 @@ void print_products(const Product *prods, int count, const char *label)
 
 /* ======================== 7. Main loop (groups 04, 05, 06, 08, 09, 10) ============ */
 
+static void consume_remaining(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
 int main(void)
 {
     /* Preprocessor demonstration (group 09): static assertion via #if */
@@ -191,6 +199,12 @@ int main(void)
         if (fgets(line, sizeof line, stdin) == NULL) {
             printf("Goodbye!\n");
             break;
+        }
+        /* Check for truncated input */
+        {
+            size_t len = strlen(line);
+            if (len > 0 && line[len - 1] != '\n')
+                consume_remaining();
         }
         char choice = line[0];
         if (choice == '\n' || choice == '\0') {

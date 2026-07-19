@@ -5,6 +5,7 @@
  * Reads $EDITOR, creates ~/.config/notes/, and opens the editor there.
  */
 
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,7 +58,7 @@ int main(void)
         char *argv[] = { editor, notes_path, NULL };
         execvp(editor, argv);
         perror("execvp");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     /* Parent: wait for editor to finish */

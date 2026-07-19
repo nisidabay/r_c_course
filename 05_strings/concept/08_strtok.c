@@ -29,6 +29,7 @@ int main(void)
 
 	char *token = strtok(line, ",");
 	while (token != NULL) {
+		if (index >= 10) break;  // protect against overflow
 		tokens[index++] = token;
 		printf("  %s\n", token);
 		token = strtok(NULL, ",");

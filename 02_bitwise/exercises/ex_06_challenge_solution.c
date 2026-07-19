@@ -59,10 +59,19 @@ int main(void)
             result = a | b;
         else if (strcmp(op, "^") == 0)
             result = a ^ b;
-        else if (strcmp(op, "<<") == 0)
+        else if (strcmp(op, "<<") == 0) {
+            if (b >= 32) {
+                printf("Error: shift amount must be < 32\n");
+                continue;
+            }
             result = a << b;
-        else if (strcmp(op, ">>") == 0)
+        } else if (strcmp(op, ">>") == 0) {
+            if (b >= 32) {
+                printf("Error: shift amount must be < 32\n");
+                continue;
+            }
             result = a >> b;
+        }
         else {
             printf("Unknown operator '%s'. Use & | ^ << >>\n", op);
             continue;

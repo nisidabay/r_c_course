@@ -30,7 +30,10 @@ int main(void)
         }
 
         int fd = fileno(fp);
-        dup2(fd, STDOUT_FILENO);
+        if (dup2(fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            exit(EXIT_FAILURE);
+        }
         fclose(fp);
 
         execlp("ls", "ls", "-la", NULL);

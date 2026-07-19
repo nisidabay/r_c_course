@@ -93,8 +93,10 @@ static void add_student(void)
             buf[len - 1] = '\0';
         }
     }
-    strncpy(s.name, buf, sizeof s.name - 1);
-    s.name[sizeof s.name - 1] = '\0';
+    int needed = snprintf(s.name, sizeof s.name, "%s", buf);
+    if ((size_t)needed >= sizeof s.name) {
+        printf("Warning: name truncated to %zu characters.\n", sizeof s.name - 1);
+    }
 
     /* id */
     if (!read_int("Enter ID: ", &s.id)) return;

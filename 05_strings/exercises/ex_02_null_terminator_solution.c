@@ -4,11 +4,11 @@
  *
  * Expected output:
  *   String: C is fun
- *   Length: 9
+ *   Length: 10
  */
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	char str[] = "C is fun";
 	int length = 0;
@@ -22,7 +22,7 @@ int main()
 	printf("Length: %d\n", length);
 
 	for (int i = 0; i < length; i++) {
-		printf("str[%d] = str[%c]\n", i, str[i]);
+		printf("str[%d] = '%c'\n", i, str[i]);
 	}
 
 	return 0;

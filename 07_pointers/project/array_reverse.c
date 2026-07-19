@@ -36,6 +36,7 @@ static void consume_remaining(void)
  */
 void reverse(int *arr, size_t len)
 {
+    if (len < 2) return;        /* guard against len==0 (pointer underflow) */
     int *start = arr;           /* pointer to first element */
     int *end   = arr + len - 1; /* pointer to last  element */
 
@@ -114,13 +115,13 @@ int main(void)
     }
 
     /* print original order */
-    print_array(nums, ARRAY_SIZE, "Original");
+    print_array(nums, count, "Original");
 
     /* reverse in-place */
-    reverse(nums, ARRAY_SIZE);
+    reverse(nums, count);
 
     /* print reversed order */
-    print_array(nums, ARRAY_SIZE, "Reversed");
+    print_array(nums, count, "Reversed");
 
     return EXIT_SUCCESS;
 }

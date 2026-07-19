@@ -10,9 +10,9 @@ int main(void) {
     printf("Price (double): %.2f\n", price);
     printf("Grade (char): %c\n", grade);
 
-    printf("Size of int: %lu bytes\n", sizeof(age));
-    printf("Size of double: %lu bytes\n", sizeof(price));
-    printf("Size of char: %lu byte\n", sizeof(grade));
+    printf("Size of int: %zu bytes\n", sizeof(age));
+    printf("Size of double: %zu bytes\n", sizeof(price));
+    printf("Size of char: %zu byte\n", sizeof(grade));
 
     return EXIT_SUCCESS;
 }

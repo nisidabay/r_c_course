@@ -15,7 +15,7 @@
 
 int main(void) {
     char buf[MAX_LINE];
-    char longest[MAX_LINE];
+    char longest[MAX_LINE] = "";
     FILE *fp;
     int line_count = 0;
     int max_len = 0;

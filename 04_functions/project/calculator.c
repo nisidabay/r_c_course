@@ -18,9 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Error code for division/modulo by zero */
-#define ERROR_DIV_ZERO 2147483647  /* close to INT_MAX, unlikely as valid result */
-
 /* Buffer size for input lines */
 #define LINE_BUF 64
 
@@ -63,26 +60,18 @@ int multiply(int a, int b)
 }
 
 /**
- * divide - Returns a / b, or ERROR_DIV_ZERO if b is zero.
+ * divide - Returns a / b.
  */
 int divide(int a, int b)
 {
-    if (b == 0) {
-        printf("Error: division by zero is undefined.\n");
-        return ERROR_DIV_ZERO;
-    }
     return a / b;
 }
 
 /**
- * modulo - Returns a % b, or ERROR_DIV_ZERO if b is zero.
+ * modulo - Returns a % b.
  */
 int modulo(int a, int b)
 {
-    if (b == 0) {
-        printf("Error: modulo by zero is undefined.\n");
-        return ERROR_DIV_ZERO;
-    }
     return a % b;
 }
 
@@ -205,14 +194,20 @@ int main(void)
             printf("%d * %d = %d\n", a, b, result);
             break;
         case '/':
-            result = divide(a, b);
-            if (result != ERROR_DIV_ZERO)
+            if (b == 0) {
+                printf("Error: division by zero is undefined.\n");
+            } else {
+                result = divide(a, b);
                 printf("%d / %d = %d\n", a, b, result);
+            }
             break;
         case '%':
-            result = modulo(a, b);
-            if (result != ERROR_DIV_ZERO)
+            if (b == 0) {
+                printf("Error: modulo by zero is undefined.\n");
+            } else {
+                result = modulo(a, b);
                 printf("%d %% %d = %d\n", a, b, result);
+            }
             break;
         default:
             printf("Unknown operator '%c'. Use + - * / %% or 'q' to quit.\n", op);

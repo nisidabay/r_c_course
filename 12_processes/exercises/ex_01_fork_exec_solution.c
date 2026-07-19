@@ -5,6 +5,7 @@
  * Launches /bin/uname -a via fork+exec+waitpid.
  */
 
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,7 +24,7 @@ int main(void)
         /* Child: exec /bin/uname -a */
         execlp("/bin/uname", "uname", "-a", (char *)NULL);
         perror("execlp");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     /* Parent: wait for child */

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 int main(void)
 {
@@ -25,8 +26,9 @@ int main(void)
     }
 
     char *endptr;
+    errno = 0;
     a = (unsigned int)strtoul(buf, &endptr, 10);
-    if (endptr == buf || *endptr != '\0') {
+    if (errno == ERANGE || endptr == buf || *endptr != '\0') {
         fprintf(stderr, "Invalid input\n");
         return EXIT_FAILURE;
     }
@@ -44,8 +46,9 @@ int main(void)
         buf[len - 1] = '\0';
     }
 
+    errno = 0;
     b = (unsigned int)strtoul(buf, &endptr, 10);
-    if (endptr == buf || *endptr != '\0') {
+    if (errno == ERANGE || endptr == buf || *endptr != '\0') {
         fprintf(stderr, "Invalid input\n");
         return EXIT_FAILURE;
     }

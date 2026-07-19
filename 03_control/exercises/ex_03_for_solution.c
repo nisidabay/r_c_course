@@ -15,7 +15,7 @@
 int main(void) {
     char buf[BUFSZ];
     int n;
-    int sum = 0;
+    long sum = 0;
 
     printf("Enter a positive integer: ");
     if (fgets(buf, BUFSZ, stdin) == NULL) {
@@ -57,7 +57,7 @@ int main(void) {
         sum += i;
     }
 
-    printf("Sum = %d\n", sum);
+    printf("Sum = %ld\n", sum);
 
     return EXIT_SUCCESS;
 }

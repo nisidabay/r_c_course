@@ -60,7 +60,7 @@ int contactlist_add(ContactList *list, Contact c)
         size_t new_cap = list->cap == 0 ? 4 : list->cap * 2;
         Contact *tmp = realloc(list->contacts, new_cap * sizeof(Contact));
         if (tmp == NULL) {
-            fprintf(stderr, "Error: memory reallocation failed\n");
+            perror("realloc");
             return -1;
         }
         list->contacts = tmp;
@@ -158,7 +158,10 @@ int main(void)
             const char *phone_str = comma + 1;
             /* Trim leading spaces from phone */
             while (*phone_str == ' ') phone_str++;
-            snprintf(c.phone, sizeof c.phone, "%s", phone_str);
+            int needed = snprintf(c.phone, sizeof c.phone, "%s", phone_str);
+            if ((size_t)needed >= sizeof c.phone) {
+                printf("Warning: phone truncated to %zu characters.\n", sizeof c.phone - 1);
+            }
 
             if (contactlist_add(&list, c) != 0) {
                 fprintf(stderr, "Failed to add contact.\n");
